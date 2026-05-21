@@ -20,9 +20,9 @@ services:
       - key: DB_NAME
         value: postgres
       - key: DB_USER
-        sync: false
+        value: postgres.cbquedvjjzxrdawyifla
       - key: DB_HOST
-        sync: false
+        value: aws-0-eu-west-1.pooler.supabase.com
       - key: DB_PORT
         value: "5432"
       # Secrets — set these manually in the Render dashboard (never commit real values)

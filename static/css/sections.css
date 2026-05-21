@@ -324,7 +324,7 @@
     padding: var(--spacing-xl) var(--spacing-lg);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    background-image: url('/static/images/trust-background.jpg');
+    background-image: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

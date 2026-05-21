@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7s5h=7_4ys$q-dz4zhpb^43xnnj*joqm=m$76s^5n=&g&b-p1l'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-7s5h=7_4ys$q-dz4zhpb^43xnnj*joqm=m$76s^5n=&g&b-p1l')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True').lower() in ('1', 'true', 'yes')
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
@@ -62,6 +62,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -124,6 +125,7 @@ else:
             'CONN_MAX_AGE': int(os.getenv('DB_CONN_MAX_AGE', '60')),
             'OPTIONS': {
                 'connect_timeout': int(os.getenv('DB_CONNECT_TIMEOUT', '10')),
+                'sslmode': 'require',
             },
         }
     }
@@ -168,6 +170,14 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STORAGES = {
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+}
 
 # Media files
 MEDIA_URL = 'media/'
@@ -198,7 +208,36 @@ MONIME_SPACE_ID = os.getenv('MONIME_SPACE_ID', '')
 # Default amount in minor units (e.g. 10000 = 100 SLE)
 MONIME_DEFAULT_AMOUNT_MINOR = int(os.getenv('MONIME_DEFAULT_AMOUNT_MINOR', '10000'))
 
-# Logging Configuration
+# Logging — console-only in production (Render has no persistent disk)
+_log_handlers = ['console']
+_log_handler_config = {
+    'console': {
+        'level': 'DEBUG',
+        'class': 'logging.StreamHandler',
+        'formatter': 'simple',
+    },
+}
+
+# Add file handlers only in local development
+if DEBUG:
+    LOGS_DIR = BASE_DIR / 'logs'
+    LOGS_DIR.mkdir(exist_ok=True)
+    _log_handlers = ['file', 'error_file', 'console']
+    _log_handler_config.update({
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'techledger.log',
+            'formatter': 'verbose',
+        },
+        'error_file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'errors.log',
+            'formatter': 'verbose',
+        },
+    })
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -212,53 +251,26 @@ LOGGING = {
             'style': '{',
         },
     },
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse',
-        },
-    },
-    'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs' / 'techledger.log',
-            'formatter': 'verbose',
-        },
-        'error_file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs' / 'errors.log',
-            'formatter': 'verbose',
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-        },
-    },
+    'handlers': _log_handler_config,
     'loggers': {
         'django': {
-            'handlers': ['file', 'console'],
+            'handlers': _log_handlers,
             'level': 'INFO',
             'propagate': False,
         },
         'django.request': {
-            'handlers': ['error_file', 'console'],
+            'handlers': _log_handlers,
             'level': 'ERROR',
             'propagate': False,
         },
         'contact': {
-            'handlers': ['file', 'error_file', 'console'],
+            'handlers': _log_handlers,
             'level': 'INFO',
             'propagate': False,
         },
     },
     'root': {
-        'handlers': ['file', 'console'],
+        'handlers': _log_handlers,
         'level': 'INFO',
     },
 }
-
-# Create logs directory if it doesn't exist
-LOGS_DIR = BASE_DIR / 'logs'
-LOGS_DIR.mkdir(exist_ok=True)

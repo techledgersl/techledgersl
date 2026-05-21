@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: techledger
+    runtime: python
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
+    startCommand: gunicorn techledger.wsgi:application --workers 2 --bind 0.0.0.0:$PORT --timeout 120
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.14.3
+      - key: DEBUG
+        value: "False"
+      - key: USE_SQLITE
+        value: "false"
+      - key: ALLOWED_HOSTS
+        value: techledger.onrender.com,techledgersolution.com,www.techledgersolution.com
+      - key: CSRF_TRUSTED_ORIGINS
+        value: https://techledger.onrender.com,https://techledgersolution.com,https://www.techledgersolution.com
+      - key: DB_ENGINE
+        value: django.db.backends.postgresql
+      - key: DB_NAME
+        value: postgres
+      - key: DB_USER
+        value: postgres
+      - key: DB_HOST
+        value: db.cbquedvjjzxrdawyifla.supabase.co
+      - key: DB_PORT
+        value: "5432"
+      # Secrets — set these manually in the Render dashboard (never commit real values)
+      - key: SECRET_KEY
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: MONIME_API_TOKEN
+        sync: false
+      - key: MONIME_SPACE_ID
+        sync: false

@@ -20,7 +20,7 @@ services:
       - key: DB_NAME
         value: postgres
       - key: DB_USER
-        value: postgres.cbquedvjjzxrdawyifla
+        value: postgres.trsbvbczsfaiqfwqyojx
       - key: DB_HOST
         value: aws-0-eu-west-1.pooler.supabase.com
       - key: DB_PORT

@@ -12,9 +12,9 @@ services:
       - key: USE_SQLITE
         value: "false"
       - key: ALLOWED_HOSTS
-        value: techledger.onrender.com,techledgersolution.com,www.techledgersolution.com
+        value: techledgersl.onrender.com,techledgersolution.com,www.techledgersolution.com
       - key: CSRF_TRUSTED_ORIGINS
-        value: https://techledger.onrender.com,https://techledgersolution.com,https://www.techledgersolution.com
+        value: https://techledgersl.onrender.com,https://techledgersolution.com,https://www.techledgersolution.com
       - key: DB_ENGINE
         value: django.db.backends.postgresql
       - key: DB_NAME

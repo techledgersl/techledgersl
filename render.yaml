@@ -20,11 +20,25 @@ services:
       - key: DB_NAME
         value: postgres
       - key: DB_USER
-        value: postgres.trsbvbczsfaiqfwqyojx
+        value: postgres.cbquedvjjzxrdawyifla
       - key: DB_HOST
         value: aws-0-eu-west-1.pooler.supabase.com
       - key: DB_PORT
         value: "6543"
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_USE_TLS
+        value: "True"
+      - key: EMAIL_HOST_USER
+        value: tech.ledger.sl@gmail.com
+      - key: DEFAULT_FROM_EMAIL
+        value: tech.ledger.sl@gmail.com
+      - key: CONTACT_EMAIL
+        value: tech.ledger.sl@gmail.com
+      - key: MONIME_DEFAULT_AMOUNT_MINOR
+        value: "10000"
       # Secrets — set these manually in the Render dashboard (never commit real values)
       - key: SECRET_KEY
         sync: false

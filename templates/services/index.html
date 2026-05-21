@@ -1,0 +1,267 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Services - TechLedger Solutions{% endblock %}
+
+{% block content %}
+
+<section class="services-section services-section--primenet">
+    <div class="container">
+        <p class="services-section__eyebrow">Our Services</p>
+        <h1 class="services-section__title">
+            Crafting Digital <span>Excellence</span>
+        </h1>
+        <p class="services-section__subtitle">
+            We deliver cutting-edge solutions that transform businesses and drive innovation forward.
+        </p>
+        <div class="services-grid">
+            {% if services %}
+                {% for service in services %}
+                {% cycle 'service-icon--web' 'service-icon--code' 'service-icon--mobile' as service_icon silent %}
+                <div class="service-card">
+                    <div class="service-card__top">
+                        <div class="service-card__icon {{ service_icon }}" aria-hidden="true">
+                            {% if service_icon == 'service-icon--web' %}
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M3 12h18"></path>
+                                <path d="M12 3c2.9 3.2 2.9 14.8 0 18"></path>
+                                <path d="M12 3c-2.9 3.2-2.9 14.8 0 18"></path>
+                            </svg>
+                            {% elif service_icon == 'service-icon--code' %}
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M8.5 8.5L4.5 12l4 3.5"></path>
+                                <path d="M15.5 8.5l4 3.5-4 3.5"></path>
+                                <path d="M13.5 5.5l-3 13"></path>
+                            </svg>
+                            {% else %}
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="7" y="2.5" width="10" height="19" rx="2"></rect>
+                                <path d="M10 18.5h4"></path>
+                            </svg>
+                            {% endif %}
+                        </div>
+                        <span class="service-card__index">{{ forloop.counter|stringformat:"02d" }}</span>
+                    </div>
+                    <div class="service-card__content">
+                        <h3 class="service-card__title">{{ service.name }}</h3>
+                        <p class="service-card__description">{{ service.description }}</p>
+                        <ul class="service-card__list">
+                            <li>Tailored Solutions</li>
+                            <li>Enterprise Ready</li>
+                            <li>Scalable Delivery</li>
+                        </ul>
+                        <a class="service-card__action" href="{% url 'contact:index' %}">
+                            Explore Service
+                            <span class="service-card__action-icon" aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="service-card">
+                    <div class="service-card__top">
+                        <div class="service-card__icon service-icon--web" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M3 12h18"></path>
+                                <path d="M12 3c2.9 3.2 2.9 14.8 0 18"></path>
+                                <path d="M12 3c-2.9 3.2-2.9 14.8 0 18"></path>
+                            </svg>
+                        </div>
+                        <span class="service-card__index">01</span>
+                    </div>
+                    <div class="service-card__content">
+                        <h3 class="service-card__title">Technology Solutions</h3>
+                        <p class="service-card__description">
+                            Cutting-edge technology solutions including software development, system integration, and digital transformation.
+                        </p>
+                        <ul class="service-card__list">
+                            <li>Responsive Delivery</li>
+                            <li>High Performance</li>
+                            <li>SEO Optimized</li>
+                        </ul>
+                        <a class="service-card__action" href="{% url 'contact:index' %}">
+                            Explore Service
+                            <span class="service-card__action-icon" aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-card__top">
+                        <div class="service-card__icon service-icon--code" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M8.5 8.5L4.5 12l4 3.5"></path>
+                                <path d="M15.5 8.5l4 3.5-4 3.5"></path>
+                                <path d="M13.5 5.5l-3 13"></path>
+                            </svg>
+                        </div>
+                        <span class="service-card__index">02</span>
+                    </div>
+                    <div class="service-card__content">
+                        <h3 class="service-card__title">Financial Management</h3>
+                        <p class="service-card__description">
+                            Comprehensive financial management services including analysis, budgeting, forecasting, and strategic planning.
+                        </p>
+                        <ul class="service-card__list">
+                            <li>Custom Solutions</li>
+                            <li>Enterprise Ready</li>
+                            <li>Scalable Architecture</li>
+                        </ul>
+                        <a class="service-card__action" href="{% url 'contact:index' %}">
+                            Explore Service
+                            <span class="service-card__action-icon" aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-card__top">
+                        <div class="service-card__icon service-icon--mobile" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="7" y="2.5" width="10" height="19" rx="2"></rect>
+                                <path d="M10 18.5h4"></path>
+                            </svg>
+                        </div>
+                        <span class="service-card__index">03</span>
+                    </div>
+                    <div class="service-card__content">
+                        <h3 class="service-card__title">Research & Analytics</h3>
+                        <p class="service-card__description">
+                            Comprehensive research services, data analytics, and evidence-based insights for informed decision-making.
+                        </p>
+                        <ul class="service-card__list">
+                            <li>iOS and Android</li>
+                            <li>Cross-Platform</li>
+                            <li>User-Centric Design</li>
+                        </ul>
+                        <a class="service-card__action" href="{% url 'contact:index' %}">
+                            Explore Service
+                            <span class="service-card__action-icon" aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-card__top">
+                        <div class="service-card__icon service-icon--web" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M3 12h18"></path>
+                                <path d="M12 3c2.9 3.2 2.9 14.8 0 18"></path>
+                                <path d="M12 3c-2.9 3.2-2.9 14.8 0 18"></path>
+                            </svg>
+                        </div>
+                        <span class="service-card__index">04</span>
+                    </div>
+                    <div class="service-card__content">
+                        <h3 class="service-card__title">Consulting Services</h3>
+                        <p class="service-card__description">
+                            Expert consulting services to help you navigate complex technology and financial challenges.
+                        </p>
+                        <ul class="service-card__list">
+                            <li>Tailored Solutions</li>
+                            <li>Strategy Focused</li>
+                            <li>Scalable Delivery</li>
+                        </ul>
+                        <a class="service-card__action" href="{% url 'contact:index' %}">
+                            Explore Service
+                            <span class="service-card__action-icon" aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-card__top">
+                        <div class="service-card__icon service-icon--code" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M8.5 8.5L4.5 12l4 3.5"></path>
+                                <path d="M15.5 8.5l4 3.5-4 3.5"></path>
+                                <path d="M13.5 5.5l-3 13"></path>
+                            </svg>
+                        </div>
+                        <span class="service-card__index">05</span>
+                    </div>
+                    <div class="service-card__content">
+                        <h3 class="service-card__title">Custom Development</h3>
+                        <p class="service-card__description">
+                            Tailored software development solutions designed specifically for your business needs and requirements.
+                        </p>
+                        <ul class="service-card__list">
+                            <li>Custom Solutions</li>
+                            <li>Enterprise Ready</li>
+                            <li>Architecture Driven</li>
+                        </ul>
+                        <a class="service-card__action" href="{% url 'contact:index' %}">
+                            Explore Service
+                            <span class="service-card__action-icon" aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-card__top">
+                        <div class="service-card__icon service-icon--mobile" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="7" y="2.5" width="10" height="19" rx="2"></rect>
+                                <path d="M10 18.5h4"></path>
+                            </svg>
+                        </div>
+                        <span class="service-card__index">06</span>
+                    </div>
+                    <div class="service-card__content">
+                        <h3 class="service-card__title">System Integration</h3>
+                        <p class="service-card__description">
+                            Seamless integration of existing systems with new technologies to optimize workflows and operations.
+                        </p>
+                        <ul class="service-card__list">
+                            <li>Mobile Ready</li>
+                            <li>Cross-Platform</li>
+                            <li>User-Centric Design</li>
+                        </ul>
+                        <a class="service-card__action" href="{% url 'contact:index' %}">
+                            Explore Service
+                            <span class="service-card__action-icon" aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="cta-section services-cta">
+    <div class="container">
+        <div class="services-cta__panel">
+            <h2 class="services-cta__title">Ready to Build Your Next Digital Solution?</h2>
+            <p class="services-cta__description">
+                Let us discuss your requirements and recommend the right service package for your organization.
+            </p>
+            <div class="services-cta__actions">
+                <a href="mailto:info@techledger.com?subject=Schedule a Meeting" class="services-cta__button services-cta__button--primary">
+                    Schedule a Meeting
+                </a>
+                <a href="{% url 'contact:index' %}" class="services-cta__button services-cta__button--secondary">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var cards = document.querySelectorAll('.services-section--primenet .service-card');
+    cards.forEach(function (card) {
+        card.addEventListener('click', function () {
+            var isActive = card.classList.contains('is-active');
+            cards.forEach(function (item) {
+                item.classList.remove('is-active');
+            });
+            if (!isActive) {
+                card.classList.add('is-active');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

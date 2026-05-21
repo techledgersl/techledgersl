@@ -1,0 +1,56 @@
+<header class="site-header">
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar__brand">
+                <a href="{% url 'home:index' %}" class="navbar__logo-link">
+                    {% load static %}
+                    <img src="{% static 'images/logo.png' %}" alt="TechLedger Solutions" class="navbar__logo-img">
+                </a>
+            </div>
+            <button class="navbar__toggle" aria-label="Toggle navigation" aria-expanded="false">
+                <span class="navbar__toggle-icon"></span>
+            </button>
+            <div class="navbar__menu" role="navigation" aria-label="Main navigation">
+                <ul class="navbar__nav" role="list">
+                    <li class="navbar__item">
+                        <a href="{% url 'home:index' %}" class="navbar__link">Home</a>
+                    </li>
+                    <li class="navbar__item navbar__item--has-dropdown">
+                        <button
+                            class="navbar__link navbar__dropdown-toggle"
+                            type="button"
+                            aria-expanded="false"
+                            aria-controls="about-submenu">
+                            About Us
+                            <span class="navbar__dropdown-caret" aria-hidden="true">▾</span>
+                        </button>
+                        <ul class="navbar__dropdown-menu" id="about-submenu" role="list">
+                            <li>
+                                <a href="{% url 'about:index' %}" class="navbar__dropdown-link">About</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'about:index' %}#team" class="navbar__dropdown-link">Our Team</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'home:index' %}#testimonials" class="navbar__dropdown-link">Testimonials</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="navbar__item">
+                        <a href="{% url 'services:index' %}" class="navbar__link">Services</a>
+                    </li>
+                    <li class="navbar__item">
+                        <a href="{% url 'portfolio:index' %}" class="navbar__link">Portfolio</a>
+                    </li>
+                    <li class="navbar__item">
+                        <a href="{% url 'contact:index' %}" class="navbar__link">Contact</a>
+                    </li>
+                </ul>
+                <div class="navbar__actions">
+                    <a href="{% url 'contact:index' %}" class="navbar__action-link navbar__action-link--primary">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+

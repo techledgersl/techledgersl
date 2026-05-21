@@ -1,0 +1,210 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Portfolio - TechLedger Solutions{% endblock %}
+
+{% block meta_description %}Explore TechLedger Solutions' portfolio of digital transformation projects across health, education, and fitness in Sierra Leone.{% endblock %}
+
+{% block content %}
+
+<section class="services-section services-section--primenet">
+    <div class="container">
+        <p class="services-section__eyebrow">Our Portfolio</p>
+        <h1 class="services-section__title">
+            Projects Built for <span>Real Impact</span>
+        </h1>
+        <p class="services-section__subtitle">
+            From national health dashboards to gym platforms and college systems — every project we ship is designed
+            for real-world delivery in Sierra Leone and beyond.
+        </p>
+
+        <div class="services-grid">
+
+            <!-- 01: Focus Gym -->
+            <div class="service-card">
+                <div class="service-card__top">
+                    <div class="service-card__icon service-icon--web" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M6 4v16M18 4v16M4 8h2M18 8h2M4 16h2M18 16h2M6 12h12"/>
+                        </svg>
+                    </div>
+                    <span class="service-card__index">01</span>
+                </div>
+                <div class="service-card__content">
+                    <h3 class="service-card__title">Focus Gym</h3>
+                    <p class="service-card__description">
+                        A modern gym management and member engagement platform for Focus Gym Sierra Leone — handling
+                        memberships, session booking, attendance, and real-time staff dashboards.
+                    </p>
+                    <ul class="service-card__list">
+                        <li>Member registration &amp; profiles</li>
+                        <li>Session booking &amp; attendance</li>
+                        <li>Real-time operations dashboard</li>
+                    </ul>
+                    <a class="service-card__action" href="{% url 'contact:index' %}">
+                        Discuss This Project
+                        <span class="service-card__action-icon" aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 02: SLPNNA -->
+            <div class="service-card">
+                <div class="service-card__top">
+                    <div class="service-card__icon service-icon--code" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <span class="service-card__index">02</span>
+                </div>
+                <div class="service-card__content">
+                    <h3 class="service-card__title">Sierra Leone Paediatric &amp; Neonatal Nurses Association</h3>
+                    <p class="service-card__description">
+                        A professional web portal for SLPNNA enabling membership management, CPD tracking, event
+                        coordination, and resource sharing across the nursing workforce.
+                    </p>
+                    <ul class="service-card__list">
+                        <li>Membership registry &amp; profiles</li>
+                        <li>CPD &amp; certification tracking</li>
+                        <li>Events &amp; resource library</li>
+                    </ul>
+                    <a class="service-card__action" href="{% url 'contact:index' %}">
+                        Discuss This Project
+                        <span class="service-card__action-icon" aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 03: College Management System -->
+            <div class="service-card">
+                <div class="service-card__top">
+                    <div class="service-card__icon service-icon--mobile" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                        </svg>
+                    </div>
+                    <span class="service-card__index">03</span>
+                </div>
+                <div class="service-card__content">
+                    <h3 class="service-card__title">College Management System — College of Nursing, Allied Health Sciences &amp; Technology</h3>
+                    <p class="service-card__description">
+                        A full college ERP digitising admissions, timetabling, examinations, results processing, fee
+                        payments, and HR records into one secure platform.
+                    </p>
+                    <ul class="service-card__list">
+                        <li>Admissions &amp; student records</li>
+                        <li>Exams, results &amp; timetabling</li>
+                        <li>Fees, HR &amp; institutional reports</li>
+                    </ul>
+                    <a class="service-card__action" href="{% url 'contact:index' %}">
+                        Discuss This Project
+                        <span class="service-card__action-icon" aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 04: MamaCare -->
+            <div class="service-card">
+                <div class="service-card__top">
+                    <div class="service-card__icon service-icon--web" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                    </div>
+                    <span class="service-card__index">04</span>
+                </div>
+                <div class="service-card__content">
+                    <h3 class="service-card__title">MamaCare Sierra Leone</h3>
+                    <p class="service-card__description">
+                        A maternal and child health platform giving health workers digital ANC records, risk alerts,
+                        and automated reminders — improving outcomes for mothers across Sierra Leone.
+                    </p>
+                    <ul class="service-card__list">
+                        <li>Digital ANC records for workers</li>
+                        <li>Risk stratification &amp; alerts</li>
+                        <li>ANC coverage &amp; quality reports</li>
+                    </ul>
+                    <a class="service-card__action" href="{% url 'contact:index' %}">
+                        Discuss This Project
+                        <span class="service-card__action-icon" aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 05: Inter-District Health Dashboard -->
+            <div class="service-card">
+                <div class="service-card__top">
+                    <div class="service-card__icon service-icon--code" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="3" width="7" height="7" rx="1"/>
+                            <rect x="14" y="3" width="7" height="7" rx="1"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1"/>
+                            <path d="M17.5 14v3M14 17.5h7"/>
+                        </svg>
+                    </div>
+                    <span class="service-card__index">05</span>
+                </div>
+                <div class="service-card__content">
+                    <h3 class="service-card__title">Inter-District Health Dashboard — Sierra Leone</h3>
+                    <p class="service-card__description">
+                        A national health intelligence platform aggregating district-level indicators across all 16
+                        districts — enabling evidence-based decisions for the Ministry of Health and development partners.
+                    </p>
+                    <ul class="service-card__list">
+                        <li>All 16 districts in one view</li>
+                        <li>Interactive maps &amp; analytics</li>
+                        <li>Exportable Ministry reports</li>
+                    </ul>
+                    <a class="service-card__action" href="{% url 'contact:index' %}">
+                        Discuss This Project
+                        <span class="service-card__action-icon" aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="cta-section services-cta">
+    <div class="container">
+        <div class="services-cta__panel">
+            <h2 class="services-cta__title">Ready to Build Your Next Digital Solution?</h2>
+            <p class="services-cta__description">
+                Let us partner with your organisation to design secure, scalable systems that deliver measurable
+                impact in Sierra Leone and across the region.
+            </p>
+            <div class="services-cta__actions">
+                <a href="{% url 'contact:index' %}" class="services-cta__button services-cta__button--primary">
+                    Start a Project
+                </a>
+                <a href="{% url 'services:index' %}" class="services-cta__button services-cta__button--secondary">
+                    View Our Services
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var cards = document.querySelectorAll('.services-section--primenet .service-card');
+    cards.forEach(function (card) {
+        card.addEventListener('click', function () {
+            var isActive = card.classList.contains('is-active');
+            cards.forEach(function (item) {
+                item.classList.remove('is-active');
+            });
+            if (!isActive) {
+                card.classList.add('is-active');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

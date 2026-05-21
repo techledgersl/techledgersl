@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+
+{% block title %}500 - Server Error - TechLedger Solutions{% endblock %}
+
+{% block content %}
+<section class="error-page">
+    <div class="container">
+        <div class="error-page__content">
+            <h1 class="error-page__code">500</h1>
+            <h2 class="error-page__title">Server Error</h2>
+            <p class="error-page__description">
+                We're sorry, but something went wrong on our end. Please try again later.
+            </p>
+            <div class="error-page__actions">
+                <a href="{% url 'home:index' %}" class="btn btn--primary">Go to Homepage</a>
+                <a href="{% url 'contact:index' %}" class="btn btn--secondary">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

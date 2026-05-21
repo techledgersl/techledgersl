@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ service.name }} - TechLedger Solutions{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-header__title">{{ service.name }}</h1>
+        <p class="page-header__subtitle">{{ service.description }}</p>
+    </div>
+</section>
+
+<section class="service-detail">
+    <div class="container">
+        <div class="service-detail__content">
+            <div class="service-detail__body">
+                <h2>About This Service</h2>
+                <div class="service-detail__description">
+                    {{ service.description|linebreaks }}
+                </div>
+            </div>
+            <div class="service-detail__sidebar">
+                <div class="service-detail__cta">
+                    <h3>Interested in this service?</h3>
+                    <p>Contact us to discuss how we can help with your project.</p>
+                    <a href="{% url 'contact:index' %}" class="btn btn--primary">Get in Touch</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

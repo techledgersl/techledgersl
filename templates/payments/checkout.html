@@ -1,0 +1,135 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Pay for a Service - TechLedger{% endblock %}
+
+{% block content %}
+<section class="checkout-page">
+    <div class="container checkout-page__layout">
+
+        <div class="checkout-page__main">
+            <h1 class="checkout-page__title">Pay for a Service</h1>
+            <p class="checkout-page__subtitle">
+                Enter your details and you will be redirected to our secure Monime checkout to complete payment.
+            </p>
+
+            <form class="checkout-page__form" method="post" action="{% url 'payments:create_session' %}">
+                {% csrf_token %}
+
+                {% if messages %}
+                <div class="checkout-page__messages">
+                    {% for message in messages %}
+                    <div class="alert alert--{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="checkout-section">
+                    <div class="checkout-section__header">
+                        <h2>Contact information</h2>
+                    </div>
+                    <div class="checkout-section__body">
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email for receipt</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="you@example.com"
+                                required
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout-section">
+                    <div class="checkout-section__header">
+                        <h2>Payment details</h2>
+                    </div>
+                    <div class="checkout-section__body checkout-section__body--grid">
+                        <div class="form-group form-group--full">
+                            <label for="service_key" class="form-label">Service</label>
+                            <select name="service_key" id="service_key" class="form-control" required>
+                                <option value="">Select a service</option>
+                                {% for option in payment_services %}
+                                <option value="{{ option.value }}">{{ option.label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input
+                                type="number"
+                                name="amount"
+                                id="amount"
+                                class="form-control"
+                                min="0.01"
+                                step="0.01"
+                                required
+                                placeholder="Enter amount, e.g. 20"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="currency" class="form-label">Currency</label>
+                            <input
+                                type="text"
+                                name="currency"
+                                id="currency"
+                                class="form-control"
+                                value="SLE"
+                                maxlength="3"
+                                style="text-transform: uppercase;"
+                                required
+                                placeholder="SLE"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout-page__actions">
+                    <button type="submit" class="btn btn--primary btn--large">
+                        Pay with Monime
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <aside class="checkout-page__summary">
+            <div class="checkout-summary-card">
+                <h2 class="checkout-summary-card__title">Order summary</h2>
+                <div class="checkout-summary-card__item">
+                    <div class="checkout-summary-card__item-info">
+                        <div class="checkout-summary-card__item-name">
+                            Selected service
+                        </div>
+                        <div class="checkout-summary-card__item-note">
+                            Choose a service and amount on the left. Final fees and total are shown on Monime.
+                        </div>
+                    </div>
+                </div>
+                <div class="checkout-summary-card__row">
+                    <span>Subtotal</span>
+                    <span>Based on your amount</span>
+                </div>
+                <div class="checkout-summary-card__row">
+                    <span>Fees</span>
+                    <span>Calculated by Monime</span>
+                </div>
+                <div class="checkout-summary-card__total">
+                    <span>Total</span>
+                    <span>Shown on Monime</span>
+                </div>
+                <p class="checkout-summary-card__note">
+                    You will confirm the final total on the secure Monime checkout page.
+                </p>
+            </div>
+        </aside>
+
+    </div>
+</section>
+{% endblock %}
+

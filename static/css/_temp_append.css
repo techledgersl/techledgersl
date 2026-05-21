@@ -1,0 +1,24 @@
+
+    .hero__trust {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .hero__trust {
+        transition: none;
+        animation: none;
+        opacity: 1;
+        transform: none !important;
+    }
+
+    .hero__trust-logo {
+        transition: none;
+    }
+
+    .hero__trust-logo:hover {
+        transform: none;
+    }
+}
+

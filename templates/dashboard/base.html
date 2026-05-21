@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard - TechLedger Solutions{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="dashboard-body">
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="dashboard-sidebar">
+            <div class="sidebar-header">
+                <a href="{% if user_role == 'Admin' %}{% url 'dashboard:admin_dashboard' %}{% elif user_role == 'Finance' %}{% url 'dashboard:finance_dashboard' %}{% else %}{% url 'dashboard:operations_dashboard' %}{% endif %}" class="sidebar-brand">
+                    {% load static %}
+                    <img src="{% static 'images/logo.png' %}" alt="TechLedger Solutions" class="sidebar-logo">
+                    <span class="sidebar-brand-text">TechLedger</span>
+                </a>
+                <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+                    <span class="sidebar-toggle-icon"></span>
+                </button>
+            </div>
+
+            <!-- Profile Card in Sidebar -->
+            <div class="sidebar-profile">
+                <div class="profile-avatar">
+                    <span class="profile-avatar-initials">{{ user.username|slice:":2"|upper }}</span>
+                </div>
+                <div class="profile-details">
+                    <span class="profile-name">{{ user.get_full_name|default:user.username }}</span>
+                    <span class="profile-email">{{ user.email|default:"No email" }}</span>
+                    <span class="profile-role-badge profile-role-badge--{{ user_role|lower }}">{{ user_role }}</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <p class="nav-section-label">Main</p>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        {% if user_role == 'Admin' %}
+                        <a href="{% url 'dashboard:admin_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+                        {% elif user_role == 'Finance' %}
+                        <a href="{% url 'dashboard:finance_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'finance_dashboard' %}active{% endif %}">
+                        {% else %}
+                        <a href="{% url 'dashboard:operations_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'operations_dashboard' %}active{% endif %}">
+                        {% endif %}
+                            <span class="nav-icon">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                            </span>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                </ul>
+
+                {% if user_role == 'Admin' or user_role == 'Operations' %}
+                <p class="nav-section-label">Operations</p>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        {% if user_role == 'Admin' %}
+                        <a href="{% url 'dashboard:admin_dashboard' %}#services" class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+                        {% else %}
+                        <a href="{% url 'dashboard:operations_dashboard' %}#services" class="nav-link {% if request.resolver_match.url_name == 'operations_dashboard' %}active{% endif %}">
+                        {% endif %}
+                            <span class="nav-icon">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            </span>
+                            <span class="nav-text">Services</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        {% if user_role == 'Admin' %}
+                        <a href="{% url 'dashboard:admin_dashboard' %}#inquiries" class="nav-link">
+                        {% else %}
+                        <a href="{% url 'dashboard:operations_dashboard' %}#inquiries" class="nav-link">
+                        {% endif %}
+                            <span class="nav-icon">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            </span>
+                            <span class="nav-text">Contact Inquiries</span>
+                        </a>
+                    </li>
+                    {% if user_role == 'Admin' %}
+                    <li class="nav-item">
+                        <a href="/admin/auth/user/" class="nav-link">
+                            <span class="nav-icon">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            </span>
+                            <span class="nav-text">Users</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+
+                {% if user_role == 'Admin' or user_role == 'Finance' %}
+                <p class="nav-section-label">Finance</p>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard:finance_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'finance_dashboard' %}active{% endif %}">
+                            <span class="nav-icon">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            </span>
+                            <span class="nav-text">Finance Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard:finance_dashboard' %}#inquiries" class="nav-link">
+                            <span class="nav-icon">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            </span>
+                            <span class="nav-text">Contact Inquiries</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard:finance_dashboard' %}#services" class="nav-link">
+                            <span class="nav-icon">
+                                <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            </span>
+                            <span class="nav-text">Services (Reference)</span>
+                        </a>
+                    </li>
+                </ul>
+                {% endif %}
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="{% url 'dashboard:logout' %}" class="nav-link nav-link--logout">
+                    <span class="nav-icon">
+                        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    </span>
+                    <span class="nav-text">Log out</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="header-mobile-menu" id="header-mobile-menu" aria-label="Open menu">
+                        <span></span><span></span><span></span>
+                    </button>
+                    <div class="header-breadcrumb">
+                        <span class="breadcrumb-item">TechLedger</span>
+                        <span class="breadcrumb-sep">/</span>
+                        <span class="breadcrumb-current">{% block page_title %}Dashboard{% endblock %}</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-profile">
+                        <div class="header-profile-avatar">
+                            <span>{{ user.username|slice:":2"|upper }}</span>
+                        </div>
+                        <div class="header-profile-info">
+                            <span class="header-profile-name">{{ user.username }}</span>
+                            <span class="header-profile-role">{{ user_role }}</span>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        {% block header_actions %}{% endblock %}
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

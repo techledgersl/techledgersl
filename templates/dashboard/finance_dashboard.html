@@ -1,0 +1,121 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Finance Dashboard - TechLedger Solutions{% endblock %}
+
+{% block page_title %}Finance Dashboard{% endblock %}
+
+{% block content %}
+<!-- Statistics Cards -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">📧</div>
+        <div class="stat-content">
+            <h3 class="stat-value">{{ total_inquiries }}</h3>
+            <p class="stat-label">Total Inquiries</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🆕</div>
+        <div class="stat-content">
+            <h3 class="stat-value">{{ new_inquiries }}</h3>
+            <p class="stat-label">New Inquiries (7 days)</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-content">
+            <h3 class="stat-value">{{ inquiries_by_status|length }}</h3>
+            <p class="stat-label">Status Categories</p>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Inquiries -->
+<section class="dashboard-section" id="inquiries">
+    <div class="section-header">
+        <h2>Contact Inquiries</h2>
+        <a href="/admin/contact/contactinquiry/" class="btn btn--primary btn--small">View All</a>
+    </div>
+    <div class="status-breakdown">
+        <h3>Inquiries by Status</h3>
+        <div class="status-grid">
+            {% for status_item in inquiries_by_status %}
+            <div class="status-item">
+                <span class="status-label">{{ status_item.status|title }}</span>
+                <span class="status-count">{{ status_item.count }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inquiry in recent_inquiries %}
+                <tr>
+                    <td>{{ inquiry.name }}</td>
+                    <td>{{ inquiry.email }}</td>
+                    <td>{{ inquiry.subject }}</td>
+                    <td>
+                        <span class="badge badge--info">{{ inquiry.get_status_display }}</span>
+                    </td>
+                    <td>{{ inquiry.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="/admin/contact/contactinquiry/{{ inquiry.id }}/change/" class="btn btn--small btn--secondary">Update Status</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No inquiries found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Services (Read-Only) -->
+<section class="dashboard-section" id="services">
+    <div class="section-header">
+        <h2>Services (Reference)</h2>
+    </div>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in services %}
+                <tr>
+                    <td>{{ service.name }}</td>
+                    <td>{{ service.description|truncatewords:15 }}</td>
+                    <td>
+                        <span class="badge {% if service.is_active %}badge--success{% else %}badge--warning{% endif %}">
+                            {% if service.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center">No services found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

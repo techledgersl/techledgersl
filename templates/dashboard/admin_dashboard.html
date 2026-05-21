@@ -1,0 +1,133 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard - TechLedger Solutions{% endblock %}
+
+{% block page_title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<!-- Statistics Cards -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">⚙️</div>
+        <div class="stat-content">
+            <h3 class="stat-value">{{ total_services }}</h3>
+            <p class="stat-label">Total Services</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">📧</div>
+        <div class="stat-content">
+            <h3 class="stat-value">{{ total_inquiries }}</h3>
+            <p class="stat-label">Total Inquiries</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🆕</div>
+        <div class="stat-content">
+            <h3 class="stat-value">{{ new_inquiries }}</h3>
+            <p class="stat-label">New Inquiries (7 days)</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-content">
+            <h3 class="stat-value">{{ total_users }}</h3>
+            <p class="stat-label">Total Users</p>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Services -->
+<section class="dashboard-section" id="services">
+    <div class="section-header">
+        <h2>Recent Services</h2>
+        <a href="/admin/services/service/" class="btn btn--primary btn--small">Manage All Services</a>
+    </div>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Display Order</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in recent_services %}
+                <tr>
+                    <td>{{ service.name }}</td>
+                    <td>
+                        <span class="badge {% if service.is_active %}badge--success{% else %}badge--warning{% endif %}">
+                            {% if service.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </td>
+                    <td>{{ service.display_order }}</td>
+                    <td>{{ service.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="/admin/services/service/{{ service.id }}/change/" class="btn btn--small btn--secondary">Edit</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No services found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Recent Contact Inquiries -->
+<section class="dashboard-section" id="inquiries">
+    <div class="section-header">
+        <h2>Recent Contact Inquiries</h2>
+        <a href="/admin/contact/contactinquiry/" class="btn btn--primary btn--small">View All Inquiries</a>
+    </div>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inquiry in recent_inquiries %}
+                <tr>
+                    <td>{{ inquiry.name }}</td>
+                    <td>{{ inquiry.email }}</td>
+                    <td>{{ inquiry.subject }}</td>
+                    <td>
+                        <span class="badge badge--info">{{ inquiry.get_status_display }}</span>
+                    </td>
+                    <td>{{ inquiry.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="/admin/contact/contactinquiry/{{ inquiry.id }}/change/" class="btn btn--small btn--secondary">View</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No inquiries found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- User Management -->
+<section class="dashboard-section" id="users">
+    <div class="section-header">
+        <h2>User Management</h2>
+        <a href="/admin/auth/user/" class="btn btn--primary btn--small">Manage Users</a>
+    </div>
+    <p class="section-description">Access the user management section to create, edit, and manage user accounts and roles.</p>
+</section>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="{% block meta_description %}TechLedger Solutions - Technology-driven research, academic writing, and financial analytics services.{% endblock %}">
+    <title>{% block title %}TechLedger Solutions{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sections.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body data-icon-url="{% static 'images/icon.png' %}">
+    {% include 'base/header.html' %}
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    {% include 'base/footer.html' %}
+
+    <button type="button" class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top" title="Scroll to top">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/navigation.js' %}"></script>
+    <script src="{% static 'js/animations.js' %}"></script>
+    <script src="{% static 'js/contact-form.js' %}"></script>
+    <script src="{% static 'js/hero-trust.js' %}"></script>
+    <script src="{% static 'js/hero-slider.js' %}"></script>
+    <script src="{% static 'js/trust-section.js' %}"></script>
+    <script src="{% static 'js/services-overview.js' %}"></script>
+    <script src="{% static 'js/benefits-scroll.js' %}"></script>
+    <script src="{% static 'js/integrations-circle.js' %}"></script>
+    <script src="{% static 'js/integrations-scroll.js' %}"></script>
+    <script src="{% static 'js/cta-scroll.js' %}"></script>
+    <script src="{% static 'js/page-transitions.js' %}"></script>
+    <script src="{% static 'js/scroll-to-top.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+

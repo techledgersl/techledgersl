@@ -122,7 +122,8 @@ else:
             'PASSWORD': os.getenv('DB_PASSWORD', ''),
             'HOST': os.getenv('DB_HOST', 'localhost'),
             'PORT': os.getenv('DB_PORT', '5432'),
-            'CONN_MAX_AGE': int(os.getenv('DB_CONN_MAX_AGE', '60')),
+            # Use 0 with Supabase transaction pooler (port 6543); set to 60 for session pooler
+            'CONN_MAX_AGE': int(os.getenv('DB_CONN_MAX_AGE', '0')),
             'OPTIONS': {
                 'connect_timeout': int(os.getenv('DB_CONNECT_TIMEOUT', '10')),
                 'sslmode': 'require',

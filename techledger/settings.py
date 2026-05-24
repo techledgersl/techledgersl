@@ -102,7 +102,7 @@ CACHES = {
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-# Set USE_SQLITE=true in .env only until PostgreSQL is installed and running locally.
+# Local: set USE_SQLITE=true in .env. Production: USE_SQLITE=false + Supabase DB_* on host.
 
 _use_sqlite = os.getenv('USE_SQLITE', 'false').lower() in ('1', 'true', 'yes')
 

@@ -46,7 +46,7 @@ I am passionate about technology, digital innovation, software development, and 
 
 ## 📫 How to reach me
 
-- Website: https://techledgersolutions.com
+- Website: https://techledgersolution.com
 - GitHub: https://github.com/techledgersl
 - Email: solomonamaraza@gmail.com
 

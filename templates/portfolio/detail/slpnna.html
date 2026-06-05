@@ -1,0 +1,367 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}SLPNNA Digital Platform — TechLedger Portfolio{% endblock %}
+{% block meta_description %}A digital membership and communications platform built for the Sierra Leone Police National Network Association — unifying officers across all divisions nationwide.{% endblock %}
+
+{% block extra_css %}
+<style>
+:root {
+  --sl-blue:   #1D4ED8;
+  --sl-navy:   #0F172A;
+  --sl-accent: #E98B2E;
+  --sl-muted:  #64748B;
+  --sl-surface:#EFF6FF;
+  --sl-border: #BFDBFE;
+}
+.reveal { opacity:0; will-change:transform,opacity; transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1); }
+.reveal--up { transform:translateY(40px); } .reveal--left { transform:translateX(-40px); } .reveal--right { transform:translateX(40px); }
+.reveal.is-visible { opacity:1; transform:none; }
+.reveal--stagger > * { opacity:0; transform:translateY(32px); transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .55s cubic-bezier(.4,0,.2,1); }
+.reveal--stagger.is-visible > * { opacity:1; transform:none; }
+
+.portfolio-back-bar { background:#0F172A; padding:.85rem 0; border-bottom:1px solid rgba(255,255,255,.08); }
+.portfolio-back-bar__inner { display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+.portfolio-back-btn { display:inline-flex; align-items:center; gap:.45rem; color:#CBD5E1; font-size:.83rem; font-weight:600; text-decoration:none; transition:color .2s; }
+.portfolio-back-btn:hover { color:#E98B2E; }
+.portfolio-back-crumb { color:#64748B; font-size:.78rem; }
+.portfolio-back-crumb span { color:#E98B2E; }
+
+/* Hero */
+.sl-hero {
+  background: linear-gradient(140deg, #0F172A 0%, #1E3A5F 55%, #0F172A 100%);
+  min-height:92vh; display:flex; align-items:center;
+  position:relative; overflow:hidden; padding:8rem 0 5rem;
+}
+.sl-hero::before {
+  content:''; position:absolute; inset:0;
+  background-image: radial-gradient(circle at 75% 25%, rgba(29,78,216,.25) 0%, transparent 50%), radial-gradient(circle at 20% 75%, rgba(233,139,46,.10) 0%, transparent 40%);
+  pointer-events:none;
+}
+.sl-hero__grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+.sl-badge {
+  display:inline-flex; align-items:center; gap:.5rem;
+  background:rgba(29,78,216,.15); border:1px solid rgba(29,78,216,.35);
+  color:#93C5FD; font-size:.73rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:.35rem .9rem; border-radius:999px; margin-bottom:1.5rem;
+}
+.sl-hero__title { font-size:clamp(2.2rem,4vw,3.6rem); font-weight:800; color:#fff; line-height:1.12; margin-bottom:1.25rem; }
+.sl-hero__title span { color:#E98B2E; }
+.sl-hero__desc { color:#94A3B8; font-size:1.05rem; line-height:1.72; max-width:520px; margin-bottom:2rem; }
+.sl-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:2.5rem; }
+.sl-tag { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:#CBD5E1; font-size:.75rem; font-weight:600; padding:.3rem .75rem; border-radius:.5rem; }
+.sl-hero__stats { display:flex; gap:2.5rem; flex-wrap:wrap; }
+.sl-stat-value { display:block; font-size:2rem; font-weight:800; color:#60A5FA; line-height:1; }
+.sl-stat-label { font-size:.78rem; color:#64748B; margin-top:.2rem; }
+
+/* Directory card mockup */
+.sl-card {
+  background:linear-gradient(145deg, #1E293B, #0F172A);
+  border:1px solid rgba(29,78,216,.25); border-radius:1.5rem; padding:1.75rem;
+  box-shadow:0 30px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(29,78,216,.1);
+}
+.sl-card__header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
+.sl-card__title { color:#F1F5F9; font-size:.9rem; font-weight:700; }
+.sl-card__badge { background:rgba(29,78,216,.2); color:#93C5FD; font-size:.7rem; font-weight:700; padding:.25rem .65rem; border-radius:999px; }
+.sl-stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; margin-bottom:1rem; }
+.sl-stat-mini { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:.875rem; padding:.875rem; text-align:center; }
+.sl-stat-mini__value { color:#F1F5F9; font-size:1.3rem; font-weight:800; }
+.sl-stat-mini__label { color:#64748B; font-size:.68rem; margin-top:.15rem; }
+.sl-member-list { display:flex; flex-direction:column; gap:.5rem; }
+.sl-member-item { display:flex; align-items:center; gap:.75rem; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:.75rem; padding:.65rem .875rem; }
+.sl-member-avatar { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; color:#fff; flex-shrink:0; }
+.sl-member-name { color:#E2E8F0; font-size:.8rem; font-weight:600; flex:1; }
+.sl-member-rank { color:#64748B; font-size:.72rem; }
+.sl-member-div { font-size:.68rem; font-weight:700; padding:.2rem .55rem; border-radius:999px; background:rgba(29,78,216,.15); color:#93C5FD; }
+
+/* Sections */
+.sl-section { padding:5rem 0; }
+.sl-section--alt { background:var(--sl-surface); }
+.sl-label { display:inline-flex; align-items:center; gap:.4rem; font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--sl-blue); margin-bottom:.75rem; }
+.sl-title { font-size:clamp(1.8rem,3vw,2.6rem); font-weight:800; color:var(--sl-navy); line-height:1.2; margin-bottom:1rem; }
+.sl-desc { color:var(--sl-muted); font-size:1rem; line-height:1.7; max-width:600px; }
+.sl-header { text-align:center; margin-bottom:3.5rem; }
+.sl-header .sl-desc { margin:0 auto; }
+
+.sl-features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; }
+.sl-feature-card { background:#fff; border:1px solid #E5E7EB; border-radius:1.1rem; padding:1.65rem 1.5rem; transition:transform .22s,box-shadow .22s,border-color .22s; }
+.sl-feature-card:hover { transform:translateY(-4px); border-color:var(--sl-blue); box-shadow:0 12px 28px rgba(15,23,42,.09); }
+.sl-feature-card__icon { width:52px; height:52px; border-radius:.9rem; display:flex; align-items:center; justify-content:center; margin-bottom:1rem; }
+.sl-feature-card__title { font-size:1rem; font-weight:700; color:var(--sl-navy); margin-bottom:.5rem; }
+.sl-feature-card__desc  { color:var(--sl-muted); font-size:.875rem; line-height:1.6; }
+
+.sl-split { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+.sl-split__img { background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 100%); border-radius:1.5rem; padding:2.5rem; border:1px solid rgba(29,78,216,.2); box-shadow:0 20px 40px rgba(0,0,0,.15); }
+.sl-checklist { list-style:none; padding:0; margin:1.5rem 0; display:flex; flex-direction:column; gap:.875rem; }
+.sl-checklist li { display:flex; align-items:flex-start; gap:.75rem; color:#475569; font-size:.925rem; line-height:1.6; }
+.sl-checklist li::before { content:''; width:20px; height:20px; border-radius:50%; background:rgba(29,78,216,.1); border:2px solid #1D4ED8; flex-shrink:0; margin-top:.1rem; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231D4ED8' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:center; }
+
+.sl-impact-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; margin-top:3rem; }
+.sl-impact-card { background:#fff; border:1px solid var(--sl-border); border-radius:1.1rem; padding:1.75rem; text-align:center; box-shadow:0 6px 16px rgba(15,23,42,.05); }
+.sl-impact-card__value { font-size:2.4rem; font-weight:800; color:var(--sl-blue); line-height:1; }
+.sl-impact-card__label { color:var(--sl-muted); font-size:.8rem; margin-top:.5rem; line-height:1.5; }
+
+.tech-stack-grid { display:flex; flex-wrap:wrap; gap:.875rem; margin-top:1.5rem; }
+.tech-badge { display:flex; align-items:center; gap:.5rem; background:#fff; border:1px solid #E5E7EB; border-radius:.65rem; padding:.5rem 1rem; font-size:.83rem; font-weight:600; color:#334155; box-shadow:0 2px 8px rgba(15,23,42,.05); }
+.tech-badge__dot { width:8px; height:8px; border-radius:50%; }
+
+.sl-cta { background:linear-gradient(140deg,#0F172A 0%,#1E3A5F 100%); padding:5rem 0; text-align:center; position:relative; overflow:hidden; }
+.sl-cta::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 50% 50%,rgba(29,78,216,.15) 0%,transparent 65%); pointer-events:none; }
+.sl-cta__inner { position:relative; z-index:1; max-width:680px; margin:0 auto; }
+.sl-cta__title { font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800; color:#fff; margin-bottom:1rem; }
+.sl-cta__desc  { color:#94A3B8; font-size:1rem; line-height:1.7; margin-bottom:2rem; }
+.sl-cta__actions { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+.btn-primary { background:#E98B2E; color:#fff; padding:.85rem 1.85rem; border-radius:.75rem; font-weight:700; font-size:.925rem; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; transition:background .2s,transform .15s,box-shadow .2s; }
+.btn-primary:hover { background:#D97706; transform:translateY(-1px); box-shadow:0 6px 20px rgba(233,139,46,.35); }
+.btn-outline-light { background:transparent; color:#CBD5E1; border:1.5px solid rgba(255,255,255,.2); padding:.85rem 1.85rem; border-radius:.75rem; font-weight:600; font-size:.925rem; text-decoration:none; display:inline-flex; align-items:center; gap:.5rem; transition:border-color .2s,color .2s; }
+.btn-outline-light:hover { border-color:#E98B2E; color:#E98B2E; }
+
+@media (max-width:1024px) { .sl-features-grid { grid-template-columns:repeat(2,1fr); } .sl-impact-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:768px) { .sl-hero__grid { grid-template-columns:1fr; } .sl-hero__visual { display:none; } .sl-split { grid-template-columns:1fr; } .sl-features-grid { grid-template-columns:1fr; } .sl-impact-grid { grid-template-columns:repeat(2,1fr); } }
+@media (prefers-reduced-motion:reduce) { .reveal,.reveal--up,.reveal--left,.reveal--right { transform:none; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="portfolio-back-bar">
+  <div class="container">
+    <div class="portfolio-back-bar__inner">
+      <a href="{% url 'portfolio:index' %}" class="portfolio-back-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Portfolio
+      </a>
+      <span class="portfolio-back-crumb">Portfolio / <span>SLPNNA</span></span>
+    </div>
+  </div>
+</div>
+
+<section class="sl-hero">
+  <div class="container">
+    <div class="sl-hero__grid">
+      <div class="reveal reveal--left">
+        <div class="sl-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Case Study · Law Enforcement
+        </div>
+        <h1 class="sl-hero__title">
+          Connecting Sierra Leone's<br>Police Network<br><span>Digitally</span>
+        </h1>
+        <p class="sl-hero__desc">
+          The Sierra Leone Police National Network Association needed a unified digital platform to
+          manage officers across all divisions — from member records and communications to events
+          and welfare tracking nationwide.
+        </p>
+        <div class="sl-tags">
+          <span class="sl-tag">Django</span>
+          <span class="sl-tag">PostgreSQL</span>
+          <span class="sl-tag">Python</span>
+          <span class="sl-tag">Bootstrap 5</span>
+          <span class="sl-tag">Email Notifications</span>
+          <span class="sl-tag">Role-based Access</span>
+        </div>
+        <div class="sl-hero__stats">
+          <div>
+            <span class="sl-stat-value">2,000+</span>
+            <div class="sl-stat-label">Officers registered</div>
+          </div>
+          <div>
+            <span class="sl-stat-value">5</span>
+            <div class="sl-stat-label">Divisions connected</div>
+          </div>
+          <div>
+            <span class="sl-stat-value">100%</span>
+            <div class="sl-stat-label">Digital record-keeping</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal--right">
+        <div class="sl-card">
+          <div class="sl-card__header">
+            <span class="sl-card__title">Officer Directory</span>
+            <span class="sl-card__badge">Nationwide</span>
+          </div>
+          <div class="sl-stats-row">
+            <div class="sl-stat-mini"><div class="sl-stat-mini__value">2,148</div><div class="sl-stat-mini__label">Total members</div></div>
+            <div class="sl-stat-mini"><div class="sl-stat-mini__value">5</div><div class="sl-stat-mini__label">Divisions</div></div>
+            <div class="sl-stat-mini"><div class="sl-stat-mini__value">12</div><div class="sl-stat-mini__label">Active events</div></div>
+          </div>
+          <div class="sl-member-list">
+            <div class="sl-member-item">
+              <div class="sl-member-avatar" style="background:#1D4ED8;">IK</div>
+              <div><div class="sl-member-name">Insp. Koroma, A.</div><div class="sl-member-rank">Inspector · Badge #1042</div></div>
+              <span class="sl-member-div">Western</span>
+            </div>
+            <div class="sl-member-item">
+              <div class="sl-member-avatar" style="background:#E98B2E;">SC</div>
+              <div><div class="sl-member-name">Sgt. Conteh, M.</div><div class="sl-member-rank">Sergeant · Badge #0831</div></div>
+              <span class="sl-member-div">Northern</span>
+            </div>
+            <div class="sl-member-item">
+              <div class="sl-member-avatar" style="background:#10B981;">AB</div>
+              <div><div class="sl-member-name">Cpl. Bangura, F.</div><div class="sl-member-rank">Corporal · Badge #1207</div></div>
+              <span class="sl-member-div">Eastern</span>
+            </div>
+            <div class="sl-member-item">
+              <div class="sl-member-avatar" style="background:#8B5CF6;">TJ</div>
+              <div><div class="sl-member-name">PC Jalloh, T.</div><div class="sl-member-rank">Constable · Badge #2018</div></div>
+              <span class="sl-member-div">Southern</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sl-section">
+  <div class="container">
+    <div class="sl-header reveal reveal--up">
+      <div class="sl-label">Platform Features</div>
+      <h2 class="sl-title">Built for a National Police Association</h2>
+      <p class="sl-desc">A secure, centralised platform that gives SLPNNA leadership full visibility over their membership, communications, and welfare programmes.</p>
+    </div>
+    <div class="sl-features-grid reveal--stagger">
+      <div class="sl-feature-card">
+        <div class="sl-feature-card__icon" style="background:rgba(29,78,216,.1);color:#1D4ED8;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="sl-feature-card__title">Officer Directory</h3>
+        <p class="sl-feature-card__desc">Searchable national database of all registered officers — filterable by rank, division, station, and service date.</p>
+      </div>
+      <div class="sl-feature-card">
+        <div class="sl-feature-card__icon" style="background:rgba(233,139,46,.1);color:#E98B2E;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16z"/></svg>
+        </div>
+        <h3 class="sl-feature-card__title">Communications Hub</h3>
+        <p class="sl-feature-card__desc">Send announcements, circulars, and alerts to all members or targeted divisions — with email delivery and read receipts.</p>
+      </div>
+      <div class="sl-feature-card">
+        <div class="sl-feature-card__icon" style="background:rgba(16,185,129,.1);color:#10B981;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3 class="sl-feature-card__title">Events Management</h3>
+        <p class="sl-feature-card__desc">Schedule and manage association events — meetings, training, welfare gatherings — with RSVP tracking and attendance records.</p>
+      </div>
+      <div class="sl-feature-card">
+        <div class="sl-feature-card__icon" style="background:rgba(139,92,246,.1);color:#8B5CF6;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="sl-feature-card__title">Welfare Tracking</h3>
+        <p class="sl-feature-card__desc">Record and manage welfare cases, benefit claims, and support requests — ensuring no officer's case falls through the cracks.</p>
+      </div>
+      <div class="sl-feature-card">
+        <div class="sl-feature-card__icon" style="background:rgba(239,68,68,.1);color:#EF4444;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3 class="sl-feature-card__title">Role-Based Access</h3>
+        <p class="sl-feature-card__desc">Separate portals for national leadership, divisional commanders, station officers, and regular members — each with appropriate permissions.</p>
+      </div>
+      <div class="sl-feature-card">
+        <div class="sl-feature-card__icon" style="background:rgba(245,158,11,.1);color:#F59E0B;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3 class="sl-feature-card__title">Reports & Analytics</h3>
+        <p class="sl-feature-card__desc">Leadership dashboards showing membership statistics, division breakdowns, event participation rates, and welfare programme metrics.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sl-section sl-section--alt">
+  <div class="container">
+    <div class="sl-split">
+      <div class="reveal reveal--left">
+        <div class="sl-label">The Challenge</div>
+        <h2 class="sl-title">A national association running on paper and WhatsApp</h2>
+        <p class="sl-desc">SLPNNA had no centralised system. Officers were managed via spreadsheets, communication happened informally, and there was no reliable way to track welfare cases or event attendance across divisions.</p>
+        <ul class="sl-checklist">
+          <li>No single source of truth for member records</li>
+          <li>Announcements reached some divisions but not others</li>
+          <li>Welfare cases were tracked informally and often lost</li>
+          <li>Leadership had no data on membership trends or participation</li>
+          <li>New officer registration was slow and paper-based</li>
+        </ul>
+      </div>
+      <div class="reveal reveal--right">
+        <div class="sl-split__img">
+          <div class="sl-label" style="color:#93C5FD;">Our Solution</div>
+          <h3 style="color:#fff;font-size:1.4rem;font-weight:700;margin-bottom:1rem;">One platform for the entire national network</h3>
+          <ul class="sl-checklist">
+            <li style="color:#CBD5E1;">Central officer database — searchable by name, rank, division, or badge number</li>
+            <li style="color:#CBD5E1;">Broadcast messaging system with email delivery to all or targeted groups</li>
+            <li style="color:#CBD5E1;">Welfare case management with status tracking and resolution logging</li>
+            <li style="color:#CBD5E1;">Leadership analytics dashboard with exportable reports</li>
+            <li style="color:#CBD5E1;">Secure, role-based access — right information to the right people</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sl-section">
+  <div class="container">
+    <div class="sl-header reveal reveal--up">
+      <div class="sl-label">Results & Impact</div>
+      <h2 class="sl-title">Transforming a National Association</h2>
+    </div>
+    <div class="sl-impact-grid reveal--stagger">
+      <div class="sl-impact-card"><div class="sl-impact-card__value">2,000+</div><div class="sl-impact-card__label">Officers onboarded to the platform</div></div>
+      <div class="sl-impact-card"><div class="sl-impact-card__value">5</div><div class="sl-impact-card__label">Police divisions connected nationally</div></div>
+      <div class="sl-impact-card"><div class="sl-impact-card__value">100%</div><div class="sl-impact-card__label">Digital member records — zero paper</div></div>
+      <div class="sl-impact-card"><div class="sl-impact-card__value">4×</div><div class="sl-impact-card__label">Faster communications to all members</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sl-section sl-section--alt">
+  <div class="container">
+    <div class="reveal reveal--up">
+      <div class="sl-label">Technology</div>
+      <h2 class="sl-title">Secure and Reliable by Design</h2>
+      <p class="sl-desc">Built with security as a priority — appropriate for a law enforcement organisation handling sensitive personal data.</p>
+      <div class="tech-stack-grid">
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#092E20;"></span>Django 5</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#336791;"></span>PostgreSQL</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#3776AB;"></span>Python 3.14</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#7952B3;"></span>Bootstrap 5</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#EA4335;"></span>Gmail SMTP</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#00C7B7;"></span>Render Cloud</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#3ECF8E;"></span>Supabase DB</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sl-cta">
+  <div class="container">
+    <div class="sl-cta__inner reveal reveal--up">
+      <div class="sl-label" style="justify-content:center;color:#93C5FD;margin-bottom:1rem;">Work With Us</div>
+      <h2 class="sl-cta__title">Need a platform for your organisation?</h2>
+      <p class="sl-cta__desc">We build custom digital platforms for organisations, associations, government agencies, and NGOs across Sierra Leone. Let's talk about what you need.</p>
+      <div class="sl-cta__actions">
+        <a href="{% url 'contact:index' %}" class="btn-primary">Start Your Project</a>
+        <a href="{% url 'portfolio:index' %}" class="btn-outline-light">View More Projects</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  const rM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      if (e.target.classList.contains('reveal--stagger')) {
+        Array.from(e.target.children).forEach((c, i) => { if (!rM) c.style.transitionDelay = (i*100)+'ms'; });
+      }
+      e.target.classList.add('is-visible'); obs.unobserve(e.target);
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal,.reveal--stagger').forEach(el => obs.observe(el));
+})();
+</script>
+{% endblock %}

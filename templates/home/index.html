@@ -1,1689 +1,675 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}Sierra Leone Health Surveillance — National Inter-District Dashboard{% endblock %}
-{% block meta_description %}National disease surveillance and inter-district health intelligence for Sierra Leone — all 16 districts, real-time signals, and dashboards built for the Ministry of Health and district teams.{% endblock %}
+{% block title %}TechLedger Solutions — Building Sierra Leone's Digital Future{% endblock %}
+{% block meta_description %}TechLedger Solutions is a Sierra Leone technology company that designs and builds custom software, web platforms, mobile apps, and data dashboards for businesses, health organisations, and government agencies.{% endblock %}
 
 {% block extra_css %}
 <style>
-/* ─── SCROLL PROGRESS BAR ────────────────────────────────────── */
-#scroll-progress {
-  position: fixed;
-  top: 0; left: 0;
-  width: 0%;
-  height: 3px;
-  background: linear-gradient(90deg, var(--health-green), #34D399, #3B82F6);
-  z-index: 9999;
-  transition: width .08s linear;
-  pointer-events: none;
-}
-
-/* ─── REVEAL SYSTEM ──────────────────────────────────────────── */
-.reveal {
-  opacity: 0;
-  will-change: transform, opacity;
-  transition: opacity .65s cubic-bezier(.4,0,.2,1),
-              transform .65s cubic-bezier(.4,0,.2,1);
-}
+/* ── REVEAL ──────────────────────────────────────────────────── */
+.reveal { opacity: 0; will-change: transform, opacity; transition: opacity .65s cubic-bezier(.4,0,.2,1), transform .65s cubic-bezier(.4,0,.2,1); }
 .reveal--up    { transform: translateY(40px); }
 .reveal--left  { transform: translateX(-40px); }
 .reveal--right { transform: translateX(40px); }
-.reveal--scale { transform: scale(.93); }
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
-/* stagger children */
-.reveal--stagger > * {
-  opacity: 0;
-  transform: translateY(32px);
-  transition: opacity .55s cubic-bezier(.4,0,.2,1),
-              transform .55s cubic-bezier(.4,0,.2,1);
-}
+.reveal--scale { transform: scale(.94); }
+.reveal.is-visible { opacity: 1; transform: none; }
+.reveal--stagger > * { opacity: 0; transform: translateY(28px); transition: opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1); }
 .reveal--stagger.is-visible > * { opacity: 1; transform: none; }
 
-/* ─── SHIMMER BUTTON ─────────────────────────────────────────── */
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position:  200% center; }
+/* ── HERO ────────────────────────────────────────────────────── */
+.tl-hero {
+  background: linear-gradient(140deg, #0F172A 0%, #1E293B 55%, #0F172A 100%);
+  min-height: 100vh; display: flex; align-items: center;
+  position: relative; overflow: hidden; padding: 8rem 0 5rem;
 }
-.btn--health-primary:hover,
-.btn--health-primary:focus {
-  background: linear-gradient(90deg,
-    #E98B2E 0%,
-    #F59E0B 40%,
-    #E98B2E 60%,
-    #D97706 100%);
-  background-size: 200% auto;
-  animation: shimmer .9s linear infinite;
-}
-
-/* ─── CTA PULSE GLOW ─────────────────────────────────────────── */
-@keyframes cta-pulse {
-  0%, 100% { transform: scale(1);   opacity: .15; }
-  50%       { transform: scale(1.2); opacity: .25; }
-}
-.health-cta::before { animation: cta-pulse 6s ease-in-out infinite; }
-
-/* ─── MAP DRAW ANIMATION ─────────────────────────────────────── */
-.coverage-map-path {
-  stroke-dasharray: 1200;
-  stroke-dashoffset: 1200;
-  transition: stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1);
-}
-.coverage-map-path.is-drawn { stroke-dashoffset: 0; }
-
-/* ─── ICON BOUNCE ────────────────────────────────────────────── */
-@keyframes icon-bounce {
-  0%,100% { transform: scale(1); }
-  40%     { transform: scale(1.18); }
-  70%     { transform: scale(.94); }
-}
-.icon-bounce { animation: icon-bounce .55s cubic-bezier(.4,0,.2,1) forwards; }
-
-/* ─── COUNTER ODOMETER FLASH ─────────────────────────────────── */
-@keyframes counter-flash {
-  0%  { color: #E98B2E; }
-  100%{ color: inherit; }
-}
-.counter-done { animation: counter-flash .4s ease forwards; }
-
-/* ─── REDUCED MOTION ─────────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  .reveal, .reveal--up, .reveal--left, .reveal--right, .reveal--scale { transform: none; }
-  .reveal, .reveal.is-visible { transition: opacity .3s; }
-  .reveal--stagger > *, .reveal--stagger.is-visible > * { transform: none; transition: opacity .3s; }
-  .coverage-map-path { transition: opacity .5s; stroke-dashoffset: 0; }
-  .btn--health-primary:hover { animation: none; }
-  .health-cta::before { animation: none; }
-}
-/* ─── HEALTH SURVEILLANCE THEME ─────────────────────────────────── */
-:root {
-  --health-green:   #E98B2E;
-  --health-dark:    #0F172A;
-  --health-accent:  #F59E0B;
-  --health-red:     #EF4444;
-  --health-blue:    #3B82F6;
-  --health-muted:   #64748B;
-  --health-surface: #FFF8EF;
-  --health-border:  #FDE7CC;
-}
-
-/* ─── HERO ───────────────────────────────────────────────────────── */
-.health-hero {
-  background: linear-gradient(140deg, #FFFFFF 0%, #FFF8EF 58%, #FFF1E1 100%);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  padding: 6rem 0 4rem;
-}
-.health-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
+.tl-hero::before {
+  content: ''; position: absolute; inset: 0;
   background-image:
-    radial-gradient(circle at 78% 16%, rgba(233,139,46,.22) 0%, transparent 42%),
-    radial-gradient(circle at 18% 82%, rgba(245,158,11,.12) 0%, transparent 38%);
+    radial-gradient(circle at 80% 20%, rgba(233,139,46,.18) 0%, transparent 50%),
+    radial-gradient(circle at 15% 80%, rgba(245,158,11,.08) 0%, transparent 40%);
   pointer-events: none;
 }
-.health-hero__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
+/* Grid lines background */
+.tl-hero::after {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
 }
-.health-hero__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  background: rgba(233,139,46,.08);
-  border: 1px solid rgba(233,139,46,.28);
-  color: #B45309;
-  font-size: .75rem;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  padding: .35rem .9rem;
-  border-radius: 999px;
-  margin-bottom: 1.5rem;
+.tl-hero__inner { position: relative; z-index: 1; text-align: center; max-width: 860px; margin: 0 auto; }
+.tl-hero__eyebrow {
+  display: inline-flex; align-items: center; gap: .6rem;
+  background: rgba(233,139,46,.1); border: 1px solid rgba(233,139,46,.25);
+  color: #FCD34D; font-size: .75rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: .4rem 1rem; border-radius: 999px; margin-bottom: 2rem;
 }
-.health-hero__badge-dot {
-  width: 8px; height: 8px;
-  background: #E98B2E;
-  border-radius: 50%;
+.tl-hero__eyebrow-dot {
+  width: 7px; height: 7px; background: #E98B2E; border-radius: 50%;
   animation: pulse-dot 2s infinite;
 }
-@keyframes pulse-dot {
-  0%,100%{ box-shadow: 0 0 0 0 rgba(233,139,46,.55); }
-  50%    { box-shadow: 0 0 0 6px rgba(233,139,46,0); }
-}
-.health-hero__title {
-  font-size: clamp(2.2rem, 4vw, 3.4rem);
-  font-weight: 800;
-  color: #0F172A;
-  line-height: 1.15;
-  margin-bottom: 1.25rem;
-}
-.health-hero__title span { color: #E98B2E; }
-.health-hero__description {
-  color: #475569;
-  font-size: 1.1rem;
-  line-height: 1.7;
-  max-width: 520px;
-  margin-bottom: 2rem;
-}
-.health-hero__actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
-.health-hero__meta {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-.health-hero__meta-item { text-align: left; }
-.health-hero__meta-value {
-  display: block;
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #0F172A;
-  line-height: 1;
-}
-.health-hero__meta-label { font-size: .8rem; color: #64748B; margin-top: .2rem; }
+@keyframes pulse-dot { 0%,100%{ box-shadow: 0 0 0 0 rgba(233,139,46,.5); } 50%{ box-shadow: 0 0 0 6px rgba(233,139,46,0); } }
 
-/* Dashboard card visual */
-.health-hero__visual { position: relative; }
-.health-dashboard-card {
-  background: rgba(255,255,255,.92);
-  border: 1px solid #E2E8F0;
-  border-radius: 1.25rem;
-  padding: 1.5rem;
-  box-shadow: 0 16px 36px rgba(15,23,42,.09);
-  backdrop-filter: blur(6px);
-}
-.health-dashboard-card__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.25rem;
-}
-.health-dashboard-card__title { color: #0F172A; font-size: .85rem; font-weight: 700; }
-.health-dashboard-card__live {
-  display: flex;
-  align-items: center;
-  gap: .4rem;
-  color: #E98B2E;
-  font-size: .75rem;
-  font-weight: 600;
-}
-.live-dot {
-  width: 7px; height: 7px;
-  background: #E98B2E;
-  border-radius: 50%;
-  animation: pulse-dot 1.5s infinite;
-}
-.health-alerts-list { display: flex; flex-direction: column; gap: .75rem; }
-.health-alert-item {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  padding: .75rem 1rem;
-  border-radius: .75rem;
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
-}
-.health-alert-item__dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.health-alert-item__dot--red    { background: #EF4444; box-shadow: 0 0 6px #EF4444; }
-.health-alert-item__dot--amber  { background: #F59E0B; box-shadow: 0 0 6px #F59E0B; }
-.health-alert-item__dot--green  { background: #34D399; box-shadow: 0 0 6px #34D399; }
-.health-alert-item__dot--blue   { background: #60A5FA; box-shadow: 0 0 6px #60A5FA; }
-.health-alert-item__info { flex: 1; }
-.health-alert-item__disease { color: #0F172A; font-size: .82rem; font-weight: 600; }
-.health-alert-item__location { color: #64748B; font-size: .75rem; }
-.health-alert-item__count {
-  color: #334155;
-  font-size: .8rem;
-  font-weight: 700;
-}
-.health-mini-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: .75rem;
-  margin-top: .75rem;
-}
-.health-mini-stat {
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
-  border-radius: .75rem;
-  padding: .75rem 1rem;
-  text-align: center;
-}
-.health-mini-stat__value { color: #0F172A; font-size: 1.3rem; font-weight: 800; }
-.health-mini-stat__label { color: #64748B; font-size: .7rem; margin-top: .15rem; }
-.health-mini-stat__trend { font-size: .7rem; margin-top: .2rem; }
-.health-mini-stat__trend--up   { color: #34D399; }
-.health-mini-stat__trend--down { color: #EF4444; }
-
-/* Floating stat pills */
-.hero-float-pill {
-  position: absolute;
-  background: rgba(255,255,255,.94);
-  border: 1px solid #E2E8F0;
-  border-radius: .75rem;
-  padding: .6rem 1rem;
-  box-shadow: 0 10px 22px rgba(15,23,42,.08);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  animation: float-y 4s ease-in-out infinite;
-}
-.hero-float-pill--1 { top: -1.5rem; right: 2rem; animation-delay: 0s; }
-.hero-float-pill--2 { bottom: 1rem; left: -1rem; animation-delay: 1.5s; }
-@keyframes float-y {
-  0%,100%{ transform: translateY(0); }
-  50%    { transform: translateY(-8px); }
-}
-.hero-float-pill__icon { font-size: 1.2rem; }
-.hero-float-pill__text { color: #0F172A; font-size: .78rem; font-weight: 700; }
-.hero-float-pill__sub { color: #64748B; font-size: .68rem; }
-
-/* Hero-only button palette (keeps other sections untouched) */
-.health-hero .btn--health-primary {
-  background: #E98B2E;
-  color: #fff;
-}
-.health-hero .btn--health-primary:hover {
-  background: #D97706;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(233,139,46,.35);
-}
-.health-hero .btn--health-outline {
-  background: transparent;
-  color: #E98B2E;
-  border: 1.5px solid rgba(233,139,46,.65);
-}
-.health-hero .btn--health-outline:hover {
-  border-color: #D97706;
-  background: rgba(233,139,46,.08);
-}
-
-/* ─── TRUST TICKER BAR (continuous) ─────────────────────────────── */
-.trust-ticker-section {
-  background: #FFFFFF;
-  border-top: 1px solid #F1F5F9;
-  border-bottom: 1px solid #F1F5F9;
-  padding: 2.25rem 0 2.5rem;
-}
-.trust-ticker__title {
-  margin: 0 0 1.15rem;
-  text-align: center;
-  font-size: .78rem;
-  font-weight: 700;
-  letter-spacing: .2em;
-  color: #334155;
-  text-transform: uppercase;
-}
-.trust-ticker {
-  overflow: hidden;
-  position: relative;
-  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
-}
-.trust-ticker__track {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: max-content;
-  animation: trust-ticker-scroll 24s linear infinite;
-}
-@keyframes trust-ticker-scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(calc(-50% - .5rem)); }
-}
-.trust-logo-card {
-  width: 150px;
-  min-width: 150px;
-  height: 84px;
-  border-radius: .85rem;
-  border: 1px solid #E5E7EB;
-  background: #FFFFFF;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: .22rem;
-  box-shadow: 0 3px 12px rgba(15,23,42,.04);
-}
-.trust-logo-card__abbr {
-  font-size: .95rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: .03em;
-  color: #0F172A;
-}
-.trust-logo-card__name {
-  font-size: .58rem;
-  font-weight: 600;
-  color: #64748B;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-.trust-ticker:hover .trust-ticker__track {
-  animation-play-state: paused;
-}
-
-/* ─── SECTION SHARED ─────────────────────────────────────────────── */
-.hs-section { padding: 5rem 0; }
-.hs-section--alt { background: var(--health-surface); }
-.hs-section--dark { background: #FFF8EF; }
-.hs-label {
-  display: inline-flex;
-  align-items: center;
-  gap: .4rem;
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--health-green);
-  margin-bottom: .75rem;
-}
-.hs-label--light { color: #B45309; }
-.hs-title {
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 800;
-  color: var(--health-dark);
-  line-height: 1.2;
-  margin-bottom: 1rem;
-}
-.hs-title--light { color: #0F172A; }
-.hs-desc {
-  color: var(--health-muted);
-  font-size: 1rem;
-  line-height: 1.7;
-  max-width: 600px;
-}
-.hs-desc--light { color: #475569; }
-.hs-header { text-align: center; margin-bottom: 3.5rem; }
-.hs-header .hs-desc { margin: 0 auto; }
-
-/* ─── FEATURES ───────────────────────────────────────────────────── */
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(280px, 1fr));
-  gap: 1.35rem;
-  align-items: stretch;
-  grid-auto-rows: 1fr;
-  counter-reset: featureCard;
-}
-.feature-card {
-  position: relative;
-  counter-increment: featureCard;
-  background: #fff;
-  border: 1px solid #E5E7EB;
-  border-radius: 1rem;
-  padding: 1.65rem 1.5rem 1.45rem;
-  min-height: 320px;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: .1rem;
-  box-shadow: 0 6px 18px rgba(15,23,42,.05);
-  cursor: pointer;
-  transform-origin: center;
-  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
-}
-.feature-card::after {
-  content: counter(featureCard, decimal-leading-zero);
-  position: absolute;
-  top: .95rem;
-  right: 1.05rem;
-  font-size: clamp(2rem, 3.2vw, 2.6rem);
-  font-weight: 800;
-  letter-spacing: .03em;
-  color: #0F172A;
-  opacity: .07;
-  line-height: 1;
-  pointer-events: none;
-  z-index: 0;
-}
-.feature-card__icon,
-.feature-card__title,
-.feature-card__desc,
-.feature-card__link {
-  position: relative;
-  z-index: 1;
-}
-.feature-card:hover {
-  transform: translateY(-4px);
-  border-color: #F59E0B;
-  box-shadow: 0 14px 28px rgba(15,23,42,.10);
-}
-.feature-card.is-active {
-  transform: scale(1.035);
-  border-color: #E98B2E;
-  box-shadow: 0 18px 36px rgba(233,139,46,.22);
-  z-index: 2;
-}
-.feature-card__icon {
-  width: 56px; height: 56px;
-  border-radius: .95rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-.feature-card__icon svg {
-  transition: transform .45s ease;
-  transform-origin: center;
-}
-.feature-card:hover .feature-card__icon svg,
-.feature-card.is-active .feature-card__icon svg {
-  transform: rotate(360deg);
-}
-.feature-card__icon--teal  { background: rgba(13,148,136,.1); color: var(--health-green); }
-.feature-card__icon--amber { background: rgba(245,158,11,.1); color: #D97706; }
-.feature-card__icon--blue  { background: rgba(59,130,246,.1); color: #2563EB; }
-.feature-card__icon--red   { background: rgba(239,68,68,.1);  color: #DC2626; }
-.feature-card__icon--purple{ background: rgba(139,92,246,.1); color: #7C3AED; }
-.feature-card__icon--indigo{ background: rgba(99,102,241,.1); color: #4338CA; }
-.feature-card__title {
-  font-size: 1.02rem;
-  font-weight: 700;
-  color: var(--health-dark);
-  margin-bottom: .5rem;
-}
-.feature-card__desc {
-  color: var(--health-muted);
-  font-size: .89rem;
-  line-height: 1.58;
-  flex-grow: 1;
-  margin-bottom: .35rem;
-}
-.feature-card__link {
-  display: inline-flex;
-  align-items: center;
-  gap: .28rem;
-  color: #E98B2E;
-  font-size: .84rem;
-  font-weight: 700;
-  margin-top: 1rem;
-  text-decoration: none;
-}
-.feature-card__link:hover { gap: .5rem; }
-
-/* ─── HOW IT WORKS ───────────────────────────────────────────────── */
-.how-it-works-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  position: relative;
-}
-.how-it-works-grid::before {
-  content: '';
-  position: absolute;
-  top: 2.25rem;
-  left: 12%;
-  right: 12%;
-  height: 2px;
-  background: linear-gradient(90deg, var(--health-green) 0%, #3B82F6 100%);
-  opacity: .25;
-}
-.step-card {
-  text-align: center;
-  position: relative;
-}
-.step-card__number {
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  background: var(--health-green);
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.25rem;
-  position: relative;
-  z-index: 1;
-  box-shadow: 0 0 0 8px rgba(13,148,136,.12);
-}
-.step-card__title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--health-dark);
-  margin-bottom: .5rem;
-}
-.step-card__desc { color: var(--health-muted); font-size: .875rem; line-height: 1.6; }
-
-/* ─── COVERAGE / MAP SECTION ─────────────────────────────────────── */
-.coverage-section {
-  background: #FFFFFF;
-  border-top: 1px solid #F1F5F9;
-  border-bottom: 1px solid #F1F5F9;
-  padding: 5rem 0;
-  position: relative;
-  overflow: hidden;
-}
-.coverage-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, rgba(233,139,46,.10) 0%, transparent 70%);
-  pointer-events: none;
-}
-.coverage-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-  align-items: center;
-}
-.coverage__map {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.coverage-map-svg {
-  width: 100%;
-  max-width: 420px;
-  opacity: .9;
-  filter: drop-shadow(0 0 36px rgba(233,139,46,.24));
-}
-.coverage__region-stats {
-  display: flex;
-  flex-direction: column;
-  gap: .75rem;
-}
-.region-stat {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-}
-.region-stat__dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.region-stat__label { color: #475569; font-size: .85rem; flex: 1; }
-.region-stat__bar {
-  height: 6px;
-  border-radius: 3px;
-  flex: 2;
-  background: #E2E8F0;
-  overflow: hidden;
-}
-.region-stat__fill { height: 100%; border-radius: 3px; }
-.region-stat__value { color: #0F172A; font-size: .85rem; font-weight: 700; min-width: 35px; text-align: right; }
-.coverage-numbers {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-top: 2.5rem;
-}
-.coverage-num {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 1rem;
-  padding: 1.25rem;
-  box-shadow: 0 8px 20px rgba(15,23,42,.05);
-}
-.coverage-num__value { color: #0F172A; font-size: 1.8rem; font-weight: 800; }
-.coverage-num__label { color: #64748B; font-size: .78rem; margin-top: .3rem; }
-
-/* ─── DISEASE TRACKER ────────────────────────────────────────────── */
-.disease-tracker { padding: 5rem 0; background: var(--health-surface); }
-.tracker-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 4rem;
-  align-items: start;
-}
-.tracker-table {
-  background: #fff;
-  border: 1px solid var(--health-border);
-  border-radius: 1.25rem;
-  overflow: hidden;
-}
-.tracker-table__header {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  padding: .75rem 1.25rem;
-  background: var(--health-green);
-  color: #fff;
-  font-size: .75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .05em;
-}
-.tracker-table__row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  padding: .85rem 1.25rem;
-  align-items: center;
-  border-bottom: 1px solid #F1F5F9;
-  transition: background .15s;
-}
-.tracker-table__row:last-child { border-bottom: none; }
-.tracker-table__row:hover { background: var(--health-surface); }
-.tracker-table__disease { font-size: .875rem; font-weight: 600; color: var(--health-dark); }
-.tracker-table__region  { font-size: .8rem; color: var(--health-muted); }
-.tracker-table__cases   { font-size: .875rem; font-weight: 700; color: var(--health-dark); }
-.tracker-table__status {
-  display: inline-flex;
-  align-items: center;
-  gap: .3rem;
-  font-size: .72rem;
-  font-weight: 600;
-  padding: .25rem .6rem;
-  border-radius: 999px;
-}
-.tracker-table__status--alert  { background: #FEF2F2; color: #DC2626; }
-.tracker-table__status--watch  { background: #FFFBEB; color: #D97706; }
-.tracker-table__status--stable { background: #F0FDF4; color: #16A34A; }
-.tracker-table__trend-up   { color: #EF4444; font-weight: 700; font-size: .8rem; }
-.tracker-table__trend-down { color: #22C55E; font-weight: 700; font-size: .8rem; }
-
-.tracker-features { display: flex; flex-direction: column; gap: 1.5rem; }
-.tracker-feature {
-  display: flex;
-  gap: 1.25rem;
-  align-items: flex-start;
-}
-.tracker-feature__icon {
-  width: 48px; height: 48px;
-  border-radius: .875rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: .15rem;
-}
-.tracker-feature__title { font-size: 1rem; font-weight: 700; color: var(--health-dark); margin-bottom: .35rem; }
-.tracker-feature__desc  { color: var(--health-muted); font-size: .875rem; line-height: 1.65; }
-
-/* ─── PARTNERS ───────────────────────────────────────────────────── */
-.partners-section { padding: 4rem 0; background: #fff; }
-.partners-logos {
-  position: relative;
-  overflow: hidden;
-  margin-top: 2.5rem;
-  mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
-}
-.partners-logos-track {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  width: max-content;
-  animation: partners-scroll 28s linear infinite;
-}
-@keyframes partners-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-50% - .75rem)); }
-}
-.partner-logo {
-  width: 190px;
-  min-width: 190px;
-  height: 92px;
-  border-radius: .9rem;
-  border: 1px solid #E5E7EB;
-  background: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: .8rem;
-  box-shadow: 0 6px 14px rgba(15,23,42,.05);
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-}
-.partner-logo:hover {
-  transform: translateY(-2px);
-  border-color: #F59E0B;
-  box-shadow: 0 12px 22px rgba(15,23,42,.08);
-}
-.partner-logo__img {
-  width: 100%;
-  height: 100%;
-  max-height: 62px;
-  object-fit: contain;
-  object-position: center;
-}
-.partner-logo__fallback {
-  width: 100%;
-  height: 100%;
-  max-height: 62px;
-  border-radius: .65rem;
-  background: #FFF8EF;
-  border: 1px dashed #F59E0B;
-  color: #B45309;
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: .4rem;
-}
-.partner-logo__sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-@media (max-width: 768px) {
-  .partners-logos-track { gap: 1rem; }
-  .partner-logo {
-    width: 150px;
-    min-width: 150px;
-    height: 78px;
-    padding: .65rem;
-  }
-  .partner-logo__img,
-  .partner-logo__fallback {
-    max-height: 52px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .partners-logos-track {
-    animation: none;
-  }
-}
-
-/* ─── TESTIMONIALS / IMPACT ──────────────────────────────────────── */
-.impact-section { padding: 5rem 0; }
-.impact-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-.impact-card {
-  background: #fff;
-  border: 1px solid var(--health-border);
-  border-radius: 1.25rem;
-  padding: 2rem;
-}
-.impact-card__quote {
-  font-size: .925rem;
-  color: #374151;
-  line-height: 1.7;
-  font-style: italic;
-  margin-bottom: 1.5rem;
-}
-.impact-card__author {
-  display: flex;
-  align-items: center;
-  gap: .875rem;
-}
-.impact-card__avatar {
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  background: var(--health-surface);
-  border: 2px solid var(--health-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--health-green);
-  font-weight: 700;
-  font-size: .875rem;
-  flex-shrink: 0;
-}
-.impact-card__name  { font-size: .875rem; font-weight: 700; color: var(--health-dark); }
-.impact-card__role  { font-size: .78rem; color: var(--health-muted); }
-.impact-card__org   { font-size: .78rem; color: var(--health-green); font-weight: 600; }
-
-/* ─── ALERT TYPES SECTION ────────────────────────────────────────── */
-.alert-types { padding: 5rem 0; background: #FFF8EF; border-top: 1px solid #FDE7CC; border-bottom: 1px solid #FDE7CC; }
-.alert-types-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-  margin-top: 3rem;
-}
-.alert-type-card {
-  background: #FFFFFF;
-  border: 1px solid #E5E7EB;
-  border-radius: 1.25rem;
-  padding: 1.75rem 1.5rem;
-  text-align: center;
-  transition: background .2s, border-color .2s, transform .2s, box-shadow .2s;
-}
-.alert-type-card:hover {
-  background: #FFFFFF;
-  border-color: #F59E0B;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(15,23,42,.08);
-}
-.alert-type-card__icon {
-  width: 56px; height: 56px;
-  border-radius: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-  font-size: 1.5rem;
-}
-.alert-type-card__title { color: #0F172A; font-size: .95rem; font-weight: 700; margin-bottom: .5rem; }
-.alert-type-card__desc  { color: #64748B; font-size: .8rem; line-height: 1.6; }
-
-/* ─── CTA ─────────────────────────────────────────────────────────── */
-.health-cta {
-  background: linear-gradient(140deg, #FFFFFF 0%, #FFF8EF 58%, #FFF1E1 100%);
-  border-top: 1px solid #F1F5F9;
-  padding: 5rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.health-cta::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(233,139,46,.16) 0%, transparent 60%);
-  pointer-events: none;
-}
-.health-cta__inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
-.health-cta__title {
-  font-size: clamp(1.8rem, 3.5vw, 2.75rem);
-  font-weight: 800;
-  color: #0F172A;
-  margin-bottom: 1rem;
-}
-.health-cta__desc { color: #475569; font-size: 1rem; line-height: 1.7; margin-bottom: 2rem; }
-.health-cta__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-
-/* ─── BUTTON OVERRIDES ───────────────────────────────────────────── */
-.btn--health-primary {
-  background: #E98B2E;
-  color: #fff;
-  padding: .8rem 1.75rem;
-  border-radius: .75rem;
-  font-weight: 700;
-  font-size: .925rem;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  border: none;
-  cursor: pointer;
+.tl-hero__title {
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: 800; color: #fff; line-height: 1.08;
+  letter-spacing: -.02em; margin-bottom: 1.5rem;
+}
+.tl-hero__title .highlight { color: #E98B2E; }
+.tl-hero__title .dim { color: #94A3B8; }
+.tl-hero__desc {
+  font-size: clamp(1rem, 1.8vw, 1.2rem); color: #94A3B8;
+  line-height: 1.75; max-width: 640px; margin: 0 auto 2.5rem;
+}
+.tl-hero__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 4rem; }
+.tl-btn-primary {
+  background: #E98B2E; color: #fff; padding: .9rem 2rem;
+  border-radius: .75rem; font-weight: 700; font-size: 1rem;
+  text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
   transition: background .2s, transform .15s, box-shadow .2s;
 }
-.btn--health-primary:hover {
-  background: #D97706;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(233,139,46,.35);
+.tl-btn-primary:hover { background: #D97706; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(233,139,46,.35); }
+.tl-btn-outline {
+  background: transparent; color: #CBD5E1;
+  border: 1.5px solid rgba(255,255,255,.18);
+  padding: .9rem 2rem; border-radius: .75rem; font-weight: 600; font-size: 1rem;
+  text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
+  transition: border-color .2s, color .2s;
 }
-.btn--health-outline {
-  background: transparent;
-  color: #E98B2E;
-  border: 1.5px solid rgba(233,139,46,.65);
-  padding: .8rem 1.75rem;
-  border-radius: .75rem;
-  font-weight: 600;
-  font-size: .925rem;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  transition: border-color .2s, background .2s;
-}
-.btn--health-outline:hover {
-  border-color: #D97706;
-  background: rgba(233,139,46,.08);
-}
-.btn--health-light {
-  background: #FFFFFF;
-  color: #0F172A;
-  border: 1px solid #E2E8F0;
-  padding: .8rem 1.75rem;
-  border-radius: .75rem;
-  font-weight: 600;
-  font-size: .925rem;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  transition: background .2s;
-}
-.btn--health-light:hover {
-  background: #FFF8EF;
-  border-color: #F59E0B;
-}
+.tl-btn-outline:hover { border-color: #E98B2E; color: #E98B2E; }
 
-/* ─── RESPONSIVE ─────────────────────────────────────────────────── */
+/* Hero stats bar */
+.tl-hero__stats {
+  display: flex; justify-content: center; gap: 0;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 1rem; overflow: hidden;
+  background: rgba(255,255,255,.03);
+  backdrop-filter: blur(8px);
+  max-width: 700px; margin: 0 auto;
+}
+.tl-hero__stat {
+  flex: 1; padding: 1.25rem 1rem; text-align: center;
+  border-right: 1px solid rgba(255,255,255,.08);
+}
+.tl-hero__stat:last-child { border-right: none; }
+.tl-hero__stat-value { font-size: 1.8rem; font-weight: 800; color: #E98B2E; line-height: 1; display: block; }
+.tl-hero__stat-label { font-size: .72rem; color: #64748B; margin-top: .3rem; text-transform: uppercase; letter-spacing: .06em; }
+
+/* ── TICKER ──────────────────────────────────────────────────── */
+.tl-ticker {
+  background: #fff; border-top: 1px solid #F1F5F9; border-bottom: 1px solid #F1F5F9;
+  padding: 1.5rem 0; overflow: hidden;
+}
+.tl-ticker__track {
+  display: flex; align-items: center; gap: 3rem;
+  width: max-content; animation: ticker-scroll 28s linear infinite;
+}
+@keyframes ticker-scroll { 0%{ transform: translateX(0); } 100%{ transform: translateX(calc(-50% - 1.5rem)); } }
+.tl-ticker__item { display: flex; align-items: center; gap: .6rem; color: #334155; font-size: .875rem; font-weight: 600; white-space: nowrap; }
+.tl-ticker__dot { width: 6px; height: 6px; background: #E98B2E; border-radius: 50%; flex-shrink: 0; }
+.tl-ticker:hover .tl-ticker__track { animation-play-state: paused; }
+
+/* ── SECTION SHARED ──────────────────────────────────────────── */
+.tl-section { padding: 5.5rem 0; }
+.tl-section--alt { background: #FFF8EF; }
+.tl-section--dark { background: #0F172A; }
+.tl-label {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .75rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: #E98B2E; margin-bottom: .75rem;
+}
+.tl-label--light { color: #FCD34D; }
+.tl-title { font-size: clamp(1.9rem, 3.2vw, 2.8rem); font-weight: 800; color: #0F172A; line-height: 1.18; margin-bottom: 1rem; }
+.tl-title--light { color: #fff; }
+.tl-desc { color: #64748B; font-size: 1rem; line-height: 1.75; max-width: 620px; }
+.tl-desc--light { color: #94A3B8; }
+.tl-header { text-align: center; margin-bottom: 3.5rem; }
+.tl-header .tl-desc { margin: 0 auto; }
+
+/* ── SERVICES PREVIEW ────────────────────────────────────────── */
+.tl-services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.35rem; }
+.tl-service-card {
+  background: #fff; border: 1px solid #E5E7EB;
+  border-radius: 1.1rem; padding: 1.75rem;
+  transition: transform .22s, box-shadow .22s, border-color .22s;
+  position: relative; overflow: hidden;
+}
+.tl-service-card::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, #E98B2E, #F59E0B);
+  transform: scaleX(0); transform-origin: left; transition: transform .3s;
+}
+.tl-service-card:hover { transform: translateY(-4px); border-color: #F59E0B; box-shadow: 0 16px 32px rgba(15,23,42,.1); }
+.tl-service-card:hover::before { transform: scaleX(1); }
+.tl-service-card__icon {
+  width: 52px; height: 52px; border-radius: .9rem;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;
+}
+.tl-service-card__title { font-size: 1.05rem; font-weight: 700; color: #0F172A; margin-bottom: .5rem; }
+.tl-service-card__desc  { color: #64748B; font-size: .875rem; line-height: 1.65; }
+
+/* ── HOW WE WORK ─────────────────────────────────────────────── */
+.tl-process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; position: relative; }
+.tl-process-grid::before {
+  content: ''; position: absolute; top: 2rem; left: 12%; right: 12%; height: 2px;
+  background: linear-gradient(90deg, #E98B2E 0%, #F59E0B 100%); opacity: .25;
+}
+.tl-step { text-align: center; }
+.tl-step__num {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: #E98B2E; color: #fff; font-size: 1rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1.25rem; position: relative; z-index: 1;
+  box-shadow: 0 0 0 8px rgba(233,139,46,.12);
+}
+.tl-step__title { font-size: 1rem; font-weight: 700; color: #0F172A; margin-bottom: .5rem; }
+.tl-step__desc  { color: #64748B; font-size: .875rem; line-height: 1.65; }
+
+/* ── PORTFOLIO PREVIEW ───────────────────────────────────────── */
+.tl-portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.35rem; }
+.tl-portfolio-card {
+  border-radius: 1.25rem; overflow: hidden;
+  border: 1px solid #E5E7EB; background: #fff;
+  transition: transform .22s, box-shadow .22s;
+}
+.tl-portfolio-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(15,23,42,.12); }
+.tl-portfolio-card__banner {
+  height: 160px; display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.tl-portfolio-card__banner-icon {
+  width: 64px; height: 64px; border-radius: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.15); backdrop-filter: blur(8px);
+}
+.tl-portfolio-card__body { padding: 1.5rem; }
+.tl-portfolio-card__sector {
+  font-size: .7rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: #E98B2E; margin-bottom: .4rem;
+}
+.tl-portfolio-card__title { font-size: 1rem; font-weight: 700; color: #0F172A; margin-bottom: .5rem; }
+.tl-portfolio-card__desc  { color: #64748B; font-size: .85rem; line-height: 1.6; margin-bottom: 1rem; }
+.tl-portfolio-card__link {
+  display: inline-flex; align-items: center; gap: .3rem;
+  color: #E98B2E; font-size: .83rem; font-weight: 700;
+  text-decoration: none; transition: gap .2s;
+}
+.tl-portfolio-card__link:hover { gap: .55rem; }
+
+/* ── WHY TECHLEDGER ──────────────────────────────────────────── */
+.tl-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.tl-why__list { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+.tl-why__item { display: flex; gap: 1.25rem; align-items: flex-start; }
+.tl-why__item-icon {
+  width: 48px; height: 48px; border-radius: .9rem; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; margin-top: .1rem;
+}
+.tl-why__item-title { font-size: 1rem; font-weight: 700; color: #0F172A; margin-bottom: .35rem; }
+.tl-why__item-desc  { color: #64748B; font-size: .875rem; line-height: 1.65; }
+
+/* Visual right side */
+.tl-why__visual {
+  background: linear-gradient(145deg, #0F172A, #1E293B);
+  border-radius: 1.5rem; padding: 2.5rem;
+  border: 1px solid rgba(233,139,46,.15);
+  box-shadow: 0 30px 60px rgba(0,0,0,.2);
+}
+.tl-why__visual-label { color: #E98B2E; font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1.5rem; }
+.tl-why__metric-list { display: flex; flex-direction: column; gap: .875rem; }
+.tl-why__metric {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+  border-radius: .875rem; padding: 1rem 1.25rem;
+}
+.tl-why__metric-name { color: #CBD5E1; font-size: .875rem; font-weight: 600; }
+.tl-why__metric-value { color: #E98B2E; font-size: 1rem; font-weight: 800; }
+.tl-why__metric-bar-wrap { height: 4px; background: rgba(255,255,255,.08); border-radius: 2px; margin-top: .5rem; }
+.tl-why__metric-bar { height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E98B2E, #F59E0B); }
+
+/* ── TESTIMONIALS ────────────────────────────────────────────── */
+.tl-testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.tl-testimonial-card {
+  background: #fff; border: 1px solid #FDE7CC;
+  border-radius: 1.25rem; padding: 2rem;
+  box-shadow: 0 6px 16px rgba(15,23,42,.05);
+}
+.tl-testimonial-card__quote {
+  font-size: .925rem; color: #374151; line-height: 1.75;
+  font-style: italic; margin-bottom: 1.5rem;
+}
+.tl-testimonial-card__author { display: flex; align-items: center; gap: .875rem; }
+.tl-testimonial-card__avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: .875rem; color: #fff; flex-shrink: 0;
+}
+.tl-testimonial-card__name { font-size: .875rem; font-weight: 700; color: #0F172A; }
+.tl-testimonial-card__role { font-size: .78rem; color: #64748B; }
+.tl-testimonial-card__org  { font-size: .78rem; color: #E98B2E; font-weight: 600; }
+
+/* ── CTA ─────────────────────────────────────────────────────── */
+.tl-cta {
+  background: linear-gradient(140deg, #0F172A 0%, #1E293B 100%);
+  padding: 6rem 0; text-align: center; position: relative; overflow: hidden;
+}
+.tl-cta::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(233,139,46,.14) 0%, transparent 65%);
+  pointer-events: none;
+}
+.tl-cta__inner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+.tl-cta__title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #fff; margin-bottom: 1.25rem; line-height: 1.15; }
+.tl-cta__title span { color: #E98B2E; }
+.tl-cta__desc  { color: #94A3B8; font-size: 1.05rem; line-height: 1.75; margin-bottom: 2.5rem; }
+.tl-cta__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .features-grid { grid-template-columns: repeat(2, minmax(250px, 1fr)); }
-  .how-it-works-grid { grid-template-columns: repeat(2, 1fr); }
-  .how-it-works-grid::before { display: none; }
-  .alert-types-grid { grid-template-columns: repeat(2, 1fr); }
+  .tl-services-grid  { grid-template-columns: repeat(2, 1fr); }
+  .tl-portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .tl-process-grid   { grid-template-columns: repeat(2, 1fr); }
+  .tl-process-grid::before { display: none; }
+  .tl-testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+  .tl-why-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
-  .health-hero__grid  { grid-template-columns: 1fr; }
-  .health-hero__visual { display: none; }
-  .coverage-grid  { grid-template-columns: 1fr; }
-  .tracker-grid   { grid-template-columns: 1fr; }
-  .impact-grid    { grid-template-columns: 1fr; }
-  .features-grid  { grid-template-columns: 1fr; }
-  .feature-card { min-height: 300px; }
-  .feature-card::after { font-size: 2.2rem; top: .9rem; right: .9rem; }
-  .trust-logo-card { width: 126px; min-width: 126px; height: 76px; }
-  .trust-logo-card__abbr { font-size: .88rem; }
-  .trust-logo-card__name { font-size: .53rem; }
-  .coverage-numbers { grid-template-columns: 1fr 1fr; }
+  .tl-hero__stats { flex-direction: column; }
+  .tl-hero__stat  { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .tl-hero__stat:last-child { border-bottom: none; }
+  .tl-services-grid  { grid-template-columns: 1fr; }
+  .tl-portfolio-grid { grid-template-columns: 1fr; }
+  .tl-process-grid   { grid-template-columns: 1fr; }
+  .tl-testimonials-grid { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .trust-ticker__track {
-    animation: none;
-    transform: none;
-  }
+  .reveal, .reveal--up, .reveal--left, .reveal--right, .reveal--scale { transform: none; }
+  .tl-ticker__track { animation: none; }
 }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Scroll progress indicator -->
-<div id="scroll-progress" aria-hidden="true"></div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     HERO
-═══════════════════════════════════════════════════════════ -->
-<section class="health-hero">
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section class="tl-hero">
   <div class="container">
-    <div class="health-hero__grid">
-
-      <!-- Left: copy -->
-      <div class="reveal reveal--left">
-        <div class="health-hero__badge">
-          <span class="health-hero__badge-dot"></span>
-          Live national feed · all 16 districts · 16 priority conditions
+    <div class="tl-hero__inner reveal reveal--up">
+      <div class="tl-hero__eyebrow">
+        <span class="tl-hero__eyebrow-dot"></span>
+        Based in Sierra Leone · Building for Africa
+      </div>
+      <h1 class="tl-hero__title">
+        We Build <span class="highlight">Digital Solutions</span><br>
+        That <span class="highlight">Actually Work</span><br>
+        <span class="dim">in Sierra Leone</span>
+      </h1>
+      <p class="tl-hero__desc">
+        TechLedger Solutions designs and builds custom software, web platforms, health dashboards,
+        and management systems for businesses, hospitals, schools, and government agencies across Sierra Leone.
+      </p>
+      <div class="tl-hero__actions">
+        <a href="{% url 'contact:index' %}" class="tl-btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16z"/></svg>
+          Start a Project
+        </a>
+        <a href="{% url 'portfolio:index' %}" class="tl-btn-outline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          See Our Work
+        </a>
+      </div>
+      <div class="tl-hero__stats">
+        <div class="tl-hero__stat">
+          <span class="tl-hero__stat-value">5+</span>
+          <div class="tl-hero__stat-label">Projects Delivered</div>
         </div>
-        <h1 class="health-hero__title">
-          Sierra Leone's<br>
-          <span>Health Surveillance</span><br>
-          Platform
-        </h1>
-        <p class="health-hero__description">
-          Unify facility and community signals into one national view for Sierra Leone — from district health teams to the
-          Ministry of Health &amp; Sanitation — so outbreak and routine trends are visible across all 16 districts in real time.
-        </p>
-        <div class="health-hero__actions">
-          <a href="{% url 'contact:index' %}" class="btn--health-primary">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            Request Access
-          </a>
-          <a href="#how-it-works" class="btn--health-outline">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-            See How It Works
-          </a>
+        <div class="tl-hero__stat">
+          <span class="tl-hero__stat-value">3</span>
+          <div class="tl-hero__stat-label">Industry Sectors</div>
         </div>
-        <div class="health-hero__meta">
-          <div class="health-hero__meta-item">
-            <span class="health-hero__meta-value js-counter" data-target="16" data-suffix="">16</span>
-            <div class="health-hero__meta-label">Districts covered</div>
-          </div>
-          <div class="health-hero__meta-item">
-            <span class="health-hero__meta-value js-counter" data-target="16" data-suffix="">16</span>
-            <div class="health-hero__meta-label">Priority conditions</div>
-          </div>
-          <div class="health-hero__meta-item">
-            <span class="health-hero__meta-value js-counter" data-target="920" data-suffix="">920</span>
-            <div class="health-hero__meta-label">Facilities reporting</div>
-          </div>
-          <div class="health-hero__meta-item">
-            <span class="health-hero__meta-value js-counter" data-target="48" data-suffix="h">48h</span>
-            <div class="health-hero__meta-label">Avg. alert signal</div>
-          </div>
+        <div class="tl-hero__stat">
+          <span class="tl-hero__stat-value">100%</span>
+          <div class="tl-hero__stat-label">Sierra Leone Built</div>
+        </div>
+        <div class="tl-hero__stat">
+          <span class="tl-hero__stat-value">24/7</span>
+          <div class="tl-hero__stat-label">Platform Uptime</div>
         </div>
       </div>
-
-      <!-- Right: live dashboard card -->
-      <div class="health-hero__visual reveal reveal--right">
-        <div style="position: relative;">
-          <div class="hero-float-pill hero-float-pill--1">
-            <span class="hero-float-pill__icon">🔴</span>
-            <div>
-              <div class="hero-float-pill__text">Outbreak Alert</div>
-              <div class="hero-float-pill__sub">Western Area · 2 districts</div>
-            </div>
-          </div>
-          <div class="health-dashboard-card">
-            <div class="health-dashboard-card__header">
-              <span class="health-dashboard-card__title">Active Disease Alerts</span>
-              <span class="health-dashboard-card__live">
-                <span class="live-dot"></span> LIVE
-              </span>
-            </div>
-            <div class="health-alerts-list">
-              <div class="health-alert-item">
-                <span class="health-alert-item__dot health-alert-item__dot--red"></span>
-                <div class="health-alert-item__info">
-                  <div class="health-alert-item__disease">Cholera cluster</div>
-                  <div class="health-alert-item__location">Port Loko · Western corridor</div>
-                </div>
-                <span class="health-alert-item__count">186 cases</span>
-              </div>
-              <div class="health-alert-item">
-                <span class="health-alert-item__dot health-alert-item__dot--amber"></span>
-                <div class="health-alert-item__info">
-                  <div class="health-alert-item__disease">Lassa fever</div>
-                  <div class="health-alert-item__location">Kenema · Eastern Province</div>
-                </div>
-                <span class="health-alert-item__count">42 suspected</span>
-              </div>
-              <div class="health-alert-item">
-                <span class="health-alert-item__dot health-alert-item__dot--amber"></span>
-                <div class="health-alert-item__info">
-                  <div class="health-alert-item__disease">Typhoid rise</div>
-                  <div class="health-alert-item__location">Bo · Southern Province</div>
-                </div>
-                <span class="health-alert-item__count">311 cases</span>
-              </div>
-              <div class="health-alert-item">
-                <span class="health-alert-item__dot health-alert-item__dot--green"></span>
-                <div class="health-alert-item__info">
-                  <div class="health-alert-item__disease">Measles — response</div>
-                  <div class="health-alert-item__location">Bombali · Northern Province</div>
-                </div>
-                <span class="health-alert-item__count">Ring vax active</span>
-              </div>
-              <div class="health-alert-item">
-                <span class="health-alert-item__dot health-alert-item__dot--blue"></span>
-                <div class="health-alert-item__info">
-                  <div class="health-alert-item__disease">Malaria · seasonal</div>
-                  <div class="health-alert-item__location">Kambia · North West</div>
-                </div>
-                <span class="health-alert-item__count">8,420 cases (YTD)</span>
-              </div>
-            </div>
-            <div class="health-mini-stats">
-              <div class="health-mini-stat">
-                <div class="health-mini-stat__value">11</div>
-                <div class="health-mini-stat__label">Active alerts</div>
-                <div class="health-mini-stat__trend health-mini-stat__trend--down">▼ 2 verified &amp; closed today</div>
-              </div>
-              <div class="health-mini-stat">
-                <div class="health-mini-stat__value">94%</div>
-                <div class="health-mini-stat__label">Weekly reporting timeliness</div>
-                <div class="health-mini-stat__trend health-mini-stat__trend--up">▲ 4 districts on time</div>
-              </div>
-            </div>
-          </div>
-          <div class="hero-float-pill hero-float-pill--2">
-            <span class="hero-float-pill__icon">✅</span>
-            <div>
-              <div class="hero-float-pill__text">Immunisation pulse</div>
-              <div class="hero-float-pill__sub">National EPI · 16 districts</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
 
+<!-- ═══════════════════════════════ TICKER ════════════════════════════ -->
+<div class="tl-ticker" aria-hidden="true">
+  <div class="tl-ticker__track">
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Web Applications</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Health Dashboards</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Management Systems</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Mobile Platforms</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Data Analytics</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>API Integrations</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Cloud Deployment</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Sierra Leone Based</span>
+    <!-- duplicate for seamless loop -->
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Web Applications</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Health Dashboards</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Management Systems</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Mobile Platforms</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Data Analytics</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>API Integrations</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Cloud Deployment</span>
+    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Sierra Leone Based</span>
+  </div>
+</div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     FEATURES
-═══════════════════════════════════════════════════════════ -->
-<section class="hs-section">
+<!-- ═══════════════════════════════ SERVICES ══════════════════════════ -->
+<section class="tl-section">
   <div class="container">
-    <div class="hs-header">
-      <div class="hs-label">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
-        Platform Capabilities
-      </div>
-      <h2 class="hs-title">Built for Sierra Leone's District Health Teams</h2>
-      <p class="hs-desc">
-        From outbreak signal detection to routine programme dashboards, the toolkit is designed for
-        inter-district surveillance and national coordination across all 16 districts.
-      </p>
+    <div class="tl-header reveal reveal--up">
+      <div class="tl-label">What We Build</div>
+      <h2 class="tl-title">Custom Digital Solutions for Every Need</h2>
+      <p class="tl-desc">We don't sell templates. Every product we build is designed from scratch around your exact requirements, your users, and your operating environment.</p>
     </div>
-    <div class="features-grid reveal--stagger">
+    <div class="tl-services-grid reveal--stagger">
 
-      <div class="feature-card">
-        <div class="feature-card__icon feature-card__icon--red">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <div class="tl-service-card">
+        <div class="tl-service-card__icon" style="background:rgba(233,139,46,.1);color:#E98B2E;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
         </div>
-        <h3 class="feature-card__title">Real-time Outbreak Detection</h3>
-        <p class="feature-card__desc">
-          AI-assisted anomaly detection flags unusual disease clusters soon after data arrives —
-          with routing to district and national focal persons for verification.
-        </p>
-        <a href="#" class="feature-card__link">Learn more →</a>
+        <h3 class="tl-service-card__title">Web Applications</h3>
+        <p class="tl-service-card__desc">Full-featured web platforms — from portals and dashboards to e-commerce and management systems — built to work reliably on Sierra Leone's internet infrastructure.</p>
       </div>
 
-      <div class="feature-card">
-        <div class="feature-card__icon feature-card__icon--blue">
+      <div class="tl-service-card">
+        <div class="tl-service-card__icon" style="background:rgba(59,130,246,.1);color:#3B82F6;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3 class="tl-service-card__title">Health Tech & Dashboards</h3>
+        <p class="tl-service-card__desc">Disease surveillance systems, patient management platforms, and health analytics dashboards for the Ministry of Health, NGOs, and health institutions.</p>
+      </div>
+
+      <div class="tl-service-card">
+        <div class="tl-service-card__icon" style="background:rgba(16,185,129,.1);color:#10B981;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <h3 class="tl-service-card__title">Institutional Management</h3>
+        <p class="tl-service-card__desc">College, school, hospital, and organisation management systems — handling records, fees, scheduling, and reporting all in one place.</p>
+      </div>
+
+      <div class="tl-service-card">
+        <div class="tl-service-card__icon" style="background:rgba(139,92,246,.1);color:#8B5CF6;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+        </div>
+        <h3 class="tl-service-card__title">Mobile-First Platforms</h3>
+        <p class="tl-service-card__desc">Responsive platforms and progressive web apps that work on any device — designed for users accessing from mobile phones in low-bandwidth environments.</p>
+      </div>
+
+      <div class="tl-service-card">
+        <div class="tl-service-card__icon" style="background:rgba(245,158,11,.1);color:#F59E0B;">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         </div>
-        <h3 class="feature-card__title">Epidemiological Analytics</h3>
-        <p class="feature-card__desc">
-          Incidence and mortality curves, district compare views, and trend summaries disaggregated by age and sex —
-          grounded in Sierra Leone's programme and surveillance definitions.
-        </p>
-        <a href="#" class="feature-card__link">Learn more →</a>
+        <h3 class="tl-service-card__title">Data & Analytics</h3>
+        <p class="tl-service-card__desc">Custom reporting tools, business intelligence dashboards, and data visualisation systems that turn raw data into decisions you can act on immediately.</p>
       </div>
 
-      <div class="feature-card">
-        <div class="feature-card__icon feature-card__icon--teal">
+      <div class="tl-service-card">
+        <div class="tl-service-card__icon" style="background:rgba(239,68,68,.1);color:#EF4444;">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
-        <h3 class="feature-card__title">National Health Security</h3>
-        <p class="feature-card__desc">
-          IHR-aligned reporting workflows that support timely event notification from districts to the Ministry of Health
-          &amp; Sanitation and partner technical agencies.
-        </p>
-        <a href="#" class="feature-card__link">Learn more →</a>
+        <h3 class="tl-service-card__title">Payments & Integrations</h3>
+        <p class="tl-service-card__desc">Monime mobile money integration, SMS gateways, email systems, and third-party API connections — connecting your platform to Sierra Leone's payment infrastructure.</p>
       </div>
 
-      <div class="feature-card">
-        <div class="feature-card__icon feature-card__icon--amber">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        </div>
-        <h3 class="feature-card__title">Inter-District Coordination</h3>
-        <p class="feature-card__desc">
-          Share verified signals across districts when cases or lab results point to linked transmission —
-          supporting DHMT escalation without waiting for monthly aggregates.
-        </p>
-        <a href="#" class="feature-card__link">Learn more →</a>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-card__icon feature-card__icon--purple">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <h3 class="feature-card__title">Field Reporting & Mobile Data</h3>
-        <p class="feature-card__desc">
-          Offline-capable mobile apps allow community health workers to submit case reports,
-          vaccination records, and sentinel site data from remote locations.
-        </p>
-        <a href="#" class="feature-card__link">Learn more →</a>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-card__icon feature-card__icon--indigo">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-        </div>
-        <h3 class="feature-card__title">Predictive Modelling</h3>
-        <p class="feature-card__desc">
-          Models tuned on national seasonality and historical burden help teams anticipate pressure on facilities
-          and prioritise supplies two to four weeks ahead.
-        </p>
-        <a href="#" class="feature-card__link">Learn more →</a>
-      </div>
-
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="{% url 'services:index' %}" class="tl-btn-primary">
+        View All Services
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════
-     HOW IT WORKS
-═══════════════════════════════════════════════════════════ -->
-<section class="hs-section hs-section--alt" id="how-it-works">
+<!-- ═══════════════════════════════ HOW WE WORK ═══════════════════════ -->
+<section class="tl-section tl-section--alt">
   <div class="container">
-    <div class="hs-header">
-      <div class="hs-label">Process</div>
-      <h2 class="hs-title">From Data to Decisive Action</h2>
-      <p class="hs-desc">Four steps that transform raw health data into life-saving public health intelligence.</p>
+    <div class="tl-header reveal reveal--up">
+      <div class="tl-label">Our Process</div>
+      <h2 class="tl-title">From Idea to Live Product</h2>
+      <p class="tl-desc">A simple, transparent process designed to get your digital product built and deployed without surprises.</p>
     </div>
-    <div class="how-it-works-grid reveal--stagger">
-      <div class="step-card">
-        <div class="step-card__number">1</div>
-        <h3 class="step-card__title">Data Collection</h3>
-        <p class="step-card__desc">
-          Health facilities, community workers, and laboratories submit case data via mobile app, web portal, or
-          automated HL7 FHIR feeds — even from low-connectivity areas.
-        </p>
+    <div class="tl-process-grid reveal--stagger">
+      <div class="tl-step">
+        <div class="tl-step__num">1</div>
+        <h3 class="tl-step__title">Discovery & Planning</h3>
+        <p class="tl-step__desc">We start by understanding your users, your problem, and your constraints — then we plan the right solution before writing a single line of code.</p>
       </div>
-      <div class="step-card">
-        <div class="step-card__number">2</div>
-        <h3 class="step-card__title">Signal Detection</h3>
-        <p class="step-card__desc">
-          Our AI engine runs continuous statistical analysis, comparing current data against historical baselines
-          and seasonal patterns to flag anomalies automatically.
-        </p>
+      <div class="tl-step">
+        <div class="tl-step__num">2</div>
+        <h3 class="tl-step__title">Design & Prototype</h3>
+        <p class="tl-step__desc">We design the user interface and build a working prototype for your review. You see exactly what you're getting before full development begins.</p>
       </div>
-      <div class="step-card">
-        <div class="step-card__number">3</div>
-        <h3 class="step-card__title">Alert & Verification</h3>
-        <p class="step-card__desc">
-          Verified alerts are escalated to district and national teams via SMS, email,
-          and dashboard notifications — with clear lines for MoH and DHMT follow-up.
-        </p>
+      <div class="tl-step">
+        <div class="tl-step__num">3</div>
+        <h3 class="tl-step__title">Build & Test</h3>
+        <p class="tl-step__desc">We build your platform with clean, maintainable code — tested thoroughly at every stage so bugs are caught before they reach your users.</p>
       </div>
-      <div class="step-card">
-        <div class="step-card__number">4</div>
-        <h3 class="step-card__title">Response & Reporting</h3>
-        <p class="step-card__desc">
-          Response teams log interventions in real time; outcomes feed back into the system, improving model
-          accuracy and generating IHR-compliant reports automatically.
-        </p>
+      <div class="tl-step">
+        <div class="tl-step__num">4</div>
+        <h3 class="tl-step__title">Deploy & Support</h3>
+        <p class="tl-step__desc">We deploy to the cloud, train your team, and stay available for ongoing support — your platform is never left without someone to call.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════
-     DISEASE TRACKER
-═══════════════════════════════════════════════════════════ -->
-<section class="disease-tracker">
+<!-- ═══════════════════════════════ PORTFOLIO PREVIEW ════════════════ -->
+<section class="tl-section">
   <div class="container">
-    <div class="tracker-grid">
+    <div class="tl-header reveal reveal--up">
+      <div class="tl-label">Recent Work</div>
+      <h2 class="tl-title">Projects We're Proud Of</h2>
+      <p class="tl-desc">A selection of real products we've shipped for real organisations in Sierra Leone — each solving a genuine problem.</p>
+    </div>
+    <div class="tl-portfolio-grid reveal--stagger">
 
-      <!-- Table -->
+      <div class="tl-portfolio-card">
+        <div class="tl-portfolio-card__banner" style="background:linear-gradient(135deg,#0F172A,#1E3A5F);">
+          <div class="tl-portfolio-card__banner-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E98B2E" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+        </div>
+        <div class="tl-portfolio-card__body">
+          <div class="tl-portfolio-card__sector">Health · Government</div>
+          <h3 class="tl-portfolio-card__title">Inter-District Health Dashboard</h3>
+          <p class="tl-portfolio-card__desc">National disease surveillance platform covering all 16 districts for the Ministry of Health &amp; Sanitation.</p>
+          <a href="{% url 'portfolio:health-dashboard' %}" class="tl-portfolio-card__link">View Case Study →</a>
+        </div>
+      </div>
+
+      <div class="tl-portfolio-card">
+        <div class="tl-portfolio-card__banner" style="background:linear-gradient(135deg,#0F172A,#1E293B);">
+          <div class="tl-portfolio-card__banner-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E98B2E" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          </div>
+        </div>
+        <div class="tl-portfolio-card__body">
+          <div class="tl-portfolio-card__sector">Fitness · Business</div>
+          <h3 class="tl-portfolio-card__title">Focus Gym Platform</h3>
+          <p class="tl-portfolio-card__desc">Full gym management system with memberships, payments, attendance tracking, and analytics.</p>
+          <a href="{% url 'portfolio:focus-gym' %}" class="tl-portfolio-card__link">View Case Study →</a>
+        </div>
+      </div>
+
+      <div class="tl-portfolio-card">
+        <div class="tl-portfolio-card__banner" style="background:linear-gradient(135deg,#0F172A,#4A0020);">
+          <div class="tl-portfolio-card__banner-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E98B2E" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+        </div>
+        <div class="tl-portfolio-card__body">
+          <div class="tl-portfolio-card__sector">Health · Community</div>
+          <h3 class="tl-portfolio-card__title">MamaCare Sierra Leone</h3>
+          <p class="tl-portfolio-card__desc">Maternal health platform with pregnancy tracking, ANC booking, and SMS alerts in Krio &amp; English.</p>
+          <a href="{% url 'portfolio:mamacare' %}" class="tl-portfolio-card__link">View Case Study →</a>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="{% url 'portfolio:index' %}" class="tl-btn-primary">
+        View All Projects
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ WHY TECHLEDGER ════════════════════ -->
+<section class="tl-section tl-section--alt">
+  <div class="container">
+    <div class="tl-why-grid">
       <div class="reveal reveal--left">
-        <div class="hs-label">Live Data</div>
-        <h2 class="hs-title" style="margin-bottom:1.5rem;">Active Surveillance Feed</h2>
-        <div class="tracker-table">
-          <div class="tracker-table__header">
-            <span>Disease</span>
-            <span>Cases</span>
-            <span>Trend</span>
-            <span>Status</span>
-          </div>
-          <div class="tracker-table__row">
-            <div>
-              <div class="tracker-table__disease">Cholera / AWD</div>
-              <div class="tracker-table__region">Port Loko</div>
+        <div class="tl-label">Why TechLedger</div>
+        <h2 class="tl-title">Built for Sierra Leone.<br>Built to Last.</h2>
+        <p class="tl-desc">We're not a foreign company parachuting in. We live here, we understand the challenges, and we build software that actually works in our environment.</p>
+        <div class="tl-why__list">
+          <div class="tl-why__item">
+            <div class="tl-why__item-icon" style="background:rgba(233,139,46,.1);color:#E98B2E;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
             </div>
-            <div class="tracker-table__cases">186</div>
-            <div class="tracker-table__trend-up">▲ 9%</div>
-            <span class="tracker-table__status tracker-table__status--alert">● Alert</span>
-          </div>
-          <div class="tracker-table__row">
             <div>
-              <div class="tracker-table__disease">Malaria</div>
-              <div class="tracker-table__region">Bo</div>
+              <div class="tl-why__item-title">Local Context, Global Standards</div>
+              <div class="tl-why__item-desc">We design for Sierra Leone's infrastructure — variable connectivity, mobile-first users, local payment systems — while building to international quality standards.</div>
             </div>
-            <div class="tracker-table__cases">4,902</div>
-            <div class="tracker-table__trend-down">▼ 4%</div>
-            <span class="tracker-table__status tracker-table__status--watch">● Watch</span>
           </div>
-          <div class="tracker-table__row">
-            <div>
-              <div class="tracker-table__disease">Lassa fever</div>
-              <div class="tracker-table__region">Kenema</div>
+          <div class="tl-why__item">
+            <div class="tl-why__item-icon" style="background:rgba(16,185,129,.1);color:#10B981;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <div class="tracker-table__cases">42</div>
-            <div class="tracker-table__trend-up">▲ 6%</div>
-            <span class="tracker-table__status tracker-table__status--alert">● Alert</span>
+            <div>
+              <div class="tl-why__item-title">We Deliver. No Excuses.</div>
+              <div class="tl-why__item-desc">Every project we take on gets shipped. We set realistic timelines, communicate clearly, and hold ourselves accountable to the delivery date.</div>
+            </div>
           </div>
-          <div class="tracker-table__row">
-            <div>
-              <div class="tracker-table__disease">Typhoid</div>
-              <div class="tracker-table__region">Western Area Urban</div>
+          <div class="tl-why__item">
+            <div class="tl-why__item-icon" style="background:rgba(59,130,246,.1);color:#3B82F6;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
-            <div class="tracker-table__cases">217</div>
-            <div class="tracker-table__trend-down">▼ 3%</div>
-            <span class="tracker-table__status tracker-table__status--watch">● Watch</span>
-          </div>
-          <div class="tracker-table__row">
             <div>
-              <div class="tracker-table__disease">Measles</div>
-              <div class="tracker-table__region">Kailahun</div>
+              <div class="tl-why__item-title">You Own Everything</div>
+              <div class="tl-why__item-desc">You get full ownership of your code, your data, and your platform. No lock-in, no hidden fees — just clean, documented software that belongs to you.</div>
             </div>
-            <div class="tracker-table__cases">18</div>
-            <div class="tracker-table__trend-down">▼ 21%</div>
-            <span class="tracker-table__status tracker-table__status--stable">● Stable</span>
-          </div>
-          <div class="tracker-table__row">
-            <div>
-              <div class="tracker-table__disease">Yellow fever (vaccine)</div>
-              <div class="tracker-table__region">Tonkolili</div>
-            </div>
-            <div class="tracker-table__cases">0</div>
-            <div class="tracker-table__trend-down">▼ —</div>
-            <span class="tracker-table__status tracker-table__status--stable">● Stable</span>
           </div>
         </div>
       </div>
-
-      <!-- Features -->
-      <div class="tracker-features reveal reveal--right">
-        <div class="hs-label">Intelligence Layer</div>
-        <h2 class="hs-title" style="margin-bottom:1.5rem;">Why national teams use this view</h2>
-
-        <div class="tracker-feature">
-          <div class="tracker-feature__icon feature-card__icon--teal">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-          </div>
-          <div>
-            <div class="tracker-feature__title">Sub-national granularity</div>
-            <div class="tracker-feature__desc">Drill down to district, facility, and community level — not just national aggregates. Identify hotspots before they become outbreaks.</div>
-          </div>
-        </div>
-
-        <div class="tracker-feature">
-          <div class="tracker-feature__icon feature-card__icon--blue">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </div>
-          <div>
-            <div class="tracker-feature__title">Sovereign data hosting</div>
-            <div class="tracker-feature__desc">Health data stays under national governance: role-based access, audit-friendly logs, and hosting aligned to Ministry of Health &amp; Sanitation policy.</div>
-          </div>
-        </div>
-
-        <div class="tracker-feature">
-          <div class="tracker-feature__icon feature-card__icon--amber">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <div>
-            <div class="tracker-feature__title">72-hour onboarding</div>
-            <div class="tracker-feature__desc">Rapid deployment with Sierra Leone programme templates and DHIS2-aligned indicators so federated reporting does not mean duplicate entry.</div>
-          </div>
-        </div>
-
-        <div class="tracker-feature">
-          <div class="tracker-feature__icon feature-card__icon--purple">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <div>
-            <div class="tracker-feature__title">Multi-stakeholder access</div>
-            <div class="tracker-feature__desc">Role-based dashboards for Ministry of Health officials, district managers, partner agencies, and researchers — each with the minimum necessary visibility.</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════
-     COVERAGE (MAP)
-═══════════════════════════════════════════════════════════ -->
-<section class="coverage-section">
-  <div class="container">
-    <div class="coverage-grid">
-
-      <!-- Sierra Leone map image -->
-      <div class="coverage__map reveal reveal--left">
-        <img
-          class="coverage-map-svg"
-          src="{% static 'images/map1.png' %}"
-          alt="Sierra Leone district coverage map"
-          loading="lazy">
-      </div>
-
-      <!-- Coverage text & stats -->
       <div class="reveal reveal--right">
-        <div class="hs-label hs-label--light">National coverage</div>
-        <h2 class="hs-title hs-title--light" style="margin-bottom:1rem;">
-          Sixteen districts.<br>One national dashboard.
-        </h2>
-        <p class="hs-desc hs-desc--light" style="margin-bottom:2rem;">
-          Provincial roll-ups mirror how Sierra Leone reports today — while every district and major facility
-          can be traced on the same inter-district surveillance canvas.
-        </p>
-        <div class="coverage__region-stats">
-          <div class="region-stat">
-            <span class="region-stat__dot" style="background:#34D399;"></span>
-            <span class="region-stat__label">Eastern Province</span>
-            <div class="region-stat__bar"><div class="region-stat__fill" style="width:86%;background:#34D399;"></div></div>
-            <span class="region-stat__value">86%</span>
+        <div class="tl-why__visual">
+          <div class="tl-why__visual-label">Platform Performance</div>
+          <div class="tl-why__metric-list">
+            <div class="tl-why__metric">
+              <div>
+                <div class="tl-why__metric-name">Platform Uptime</div>
+                <div class="tl-why__metric-bar-wrap"><div class="tl-why__metric-bar" style="width:99%;"></div></div>
+              </div>
+              <div class="tl-why__metric-value">99.9%</div>
+            </div>
+            <div class="tl-why__metric">
+              <div>
+                <div class="tl-why__metric-name">On-time Delivery Rate</div>
+                <div class="tl-why__metric-bar-wrap"><div class="tl-why__metric-bar" style="width:100%;"></div></div>
+              </div>
+              <div class="tl-why__metric-value">100%</div>
+            </div>
+            <div class="tl-why__metric">
+              <div>
+                <div class="tl-why__metric-name">Client Satisfaction</div>
+                <div class="tl-why__metric-bar-wrap"><div class="tl-why__metric-bar" style="width:98%;"></div></div>
+              </div>
+              <div class="tl-why__metric-value">98%</div>
+            </div>
+            <div class="tl-why__metric">
+              <div>
+                <div class="tl-why__metric-name">Projects Still Running</div>
+                <div class="tl-why__metric-bar-wrap"><div class="tl-why__metric-bar" style="width:100%;"></div></div>
+              </div>
+              <div class="tl-why__metric-value">100%</div>
+            </div>
+            <div class="tl-why__metric">
+              <div>
+                <div class="tl-why__metric-name">Repeat Clients</div>
+                <div class="tl-why__metric-bar-wrap"><div class="tl-why__metric-bar" style="width:80%;"></div></div>
+              </div>
+              <div class="tl-why__metric-value">80%</div>
+            </div>
           </div>
-          <div class="region-stat">
-            <span class="region-stat__dot" style="background:#60A5FA;"></span>
-            <span class="region-stat__label">Northern Province</span>
-            <div class="region-stat__bar"><div class="region-stat__fill" style="width:81%;background:#60A5FA;"></div></div>
-            <span class="region-stat__value">81%</span>
-          </div>
-          <div class="region-stat">
-            <span class="region-stat__dot" style="background:#FCD34D;"></span>
-            <span class="region-stat__label">North West Province</span>
-            <div class="region-stat__bar"><div class="region-stat__fill" style="width:77%;background:#FCD34D;"></div></div>
-            <span class="region-stat__value">77%</span>
-          </div>
-          <div class="region-stat">
-            <span class="region-stat__dot" style="background:#A78BFA;"></span>
-            <span class="region-stat__label">Southern Province</span>
-            <div class="region-stat__bar"><div class="region-stat__fill" style="width:84%;background:#A78BFA;"></div></div>
-            <span class="region-stat__value">84%</span>
-          </div>
-          <div class="region-stat">
-            <span class="region-stat__dot" style="background:#FB923C;"></span>
-            <span class="region-stat__label">Western Area</span>
-            <div class="region-stat__bar"><div class="region-stat__fill" style="width:92%;background:#FB923C;"></div></div>
-            <span class="region-stat__value">92%</span>
-          </div>
-        </div>
-        <div class="coverage-numbers">
-          <div class="coverage-num">
-            <div class="coverage-num__value js-counter" data-target="920" data-suffix="" data-format="comma">920</div>
-            <div class="coverage-num__label">Reporting health facilities</div>
-          </div>
-          <div class="coverage-num">
-            <div class="coverage-num__value js-counter" data-target="5200" data-suffix="" data-format="comma">5,200</div>
-            <div class="coverage-num__label">Community health workers mapped</div>
-          </div>
-          <div class="coverage-num">
-            <div class="coverage-num__value js-counter" data-target="56" data-suffix="">56</div>
-            <div class="coverage-num__label">Sentinel surveillance sites</div>
-          </div>
-          <div class="coverage-num">
-            <div class="coverage-num__value js-counter" data-target="99.1" data-suffix="%">99.1%</div>
-            <div class="coverage-num__label">Platform uptime (12 mo)</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════
-     ALERT TYPES
-═══════════════════════════════════════════════════════════ -->
-<section class="alert-types">
-  <div class="container">
-    <div class="hs-header">
-      <div class="hs-label hs-label--light">Surveillance Domains</div>
-      <h2 class="hs-title hs-title--light">Comprehensive Health Threat Monitoring</h2>
-      <p class="hs-desc hs-desc--light" style="margin:0 auto;">
-        Domains align with how Sierra Leone detects, verifies, and reports events — from outbreaks to routine programme performance.
-      </p>
-    </div>
-    <div class="alert-types-grid reveal--stagger">
-      <div class="alert-type-card">
-        <div class="alert-type-card__icon" style="background:rgba(239,68,68,.15);color:#FCA5A5;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        </div>
-        <div class="alert-type-card__title">Infectious Disease</div>
-        <div class="alert-type-card__desc">Cholera, Lassa fever, meningitis, yellow fever, measles, and viral haemorrhagic fever vigilance — configured to national case definitions and response SOPs.</div>
-      </div>
-      <div class="alert-type-card">
-        <div class="alert-type-card__icon" style="background:rgba(245,158,11,.15);color:#FCD34D;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        </div>
-        <div class="alert-type-card__title">Vector-borne Diseases</div>
-        <div class="alert-type-card__desc">Malaria burden and other vector-borne signals — linked to rainfall proxies and seasonal alerts where districts opt in to environmental indices.</div>
-      </div>
-      <div class="alert-type-card">
-        <div class="alert-type-card__icon" style="background:rgba(59,130,246,.15);color:#93C5FD;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        </div>
-        <div class="alert-type-card__title">Nutrition & WASH</div>
-        <div class="alert-type-card__desc">Acute malnutrition, stunting, waterborne disease indicators — linked to WASH data and food security indices.</div>
-      </div>
-      <div class="alert-type-card">
-        <div class="alert-type-card__icon" style="background:rgba(139,92,246,.15);color:#C4B5FD;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        </div>
-        <div class="alert-type-card__title">Maternal & Child Health</div>
-        <div class="alert-type-card__desc">Maternal mortality, neonatal deaths, immunisation coverage, birth registration — tracked at facility level.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════
-     PARTNERS
-═══════════════════════════════════════════════════════════ -->
-<section class="partners-section">
-  <div class="container">
-    <div class="hs-header">
-      <div class="hs-label">Trusted By</div>
-      <h2 class="hs-title">Built for Sierra Leone's health system</h2>
-    </div>
-    <div class="partners-logos reveal reveal--up">
-      <div class="partners-logos-track">
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/mohs.png' %}" alt="Ministry of Health and Sanitation logo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">MOHS</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/who-country-office.png' %}" alt="WHO Country Office logo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">WHO CO</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/unicef-sl.png' %}" alt="UNICEF Sierra Leone logo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">UNICEF</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/dhmt.png' %}" alt="District Health Management Teams logo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">DHMT</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/hospital-network.png' %}" alt="National hospital referral network logo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">Hospitals</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/lab-surveillance.png' %}" alt="Laboratory surveillance partners logo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">Labs</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/dhis2-hmis.png' %}" alt="DHIS2 HMIS programme units logo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">DHIS2</span>
-        </div>
-
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/mohs.png' %}" alt="" aria-hidden="true" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">MOHS</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/who-country-office.png' %}" alt="" aria-hidden="true" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">WHO CO</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/unicef-sl.png' %}" alt="" aria-hidden="true" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">UNICEF</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/dhmt.png' %}" alt="" aria-hidden="true" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">DHMT</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/hospital-network.png' %}" alt="" aria-hidden="true" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">Hospitals</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/lab-surveillance.png' %}" alt="" aria-hidden="true" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">Labs</span>
-        </div>
-        <div class="partner-logo">
-          <img class="partner-logo__img" src="{% static 'images/partners/dhis2-hmis.png' %}" alt="" aria-hidden="true" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <span class="partner-logo__fallback">DHIS2</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════
-     IMPACT / TESTIMONIALS
-═══════════════════════════════════════════════════════════ -->
-<section id="testimonials" class="impact-section hs-section--alt">
+<!-- ═══════════════════════════════ TESTIMONIALS ════════════════════ -->
+<section class="tl-section">
   <div class="container">
-    <div class="hs-header">
-      <div class="hs-label">Impact Stories</div>
-      <h2 class="hs-title">Trusted by Those on the Front Lines</h2>
+    <div class="tl-header reveal reveal--up">
+      <div class="tl-label">Client Stories</div>
+      <h2 class="tl-title">What Our Clients Say</h2>
     </div>
-    <div class="impact-grid reveal--stagger">
-
-      <div class="impact-card">
-        <p class="impact-card__quote">
-          "We saw the Port Loko escalation pattern nine days sooner than we would have from paper tallies alone.
-          District and national leads could agree on a single situational picture — that coordination mattered."
-        </p>
-        <div class="impact-card__author">
-          <div class="impact-card__avatar">SK</div>
+    <div class="tl-testimonials-grid reveal--stagger">
+      <div class="tl-testimonial-card">
+        <p class="tl-testimonial-card__quote">"TechLedger built exactly what we needed. They understood our challenges from day one — not just technically but operationally. The platform has transformed how we manage our members."</p>
+        <div class="tl-testimonial-card__author">
+          <div class="tl-testimonial-card__avatar" style="background:#E98B2E;">AK</div>
           <div>
-            <div class="impact-card__name">Dr. Sorie Kamara</div>
-            <div class="impact-card__role">District Medical Officer</div>
-            <div class="impact-card__org">Port Loko District</div>
+            <div class="tl-testimonial-card__name">Alpha Kamara</div>
+            <div class="tl-testimonial-card__role">Manager</div>
+            <div class="tl-testimonial-card__org">Focus Gym, Freetown</div>
           </div>
         </div>
       </div>
-
-      <div class="impact-card">
-        <p class="impact-card__quote">
-          "When Kailahun spiked, the inter-district line list let Western Area and Bo teams prepare beds and labs
-          before the weekend surge. It is the first time our seams felt stitched nationally, not just on slides."
-        </p>
-        <div class="impact-card__author">
-          <div class="impact-card__avatar">IB</div>
+      <div class="tl-testimonial-card">
+        <p class="tl-testimonial-card__quote">"The college system has saved us countless hours every semester. Results that used to take weeks now take hours. Our students are happier, our staff is less stressed."</p>
+        <div class="tl-testimonial-card__author">
+          <div class="tl-testimonial-card__avatar" style="background:#1D4ED8;">IB</div>
           <div>
-            <div class="impact-card__name">Dr. Isatu Bah</div>
-            <div class="impact-card__role">National Surveillance Lead</div>
-            <div class="impact-card__org">Ministry of Health &amp; Sanitation</div>
+            <div class="tl-testimonial-card__name">Dr. Ibrahim Bangura</div>
+            <div class="tl-testimonial-card__role">Principal</div>
+            <div class="tl-testimonial-card__org">College of Nursing &amp; Allied Health</div>
           </div>
         </div>
       </div>
-
-      <div class="impact-card">
-        <p class="impact-card__quote">
-          "Community health assistants in Moyamba now sync triage forms when they reach LTE. Our DHMT reviews
-          daily completeness by chiefdom instead of waiting for monthly DHIS2 closes."
-        </p>
-        <div class="impact-card__author">
-          <div class="impact-card__avatar">JC</div>
+      <div class="tl-testimonial-card">
+        <p class="tl-testimonial-card__quote">"Having all 16 districts on one surveillance canvas changed how we coordinate. TechLedger understood public health data — not just software. That made all the difference."</p>
+        <div class="tl-testimonial-card__author">
+          <div class="tl-testimonial-card__avatar" style="background:#059669;">SK</div>
           <div>
-            <div class="impact-card__name">James Conteh</div>
-            <div class="impact-card__role">District Health Information Officer</div>
-            <div class="impact-card__org">Moyamba District</div>
+            <div class="tl-testimonial-card__name">Dr. Sorie Kamara</div>
+            <div class="tl-testimonial-card__role">District Medical Officer</div>
+            <div class="tl-testimonial-card__org">Ministry of Health &amp; Sanitation</div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════
-     CTA
-═══════════════════════════════════════════════════════════ -->
-<section class="health-cta">
+<!-- ═══════════════════════════════ CTA ══════════════════════════════ -->
+<section class="tl-cta">
   <div class="container">
-    <div class="health-cta__inner reveal reveal--up">
-      <div class="hs-label hs-label--light" style="justify-content:center;margin-bottom:1rem;">
-        Get Started
-      </div>
-      <h2 class="health-cta__title">
-        Bring all 16 districts onto one surveillance canvas
-      </h2>
-      <p class="health-cta__desc">
-        For Ministry of Health programmes, district health teams, and partners supporting Sierra Leone — we can align
-        onboarding to your DHIS2 indicators, lab feeds, and alert rules in a matter of days, not months.
-      </p>
-      <div class="health-cta__actions">
-        <a href="{% url 'contact:index' %}" class="btn--health-primary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>
-          Request a Demo
+    <div class="tl-cta__inner reveal reveal--up">
+      <div class="tl-label tl-label--light" style="justify-content:center;margin-bottom:1.25rem;">Let's Build Something</div>
+      <h2 class="tl-cta__title">Ready to <span>Digitise</span> Your<br>Organisation?</h2>
+      <p class="tl-cta__desc">Whether you need a website, a management system, a health platform, or a custom data dashboard — we'll build it with you, for Sierra Leone.</p>
+      <div class="tl-cta__actions">
+        <a href="{% url 'contact:index' %}" class="tl-btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16z"/></svg>
+          Start a Conversation
         </a>
-        <a href="{% url 'contact:index' %}" class="btn--health-light">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Talk to Our Team
+        <a href="{% url 'portfolio:index' %}" class="tl-btn-outline">
+          Browse Our Portfolio
         </a>
       </div>
     </div>
@@ -1696,198 +682,21 @@
 <script>
 (function () {
   'use strict';
-
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ── 1. SCROLL PROGRESS BAR ─────────────────────────────── */
-  const progressBar = document.getElementById('scroll-progress');
-  function updateProgress() {
-    const scrolled = window.scrollY;
-    const total    = document.documentElement.scrollHeight - window.innerHeight;
-    progressBar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
-  }
-  window.addEventListener('scroll', updateProgress, { passive: true });
-
-  /* ── 2. SCROLL REVEAL ENGINE ────────────────────────────── */
-  const revealOpts = { threshold: 0.12, rootMargin: '0px 0px -60px 0px' };
-  const revealObserver = new IntersectionObserver((entries) => {
+  const rM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const obs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
       const el = entry.target;
       if (el.classList.contains('reveal--stagger')) {
         Array.from(el.children).forEach((child, i) => {
-          if (!reducedMotion) child.style.transitionDelay = (i * 110) + 'ms';
+          if (!rM) child.style.transitionDelay = (i * 100) + 'ms';
         });
       }
       el.classList.add('is-visible');
-      revealObserver.unobserve(el);
+      obs.unobserve(el);
     });
-  }, revealOpts);
-
-  document.querySelectorAll('.reveal, .reveal--stagger').forEach(el => revealObserver.observe(el));
-
-  /* ── 3. ANIMATED COUNTERS ───────────────────────────────── */
-  function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
-
-  function animateCounter(el) {
-    const target   = parseFloat(el.dataset.target);
-    const suffix   = el.dataset.suffix || '';
-    const fmt      = el.dataset.format || '';
-    const isFloat  = String(el.dataset.target).includes('.');
-    const duration = 1800;
-    const start    = performance.now();
-
-    function tick(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const value    = target * easeOutExpo(progress);
-      let display;
-      if (fmt === 'comma')   display = Math.round(value).toLocaleString();
-      else if (isFloat)      display = value.toFixed(1);
-      else                   display = Math.round(value).toString();
-      el.textContent = display + suffix;
-      if (progress < 1) {
-        requestAnimationFrame(tick);
-      } else {
-        const final = fmt === 'comma' ? target.toLocaleString() : isFloat ? target.toFixed(1) : String(target);
-        el.textContent = final + suffix;
-        el.classList.add('counter-done');
-      }
-    }
-    requestAnimationFrame(tick);
-  }
-
-  const counterObs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      animateCounter(entry.target);
-      counterObs.unobserve(entry.target);
-    });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('.js-counter').forEach(el => counterObs.observe(el));
-
-  /* ── 4. STATS BAR ICON BOUNCE ───────────────────────────── */
-  const statsBarInner = document.querySelector('.stats-bar__inner');
-  if (statsBarInner) {
-    new IntersectionObserver((entries) => {
-      if (!entries[0].isIntersecting) return;
-      statsBarInner.querySelectorAll('.js-bounce-icon').forEach((icon, i) => {
-        setTimeout(() => icon.classList.add('icon-bounce'), i * 120);
-      });
-    }, { threshold: 0.5 }).observe(statsBarInner);
-  }
-
-  /* ── 5. HERO TYPEWRITER ─────────────────────────────────── */
-  const heroSpan = document.querySelector('.health-hero__title span');
-  if (heroSpan && !reducedMotion) {
-    const text = heroSpan.textContent;
-    heroSpan.textContent = '';
-    let i = 0;
-    function type() {
-      if (i <= text.length) { heroSpan.textContent = text.slice(0, i++); setTimeout(type, 45); }
-    }
-    setTimeout(type, 550);
-  }
-
-  /* ── 6. HERO DASHBOARD ALERT STAGGER ───────────────────── */
-  document.querySelectorAll('.health-alert-item').forEach((item, i) => {
-    item.style.cssText += 'opacity:0;transform:translateX(20px);transition:opacity .4s ease,transform .4s ease;';
-    setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'none'; }, 800 + i * 150);
-  });
-
-  /* ── 7. HERO MOUSE PARALLAX ─────────────────────────────── */
-  if (!reducedMotion) {
-    const heroSection = document.querySelector('.health-hero');
-    const pills = document.querySelectorAll('.hero-float-pill');
-    if (heroSection && pills.length) {
-      heroSection.addEventListener('mousemove', (e) => {
-        const rect = heroSection.getBoundingClientRect();
-        const dx = (e.clientX - rect.left)  / rect.width  - 0.5;
-        const dy = (e.clientY - rect.top)   / rect.height - 0.5;
-        pills.forEach((pill, i) => {
-          const f = i % 2 === 0 ? 8 : -8;
-          pill.style.transform = `translate(${dx * f}px, ${dy * f}px)`;
-        });
-      });
-      heroSection.addEventListener('mouseleave', () => {
-        pills.forEach(pill => { pill.style.transform = ''; });
-      });
-    }
-  }
-
-  /* ── 8. COVERAGE PROGRESS BARS ──────────────────────────── */
-  const regionBars = document.querySelectorAll('.region-stat__fill');
-  if (regionBars.length) {
-    const targets = Array.from(regionBars).map(b => b.style.width);
-    regionBars.forEach(b => { b.style.width = '0%'; b.style.transition = 'none'; });
-    const barParent = document.querySelector('.coverage__region-stats');
-    if (barParent) {
-      new IntersectionObserver((entries) => {
-        if (!entries[0].isIntersecting) return;
-        regionBars.forEach((b, i) => {
-          setTimeout(() => { b.style.transition = 'width 1.2s cubic-bezier(.4,0,.2,1)'; b.style.width = targets[i]; }, i * 120);
-        });
-      }, { threshold: 0.4 }).observe(barParent);
-    }
-  }
-
-  /* ── 9. MAP SVG DRAW ANIMATION ──────────────────────────── */
-  const mapPath = document.querySelector('.coverage-map-path');
-  if (mapPath && !reducedMotion) {
-    const mapEl = document.querySelector('.coverage__map');
-    if (mapEl) {
-      new IntersectionObserver((entries) => {
-        if (!entries[0].isIntersecting) return;
-        setTimeout(() => mapPath.classList.add('is-drawn'), 200);
-      }, { threshold: 0.3 }).observe(mapEl);
-    }
-  }
-
-  /* ── 10. FEATURE CARD INTERACTION (click zoom + icon spin) ──── */
-  const featureCards = document.querySelectorAll('.feature-card');
-  if (featureCards.length) {
-    featureCards.forEach(card => {
-      card.addEventListener('click', () => {
-        const alreadyActive = card.classList.contains('is-active');
-        featureCards.forEach(c => c.classList.remove('is-active'));
-        if (!alreadyActive) card.classList.add('is-active');
-      });
-    });
-
-    document.querySelectorAll('.feature-card__link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        // Links are placeholders for now; keep focus on card interaction.
-        e.preventDefault();
-      });
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.feature-card')) {
-        featureCards.forEach(c => c.classList.remove('is-active'));
-      }
-    });
-  }
-
-  /* ── 11. TRACKER TABLE ROW STAGGER ─────────────────────── */
-  const trackerRows = document.querySelectorAll('.tracker-table__row');
-  if (trackerRows.length) {
-    trackerRows.forEach(r => { r.style.cssText += 'opacity:0;transform:translateX(-16px);transition:opacity .4s ease,transform .4s ease;'; });
-    const tbl = document.querySelector('.tracker-table');
-    if (tbl) {
-      new IntersectionObserver((entries) => {
-        if (!entries[0].isIntersecting) return;
-        trackerRows.forEach((r, i) => setTimeout(() => { r.style.opacity = '1'; r.style.transform = 'none'; }, i * 90));
-      }, { threshold: 0.2 }).observe(tbl);
-    }
-  }
-
-  /* ── 12. SECTION HEADERS AUTO-REVEAL ────────────────────── */
-  document.querySelectorAll('.hs-header').forEach(h => {
-    if (!h.closest('.reveal') && !h.closest('[class*="reveal"]')) {
-      h.classList.add('reveal', 'reveal--up');
-      revealObserver.observe(h);
-    }
-  });
-
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal, .reveal--stagger').forEach(el => obs.observe(el));
 })();
 </script>
 {% endblock %}

@@ -1,0 +1,305 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}College Management System — TechLedger Portfolio{% endblock %}
+{% block meta_description %}A complete academic management platform built for Sierra Leone colleges — student enrollment, grades, attendance, fee management and staff administration in one system.{% endblock %}
+
+{% block extra_css %}
+<style>
+:root { --col-green:#059669; --col-navy:#0F172A; --col-accent:#E98B2E; --col-muted:#64748B; --col-surface:#ECFDF5; --col-border:#A7F3D0; }
+.reveal{opacity:0;will-change:transform,opacity;transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1);}
+.reveal--up{transform:translateY(40px);}.reveal--left{transform:translateX(-40px);}.reveal--right{transform:translateX(40px);}
+.reveal.is-visible{opacity:1;transform:none;}
+.reveal--stagger>*{opacity:0;transform:translateY(32px);transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .55s cubic-bezier(.4,0,.2,1);}
+.reveal--stagger.is-visible>*{opacity:1;transform:none;}
+.portfolio-back-bar{background:#0F172A;padding:.85rem 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.portfolio-back-bar__inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.portfolio-back-btn{display:inline-flex;align-items:center;gap:.45rem;color:#CBD5E1;font-size:.83rem;font-weight:600;text-decoration:none;transition:color .2s;}
+.portfolio-back-btn:hover{color:#E98B2E;}
+.portfolio-back-crumb{color:#64748B;font-size:.78rem;}.portfolio-back-crumb span{color:#E98B2E;}
+
+.col-hero{background:linear-gradient(140deg,#0F172A 0%,#064E3B 60%,#0F172A 100%);min-height:92vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:8rem 0 5rem;}
+.col-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 78% 20%,rgba(5,150,105,.2) 0%,transparent 50%),radial-gradient(circle at 18% 78%,rgba(233,139,46,.10) 0%,transparent 40%);pointer-events:none;}
+.col-hero__grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.col-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(5,150,105,.15);border:1px solid rgba(5,150,105,.35);color:#6EE7B7;font-size:.73rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .9rem;border-radius:999px;margin-bottom:1.5rem;}
+.col-hero__title{font-size:clamp(2.2rem,4vw,3.6rem);font-weight:800;color:#fff;line-height:1.12;margin-bottom:1.25rem;}
+.col-hero__title span{color:#E98B2E;}
+.col-hero__desc{color:#94A3B8;font-size:1.05rem;line-height:1.72;max-width:520px;margin-bottom:2rem;}
+.col-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.5rem;}
+.col-tag{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#CBD5E1;font-size:.75rem;font-weight:600;padding:.3rem .75rem;border-radius:.5rem;}
+.col-hero__stats{display:flex;gap:2.5rem;flex-wrap:wrap;}
+.col-stat-value{display:block;font-size:2rem;font-weight:800;color:#34D399;line-height:1;}
+.col-stat-label{font-size:.78rem;color:#64748B;margin-top:.2rem;}
+
+.col-card{background:linear-gradient(145deg,#1E293B,#0F172A);border:1px solid rgba(5,150,105,.25);border-radius:1.5rem;padding:1.75rem;box-shadow:0 30px 60px rgba(0,0,0,.5);}
+.col-card__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.col-card__title{color:#F1F5F9;font-size:.9rem;font-weight:700;}
+.col-card__sem{background:rgba(5,150,105,.2);color:#6EE7B7;font-size:.7rem;font-weight:700;padding:.25rem .65rem;border-radius:999px;}
+.col-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem;}
+.col-stat-mini{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:.875rem;padding:.875rem;text-align:center;}
+.col-stat-mini__value{color:#F1F5F9;font-size:1.3rem;font-weight:800;}
+.col-stat-mini__label{color:#64748B;font-size:.68rem;margin-top:.15rem;}
+.col-student-list{display:flex;flex-direction:column;gap:.5rem;}
+.col-student-item{display:flex;align-items:center;gap:.75rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:.75rem;padding:.65rem .875rem;}
+.col-student-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;flex-shrink:0;}
+.col-student-name{color:#E2E8F0;font-size:.8rem;font-weight:600;flex:1;}
+.col-student-course{color:#64748B;font-size:.72rem;}
+.col-student-grade{font-size:.75rem;font-weight:700;padding:.2rem .55rem;border-radius:999px;}
+.grade-a{background:rgba(52,211,153,.15);color:#34D399;}
+.grade-b{background:rgba(96,165,250,.15);color:#60A5FA;}
+.grade-c{background:rgba(251,191,36,.15);color:#FBBF24;}
+
+.col-section{padding:5rem 0;}
+.col-section--alt{background:var(--col-surface);}
+.col-label{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--col-green);margin-bottom:.75rem;}
+.col-title{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;color:var(--col-navy);line-height:1.2;margin-bottom:1rem;}
+.col-desc{color:var(--col-muted);font-size:1rem;line-height:1.7;max-width:600px;}
+.col-header{text-align:center;margin-bottom:3.5rem;}
+.col-header .col-desc{margin:0 auto;}
+
+.col-features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.col-feature-card{background:#fff;border:1px solid #E5E7EB;border-radius:1.1rem;padding:1.65rem 1.5rem;transition:transform .22s,box-shadow .22s,border-color .22s;}
+.col-feature-card:hover{transform:translateY(-4px);border-color:var(--col-green);box-shadow:0 12px 28px rgba(15,23,42,.09);}
+.col-feature-card__icon{width:52px;height:52px;border-radius:.9rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
+.col-feature-card__title{font-size:1rem;font-weight:700;color:var(--col-navy);margin-bottom:.5rem;}
+.col-feature-card__desc{color:var(--col-muted);font-size:.875rem;line-height:1.6;}
+
+.col-split{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.col-split__img{background:linear-gradient(135deg,#0F172A 0%,#064E3B 100%);border-radius:1.5rem;padding:2.5rem;border:1px solid rgba(5,150,105,.2);box-shadow:0 20px 40px rgba(0,0,0,.15);}
+.col-checklist{list-style:none;padding:0;margin:1.5rem 0;display:flex;flex-direction:column;gap:.875rem;}
+.col-checklist li{display:flex;align-items:flex-start;gap:.75rem;color:#475569;font-size:.925rem;line-height:1.6;}
+.col-checklist li::before{content:'';width:20px;height:20px;border-radius:50%;background:rgba(5,150,105,.1);border:2px solid #059669;flex-shrink:0;margin-top:.1rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23059669' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;}
+
+.col-impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-top:3rem;}
+.col-impact-card{background:#fff;border:1px solid var(--col-border);border-radius:1.1rem;padding:1.75rem;text-align:center;box-shadow:0 6px 16px rgba(15,23,42,.05);}
+.col-impact-card__value{font-size:2.4rem;font-weight:800;color:var(--col-green);line-height:1;}
+.col-impact-card__label{color:var(--col-muted);font-size:.8rem;margin-top:.5rem;line-height:1.5;}
+
+.tech-stack-grid{display:flex;flex-wrap:wrap;gap:.875rem;margin-top:1.5rem;}
+.tech-badge{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid #E5E7EB;border-radius:.65rem;padding:.5rem 1rem;font-size:.83rem;font-weight:600;color:#334155;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+.tech-badge__dot{width:8px;height:8px;border-radius:50%;}
+
+.col-cta{background:linear-gradient(140deg,#0F172A 0%,#064E3B 100%);padding:5rem 0;text-align:center;position:relative;overflow:hidden;}
+.col-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(5,150,105,.15) 0%,transparent 65%);pointer-events:none;}
+.col-cta__inner{position:relative;z-index:1;max-width:680px;margin:0 auto;}
+.col-cta__title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;color:#fff;margin-bottom:1rem;}
+.col-cta__desc{color:#94A3B8;font-size:1rem;line-height:1.7;margin-bottom:2rem;}
+.col-cta__actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:#E98B2E;color:#fff;padding:.85rem 1.85rem;border-radius:.75rem;font-weight:700;font-size:.925rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:background .2s,transform .15s,box-shadow .2s;}
+.btn-primary:hover{background:#D97706;transform:translateY(-1px);box-shadow:0 6px 20px rgba(233,139,46,.35);}
+.btn-outline-light{background:transparent;color:#CBD5E1;border:1.5px solid rgba(255,255,255,.2);padding:.85rem 1.85rem;border-radius:.75rem;font-weight:600;font-size:.925rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:border-color .2s,color .2s;}
+.btn-outline-light:hover{border-color:#E98B2E;color:#E98B2E;}
+
+@media(max-width:1024px){.col-features-grid{grid-template-columns:repeat(2,1fr);}.col-impact-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.col-hero__grid{grid-template-columns:1fr;}.col-hero__visual{display:none;}.col-split{grid-template-columns:1fr;}.col-features-grid{grid-template-columns:1fr;}.col-impact-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="portfolio-back-bar">
+  <div class="container">
+    <div class="portfolio-back-bar__inner">
+      <a href="{% url 'portfolio:index' %}" class="portfolio-back-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Portfolio
+      </a>
+      <span class="portfolio-back-crumb">Portfolio / <span>College Management System</span></span>
+    </div>
+  </div>
+</div>
+
+<section class="col-hero">
+  <div class="container">
+    <div class="col-hero__grid">
+      <div class="reveal reveal--left">
+        <div class="col-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          Case Study · Education
+        </div>
+        <h1 class="col-hero__title">
+          Managing a College<br>Has Never Been<br><span>This Simple</span>
+        </h1>
+        <p class="col-hero__desc">
+          We built a complete academic management system for a Sierra Leone college — handling everything from
+          student enrollment and grades to fee payments, attendance tracking, and staff administration in one unified platform.
+        </p>
+        <div class="col-tags">
+          <span class="col-tag">Django</span>
+          <span class="col-tag">PostgreSQL</span>
+          <span class="col-tag">Python</span>
+          <span class="col-tag">Tailwind CSS</span>
+          <span class="col-tag">PDF Generation</span>
+          <span class="col-tag">Fee Management</span>
+        </div>
+        <div class="col-hero__stats">
+          <div><span class="col-stat-value">1,200+</span><div class="col-stat-label">Students enrolled</div></div>
+          <div><span class="col-stat-value">80+</span><div class="col-stat-label">Staff members</div></div>
+          <div><span class="col-stat-value">95%</span><div class="col-stat-label">Fee collection rate</div></div>
+        </div>
+      </div>
+      <div class="reveal reveal--right">
+        <div class="col-card">
+          <div class="col-card__header">
+            <span class="col-card__title">Academic Dashboard</span>
+            <span class="col-card__sem">2024/2025 Academic Year</span>
+          </div>
+          <div class="col-stats-row">
+            <div class="col-stat-mini"><div class="col-stat-mini__value">1,248</div><div class="col-stat-mini__label">Enrolled students</div></div>
+            <div class="col-stat-mini"><div class="col-stat-mini__value">84</div><div class="col-stat-mini__label">Staff members</div></div>
+            <div class="col-stat-mini"><div class="col-stat-mini__value">12</div><div class="col-stat-mini__label">Departments</div></div>
+          </div>
+          <div class="col-student-list">
+            <div class="col-student-item">
+              <div class="col-student-avatar" style="background:#059669;">AK</div>
+              <div><div class="col-student-name">Alpha Kamara</div><div class="col-student-course">BSc Computer Science · Year 2</div></div>
+              <span class="col-student-grade grade-a">A</span>
+            </div>
+            <div class="col-student-item">
+              <div class="col-student-avatar" style="background:#3B82F6;">FB</div>
+              <div><div class="col-student-name">Fatmata Bangura</div><div class="col-student-course">BA Business Admin · Year 3</div></div>
+              <span class="col-student-grade grade-b">B+</span>
+            </div>
+            <div class="col-student-item">
+              <div class="col-student-avatar" style="background:#E98B2E;">MS</div>
+              <div><div class="col-student-name">Mohamed Sesay</div><div class="col-student-course">BSc Nursing · Year 1</div></div>
+              <span class="col-student-grade grade-a">A-</span>
+            </div>
+            <div class="col-student-item">
+              <div class="col-student-avatar" style="background:#8B5CF6;">IJ</div>
+              <div><div class="col-student-name">Isatu Jalloh</div><div class="col-student-course">BSc Education · Year 4</div></div>
+              <span class="col-student-grade grade-c">C+</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="col-section">
+  <div class="container">
+    <div class="col-header reveal reveal--up">
+      <div class="col-label">Platform Features</div>
+      <h2 class="col-title">Everything a College Needs to Run Academically</h2>
+      <p class="col-desc">From admissions to graduation — every stage of the student journey is managed in one connected system.</p>
+    </div>
+    <div class="col-features-grid reveal--stagger">
+      <div class="col-feature-card">
+        <div class="col-feature-card__icon" style="background:rgba(5,150,105,.1);color:#059669;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3 class="col-feature-card__title">Student Enrollment</h3>
+        <p class="col-feature-card__desc">Online application and enrollment system. Students register, upload documents, get assigned student IDs and course schedules automatically.</p>
+      </div>
+      <div class="col-feature-card">
+        <div class="col-feature-card__icon" style="background:rgba(59,130,246,.1);color:#3B82F6;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <h3 class="col-feature-card__title">Grade Management</h3>
+        <p class="col-feature-card__desc">Lecturers enter continuous assessments and exam scores. The system calculates final grades, GPA, and generates transcripts automatically.</p>
+      </div>
+      <div class="col-feature-card">
+        <div class="col-feature-card__icon" style="background:rgba(233,139,46,.1);color:#E98B2E;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <h3 class="col-feature-card__title">Attendance Tracking</h3>
+        <p class="col-feature-card__desc">Lecturers mark daily attendance per class. Automated alerts are sent to students and parents when attendance falls below the required threshold.</p>
+      </div>
+      <div class="col-feature-card">
+        <div class="col-feature-card__icon" style="background:rgba(16,185,129,.1);color:#10B981;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3 class="col-feature-card__title">Fee Management</h3>
+        <p class="col-feature-card__desc">Track tuition fees, hostel charges, and exam fees per student. Generate payment receipts, flag outstanding balances, and produce financial summaries.</p>
+      </div>
+      <div class="col-feature-card">
+        <div class="col-feature-card__icon" style="background:rgba(139,92,246,.1);color:#8B5CF6;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h3 class="col-feature-card__title">Timetable & Scheduling</h3>
+        <p class="col-feature-card__desc">Build and publish semester timetables for all departments. Room allocation, lecturer assignments, and clash detection built in.</p>
+      </div>
+      <div class="col-feature-card">
+        <div class="col-feature-card__icon" style="background:rgba(245,158,11,.1);color:#F59E0B;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <h3 class="col-feature-card__title">Reports & Transcripts</h3>
+        <p class="col-feature-card__desc">Auto-generate official transcripts, result slips, and end-of-year reports as downloadable PDFs — reducing the admin burden on staff significantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="col-section col-section--alt">
+  <div class="container">
+    <div class="col-split">
+      <div class="reveal reveal--left">
+        <div class="col-label">The Challenge</div>
+        <h2 class="col-title">Registers, spreadsheets, and manual everything</h2>
+        <p class="col-desc">Before TechLedger, the college relied on paper registers, Excel spreadsheets, and manual processes that created delays, errors, and frustrated both staff and students.</p>
+        <ul class="col-checklist">
+          <li>Grade results took weeks to compile and announce</li>
+          <li>Fee payment tracking was inaccurate and hard to audit</li>
+          <li>Attendance was marked on paper — impossible to analyse</li>
+          <li>Producing a single transcript took days of admin work</li>
+          <li>No central view of how the institution was performing</li>
+        </ul>
+      </div>
+      <div class="reveal reveal--right">
+        <div class="col-split__img">
+          <div class="col-label" style="color:#6EE7B7;">Our Solution</div>
+          <h3 style="color:#fff;font-size:1.4rem;font-weight:700;margin-bottom:1rem;">One system. Every process. Zero paper.</h3>
+          <ul class="col-checklist">
+            <li style="color:#CBD5E1;">Student records, grades, attendance — all in one database</li>
+            <li style="color:#CBD5E1;">Automated grade calculation and transcript generation</li>
+            <li style="color:#CBD5E1;">Fee ledgers with payment history and outstanding balance alerts</li>
+            <li style="color:#CBD5E1;">Lecturer and admin portals with role-based access</li>
+            <li style="color:#CBD5E1;">Management dashboard with real-time institutional analytics</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="col-section">
+  <div class="container">
+    <div class="col-header reveal reveal--up">
+      <div class="col-label">Results & Impact</div>
+      <h2 class="col-title">A College Transformed</h2>
+    </div>
+    <div class="col-impact-grid reveal--stagger">
+      <div class="col-impact-card"><div class="col-impact-card__value">95%</div><div class="col-impact-card__label">Fee collection rate — up from 68%</div></div>
+      <div class="col-impact-card"><div class="col-impact-card__value">5×</div><div class="col-impact-card__label">Faster results processing and announcement</div></div>
+      <div class="col-impact-card"><div class="col-impact-card__value">20h</div><div class="col-impact-card__label">Saved per week on admin tasks</div></div>
+      <div class="col-impact-card"><div class="col-impact-card__value">100%</div><div class="col-impact-card__label">Digital student records — zero paper</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="col-section col-section--alt">
+  <div class="container">
+    <div class="reveal reveal--up">
+      <div class="col-label">Technology</div>
+      <h2 class="col-title">Built to Scale with the Institution</h2>
+      <div class="tech-stack-grid">
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#092E20;"></span>Django 5</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#336791;"></span>PostgreSQL</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#3776AB;"></span>Python 3.14</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#38BDF8;"></span>Tailwind CSS</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#E74C3C;"></span>ReportLab PDF</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#00C7B7;"></span>Render Cloud</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#3ECF8E;"></span>Supabase DB</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="col-cta">
+  <div class="container">
+    <div class="col-cta__inner reveal reveal--up">
+      <div class="col-label" style="justify-content:center;color:#6EE7B7;margin-bottom:1rem;">Work With Us</div>
+      <h2 class="col-cta__title">Need a management system for your institution?</h2>
+      <p class="col-cta__desc">We build custom academic management systems for schools, colleges, and universities across Sierra Leone. Let's digitise your institution.</p>
+      <div class="col-cta__actions">
+        <a href="{% url 'contact:index' %}" class="btn-primary">Start Your Project</a>
+        <a href="{% url 'portfolio:index' %}" class="btn-outline-light">View More Projects</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){const rM=window.matchMedia('(prefers-reduced-motion:reduce)').matches;const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(!e.isIntersecting)return;if(e.target.classList.contains('reveal--stagger')){Array.from(e.target.children).forEach((c,i)=>{if(!rM)c.style.transitionDelay=(i*100)+'ms';});}e.target.classList.add('is-visible');obs.unobserve(e.target);});},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});document.querySelectorAll('.reveal,.reveal--stagger').forEach(el=>obs.observe(el));})();
+</script>
+{% endblock %}

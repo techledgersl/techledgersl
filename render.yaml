@@ -20,11 +20,11 @@ services:
       - key: DB_NAME
         value: postgres
       - key: DB_USER
-        value: postgres.trsbvbczsfaiqfwqyojx
+        value: postgres
       - key: DB_HOST
-        value: aws-0-eu-west-1.pooler.supabase.com
+        value: db.bgmotxgqjybpteuddyjm.supabase.co
       - key: DB_PORT
-        value: "6543"
+        value: "5432"
       - key: EMAIL_HOST
         value: smtp.gmail.com
       - key: EMAIL_PORT

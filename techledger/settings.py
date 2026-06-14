@@ -127,6 +127,11 @@ else:
             'OPTIONS': {
                 'connect_timeout': int(os.getenv('DB_CONNECT_TIMEOUT', '10')),
                 'sslmode': 'require',
+                # Supabase's transaction pooler (PgBouncer, port 6543) does not
+                # support server-side prepared statements, which psycopg3 uses by
+                # default. Disabling them avoids "prepared statement does not
+                # exist" errors in production. Harmless on direct/session pooler.
+                'prepare_threshold': None,
             },
         }
     }

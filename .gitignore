@@ -33,11 +33,12 @@ static_root/
 Thumbs.db
 desktop.ini
 
-# ── IDEs ─────────────────────────────────────────────────────
+# ── IDEs / agents ────────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
+.claude/
 
 # ── PostgreSQL local cluster (not part of the project) ───────
 /pgdata/

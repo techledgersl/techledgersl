@@ -13,25 +13,53 @@
 
 /* CSS Variables */
 :root {
-    /* Colors */
-    --color-primary: #0D9488;
-    --color-primary-dark: #059669;
-    --color-primary-light: #34D399;
-    --color-dark-navy: #0A2540;
-    --color-dark-navy-light: #1A365D;
-    --color-section-dark: #0D9488;
+    /* Colors — TechLedger brand: Medical Blue & White */
+    --color-primary: #1A4A8A;
+    --color-primary-dark: #122F5C;
+    --color-primary-light: #2E6DB4;
+    --color-secondary: #2E86C1;
+    --color-hero-accent: #7EC8F4;
+    /* Light accent kept available for text on dark sections */
+    --color-primary-light-on-dark: #7EC8F4;
+    --color-dark-navy: #122F5C;
+    --color-dark-navy-light: #1A4A8A;
+    --color-section-dark: #122F5C;
     --color-white: #FFFFFF;
-    --color-bg-global: #dfe3e6;
-    --color-light-gray: #F7F9FC;
-    --color-light-gray-alt: #F8F9FA;
+    --color-bg-global: #F4F8FB;
+    --color-bg-dashboard: #F4F7FB;
+    --color-light-gray: #F4F8FB;
+    --color-light-gray-alt: #F8FAFC;
+    --color-surface-warm: #EBF5FB;
+    --color-border-warm: #D1E3F5;
+    --color-bg-alt: #EBF5FB;
+    --color-surface-cool: #EBF5FB;
+    --color-tint-blue: #EBF5FB;
+    --color-border-cool: #D1E3F5;
+    --color-border-site: #D1E3F5;
+    --color-border-dashboard: #E3ECF5;
     --color-gray: #E2E8F0;
     --color-gray-medium: #CBD5E0;
-    --color-text-dark: #1A202C;
-    --color-text-medium: #2D3748;
-    --color-text-light: #718096;
+    --color-text-dark: #1C2833;
+    --color-text-medium: #334155;
+    --color-text-light: #6B7280;
     --color-text-black: #000000;
-    --color-error: #E53E3E;
-    --color-success: #38A169;
+    --color-error: #C0392B;
+    --color-error-hover: #96281B;
+    --color-danger: #C0392B;
+    --color-danger-hover: #96281B;
+    --color-success: #17A589;
+    --color-success-dark: #0E7A64;
+    --color-teal: #17A589;
+    --color-teal-dark: #0E7A64;
+    --color-gold: #B7791F;
+
+    /* Brand gradients */
+    --gradient-primary: linear-gradient(135deg, #122F5C 0%, #2E6DB4 100%);
+
+    /* Brand-tinted shadows */
+    --shadow-brand-sm: 0 2px 8px rgba(26, 74, 138, 0.08);
+    --shadow-brand-md: 0 6px 18px rgba(26, 74, 138, 0.12);
+    --shadow-brand-lg: 0 14px 36px rgba(26, 74, 138, 0.18);
 
     /* Spacing */
     --spacing-xs: 0.5rem;
@@ -43,7 +71,7 @@
     --spacing-3xl: 6rem;
 
     /* Typography */
-    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --font-size-base: 16px;
     --font-size-sm: 14px;
     --font-size-lg: 18px;
@@ -145,6 +173,18 @@ a:hover {
     color: var(--color-primary-dark);
 }
 
+/* Accessibility — visible keyboard focus (mouse users unaffected) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid var(--color-secondary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
 /* Lists */
 ul, ol {
     list-style: none;
@@ -180,53 +220,6 @@ img {
 
 .text-right {
     text-align: right;
-}
-
-/* ─────────────────────────────────────────────────────────────
-   Page Transition Veil
-   A full-screen overlay that wipes in on exit and wipes out on
-   enter, giving every page change a smooth curtain effect.
-───────────────────────────────────────────────────────────── */
-#page-veil {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: linear-gradient(150deg, #e98b2e 0%, #0f172a 100%);
-    transform: scaleY(0);
-    transform-origin: bottom center;
-    will-change: transform;
-    pointer-events: none;
-}
-
-/* ── Logo shown centred above the veil (independent of scaleY) ── */
-#page-veil-icon {
-    position: fixed;
-    inset: 0;
-    z-index: 10000;          /* sits above the veil */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.28s ease;
-}
-
-#page-veil-icon.is-visible {
-    opacity: 1;
-}
-
-#page-veil-icon img {
-    width: 72px;
-    height: 72px;
-    object-fit: contain;
-    /* invert to white so it pops on the dark/orange veil */
-    filter: brightness(0) invert(1) drop-shadow(0 0 18px rgba(255,255,255,0.35));
-    animation: veil-icon-breathe 1.2s ease-in-out infinite;
-}
-
-@keyframes veil-icon-breathe {
-    0%, 100% { transform: scale(1);    opacity: 1;    }
-    50%       { transform: scale(1.1); opacity: 0.75; }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -268,7 +261,6 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    #page-veil { display: none; }
     .js-reveal { opacity: 1; transform: none; }
     .js-reveal.is-visible { transition: none; }
 }

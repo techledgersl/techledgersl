@@ -15,33 +15,75 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #122F5C 0%, #2E6DB4 100%);
             padding: 20px;
         }
         .login-box {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            padding: 40px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 24px 56px rgba(26, 74, 138, 0.18), 0 4px 12px rgba(0,0,0,0.08);
+            padding: 48px 40px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
         }
         .login-box h1 {
             text-align: center;
-            margin-bottom: 10px;
-            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0F172A;
         }
-        .login-box p {
+        .login-box > p {
             text-align: center;
-            color: #666;
-            margin-bottom: 30px;
+            color: #64748B;
+            margin-bottom: 32px;
+            font-size: 0.93rem;
         }
         .login-logo {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 28px;
         }
         .login-logo img {
-            max-width: 150px;
+            max-width: 140px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #334155;
+        }
+        .form-group .form-control {
+            width: 100%;
+        }
+        .error {
+            color: #E53E3E;
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+        /* Apply form-control styles to Django-rendered bare inputs */
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]) {
+            display: block;
+            width: 100%;
+            padding: 0.625rem 0.875rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #0F172A;
+            background: #ffffff;
+            border: 1.5px solid #D1E3F5;
+            border-radius: 8px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus {
+            outline: none;
+            border-color: #1A4A8A;
+            box-shadow: 0 0 0 3px rgba(26, 74, 138, 0.15);
         }
     </style>
 </head>
@@ -72,7 +114,7 @@
                         <div class="error">{{ form.username.errors }}</div>
                     {% endif %}
                 </div>
-                
+
                 <div class="form-group">
                     <label for="{{ form.password.id_for_label }}">Password</label>
                     {{ form.password }}

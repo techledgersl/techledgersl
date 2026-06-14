@@ -40,7 +40,9 @@ New contact form submission received:
 
 Name: {inquiry.name}
 Email: {inquiry.email}
+Phone: {inquiry.phone or 'Not provided'}
 Service: {service_name}
+Subject: {inquiry.topic or 'Not provided'}
 Message:
 {inquiry.message}
 

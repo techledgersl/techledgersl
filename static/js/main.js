@@ -69,13 +69,6 @@
         if (typeof CtaScroll !== 'undefined') {
             CtaScroll.init();
         }
-
-        // Check if PageTransitions module exists and initialize
-        if (typeof PageTransitions !== 'undefined') {
-            PageTransitions.init();
-            // Restore scroll position if available
-            PageTransitions.restoreScrollPosition();
-        }
     }
 
     /**

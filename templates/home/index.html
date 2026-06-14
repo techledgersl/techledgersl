@@ -1,674 +1,1003 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}TechLedger Solutions — Building Sierra Leone's Digital Future{% endblock %}
-{% block meta_description %}TechLedger Solutions is a Sierra Leone technology company that designs and builds custom software, web platforms, mobile apps, and data dashboards for businesses, health organisations, and government agencies.{% endblock %}
+{% block title %}TechLedger Solutions — Sierra Leone's Digital Product Studio{% endblock %}
+{% block meta_description %}TechLedger Solutions builds custom web platforms, health dashboards, and management systems for businesses, hospitals, schools, and government agencies across Sierra Leone.{% endblock %}
 
 {% block extra_css %}
 <style>
-/* ── REVEAL ──────────────────────────────────────────────────── */
-.reveal { opacity: 0; will-change: transform, opacity; transition: opacity .65s cubic-bezier(.4,0,.2,1), transform .65s cubic-bezier(.4,0,.2,1); }
-.reveal--up    { transform: translateY(40px); }
-.reveal--left  { transform: translateX(-40px); }
-.reveal--right { transform: translateX(40px); }
-.reveal--scale { transform: scale(.94); }
-.reveal.is-visible { opacity: 1; transform: none; }
-.reveal--stagger > * { opacity: 0; transform: translateY(28px); transition: opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1); }
-.reveal--stagger.is-visible > * { opacity: 1; transform: none; }
 
-/* ── HERO ────────────────────────────────────────────────────── */
-.tl-hero {
-  background: linear-gradient(140deg, #0F172A 0%, #1E293B 55%, #0F172A 100%);
-  min-height: 100vh; display: flex; align-items: center;
-  position: relative; overflow: hidden; padding: 8rem 0 5rem;
+/* ── REVEAL ─────────────────────────────────────────────── */
+.rv { opacity: 0; transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1); will-change: transform, opacity; }
+.rv--up    { transform: translateY(30px); }
+.rv--left  { transform: translateX(-30px); }
+.rv--right { transform: translateX(30px); }
+.rv.in     { opacity: 1; transform: none; }
+.rv--stagger > * { opacity: 0; transform: translateY(22px); transition: opacity .5s cubic-bezier(.4,0,.2,1), transform .5s cubic-bezier(.4,0,.2,1); }
+.rv--stagger.in > * { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .rv, .rv--up, .rv--left, .rv--right { transition: opacity .3s; transform: none !important; }
+  .rv--stagger > * { transition: opacity .3s; transform: none !important; }
 }
-.tl-hero::before {
-  content: ''; position: absolute; inset: 0;
-  background-image:
-    radial-gradient(circle at 80% 20%, rgba(233,139,46,.18) 0%, transparent 50%),
-    radial-gradient(circle at 15% 80%, rgba(245,158,11,.08) 0%, transparent 40%);
+
+/* ── HEADER FLUSH WITH HERO ──────────────────────────────── */
+/* The header overlays the hero (fixed, transparent) so the hero
+   image sits behind the nav as one continuous block. It solidifies
+   to the light theme once the user scrolls past the hero. */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.site-header.scrolled {
+  background: var(--color-bg-global);
+  box-shadow: 0 1px 8px rgba(15, 23, 42, .06);
+}
+@media (min-width: 768px) {
+  .site-header .navbar__link,
+  .site-header .navbar__dropdown-toggle,
+  .site-header .navbar__dropdown-caret { color: #fff; }
+  .site-header .navbar__link:hover,
+  .site-header .navbar__link.active { color: #fff; opacity: .85; }
+  .site-header.scrolled .navbar__link,
+  .site-header.scrolled .navbar__dropdown-toggle,
+  .site-header.scrolled .navbar__dropdown-caret { color: #0F172A; }
+  .site-header.scrolled .navbar__link:hover,
+  .site-header.scrolled .navbar__link.active { color: var(--color-primary); opacity: 1; }
+}
+@media (max-width: 767px) {
+  .site-header .navbar__toggle-icon,
+  .site-header .navbar__toggle-icon::before,
+  .site-header .navbar__toggle-icon::after { background-color: #fff; }
+  .site-header.scrolled .navbar__toggle-icon,
+  .site-header.scrolled .navbar__toggle-icon::before,
+  .site-header.scrolled .navbar__toggle-icon::after { background-color: var(--color-text-dark); }
+  /* Mobile menu opens as a light overlay, so keep the close icon dark. */
+  .site-header .navbar__toggle[aria-expanded="true"] .navbar__toggle-icon::before,
+  .site-header .navbar__toggle[aria-expanded="true"] .navbar__toggle-icon::after { background-color: var(--color-text-dark); }
+}
+
+/* ── HERO ───────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 8rem 0 6rem;
+}
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
+}
+.hero__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #7EC8F4;
+  border: 1px solid rgba(126, 200, 244,.22);
+  background: rgba(126, 200, 244,.07);
+  padding: .35rem .9rem;
+  border-radius: 999px;
+  margin-bottom: 1.75rem;
+}
+.hero__tag-dot {
+  width: 6px; height: 6px;
+  background: #7EC8F4;
+  border-radius: 50%;
+  animation: blink 2.5s ease infinite;
+}
+@keyframes blink { 0%,100%{ opacity:1; } 50%{ opacity:.25; } }
+
+.hero__h1 {
+  font-size: clamp(2.9rem, 5.5vw, 4.6rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.06;
+  letter-spacing: -.03em;
+  margin-bottom: 1.5rem;
+}
+.hero__h1 em { font-style: normal; color: #7EC8F4; }
+
+.hero__sub {
+  font-size: 1.08rem;
+  color: rgba(255, 255, 255, .9);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+}
+.hero__sub strong { color: #7EC8F4; font-weight: 700; }
+
+/* Synced text slider — each message crossfades with its background image.
+   Slides are stacked in one grid cell so the block sizes to the tallest
+   message and the CTAs below never jump as slides change. */
+.hero__copy {
+  display: grid;
+  margin-bottom: 2.5rem;
+}
+.hero__copy-slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity .6s ease, transform .6s ease;
   pointer-events: none;
 }
-/* Grid lines background */
-.tl-hero::after {
-  content: ''; position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
+.hero__copy-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
 }
-.tl-hero__inner { position: relative; z-index: 1; text-align: center; max-width: 860px; margin: 0 auto; }
-.tl-hero__eyebrow {
-  display: inline-flex; align-items: center; gap: .6rem;
-  background: rgba(233,139,46,.1); border: 1px solid rgba(233,139,46,.25);
-  color: #FCD34D; font-size: .75rem; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase;
-  padding: .4rem 1rem; border-radius: 999px; margin-bottom: 2rem;
+.hero__copy .hero__sub { margin-bottom: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .hero__copy-slide { transition: opacity .3s ease; transform: none; }
 }
-.tl-hero__eyebrow-dot {
-  width: 7px; height: 7px; background: #E98B2E; border-radius: 50%;
-  animation: pulse-dot 2s infinite;
-}
-@keyframes pulse-dot { 0%,100%{ box-shadow: 0 0 0 0 rgba(233,139,46,.5); } 50%{ box-shadow: 0 0 0 6px rgba(233,139,46,0); } }
 
-.tl-hero__title {
-  font-size: clamp(2.6rem, 6vw, 5rem);
-  font-weight: 800; color: #fff; line-height: 1.08;
-  letter-spacing: -.02em; margin-bottom: 1.5rem;
+.hero__ctas {
+  display: flex;
+  gap: .875rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
 }
-.tl-hero__title .highlight { color: #E98B2E; }
-.tl-hero__title .dim { color: #94A3B8; }
-.tl-hero__desc {
-  font-size: clamp(1rem, 1.8vw, 1.2rem); color: #94A3B8;
-  line-height: 1.75; max-width: 640px; margin: 0 auto 2.5rem;
-}
-.tl-hero__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 4rem; }
-.tl-btn-primary {
-  background: #E98B2E; color: #fff; padding: .9rem 2rem;
-  border-radius: .75rem; font-weight: 700; font-size: 1rem;
-  text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
+
+.btn-prim {
+  background: #1A4A8A;
+  color: #fff;
+  padding: .9rem 1.875rem;
+  border-radius: .625rem;
+  font-weight: 700;
+  font-size: .95rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
   transition: background .2s, transform .15s, box-shadow .2s;
 }
-.tl-btn-primary:hover { background: #D97706; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(233,139,46,.35); }
-.tl-btn-outline {
-  background: transparent; color: #CBD5E1;
-  border: 1.5px solid rgba(255,255,255,.18);
-  padding: .9rem 2rem; border-radius: .75rem; font-weight: 600; font-size: 1rem;
-  text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
-  transition: border-color .2s, color .2s;
+.btn-prim:hover {
+  background: #122F5C;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(26, 74, 138,.35);
 }
-.tl-btn-outline:hover { border-color: #E98B2E; color: #E98B2E; }
+/* On the blue gradient hero, invert the primary CTA so it stands out */
+.hero .btn-prim { background: #fff; color: #122F5C; }
+.hero .btn-prim:hover { background: #EBF5FB; color: #122F5C; box-shadow: 0 12px 30px rgba(0,0,0,.25); }
+.btn-ghost {
+  background: rgba(255,255,255,.06);
+  color: #CBD5E1;
+  padding: .9rem 1.875rem;
+  border-radius: .625rem;
+  font-weight: 600;
+  font-size: .95rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  border: 1px solid rgba(255,255,255,.12);
+  transition: background .2s, border-color .2s, color .2s;
+}
+.btn-ghost:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.22); color: #fff; }
 
-/* Hero stats bar */
-.tl-hero__stats {
-  display: flex; justify-content: center; gap: 0;
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 1rem; overflow: hidden;
-  background: rgba(255,255,255,.03);
-  backdrop-filter: blur(8px);
-  max-width: 700px; margin: 0 auto;
+.hero__trust {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
-.tl-hero__stat {
-  flex: 1; padding: 1.25rem 1rem; text-align: center;
-  border-right: 1px solid rgba(255,255,255,.08);
+.hero__trust-label {
+  font-size: .7rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.7);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  flex-shrink: 0;
 }
-.tl-hero__stat:last-child { border-right: none; }
-.tl-hero__stat-value { font-size: 1.8rem; font-weight: 800; color: #E98B2E; line-height: 1; display: block; }
-.tl-hero__stat-label { font-size: .72rem; color: #64748B; margin-top: .3rem; text-transform: uppercase; letter-spacing: .06em; }
+.hero__trust-pill {
+  font-size: .75rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.9);
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+  padding: .3rem .7rem;
+  border-radius: .4rem;
+  white-space: nowrap;
+}
 
-/* ── TICKER ──────────────────────────────────────────────────── */
-.tl-ticker {
-  background: #fff; border-top: 1px solid #F1F5F9; border-bottom: 1px solid #F1F5F9;
-  padding: 1.5rem 0; overflow: hidden;
+/* ── CLIENTS STRIP ──────────────────────────────────────── */
+.clients-strip {
+  background: #fff;
+  border-bottom: 1px solid #E2E8F0;
+  padding: 1.25rem 0;
 }
-.tl-ticker__track {
-  display: flex; align-items: center; gap: 3rem;
-  width: max-content; animation: ticker-scroll 28s linear infinite;
+.clients-strip__inner {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
-@keyframes ticker-scroll { 0%{ transform: translateX(0); } 100%{ transform: translateX(calc(-50% - 1.5rem)); } }
-.tl-ticker__item { display: flex; align-items: center; gap: .6rem; color: #334155; font-size: .875rem; font-weight: 600; white-space: nowrap; }
-.tl-ticker__dot { width: 6px; height: 6px; background: #E98B2E; border-radius: 50%; flex-shrink: 0; }
-.tl-ticker:hover .tl-ticker__track { animation-play-state: paused; }
+.clients-strip__inner::-webkit-scrollbar { display: none; }
+.clients-strip__label {
+  font-size: .68rem;
+  font-weight: 700;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  flex-shrink: 0;
+  padding-right: 1.5rem;
+  border-right: 1px solid #E2E8F0;
+  white-space: nowrap;
+}
+.clients-strip__name {
+  font-size: .82rem;
+  font-weight: 600;
+  color: #64748B;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 
-/* ── SECTION SHARED ──────────────────────────────────────────── */
-.tl-section { padding: 5.5rem 0; }
-.tl-section--alt { background: #FFF8EF; }
-.tl-section--dark { background: #0F172A; }
-.tl-label {
-  display: inline-flex; align-items: center; gap: .4rem;
-  font-size: .75rem; font-weight: 700; letter-spacing: .1em;
-  text-transform: uppercase; color: #E98B2E; margin-bottom: .75rem;
-}
-.tl-label--light { color: #FCD34D; }
-.tl-title { font-size: clamp(1.9rem, 3.2vw, 2.8rem); font-weight: 800; color: #0F172A; line-height: 1.18; margin-bottom: 1rem; }
-.tl-title--light { color: #fff; }
-.tl-desc { color: #64748B; font-size: 1rem; line-height: 1.75; max-width: 620px; }
-.tl-desc--light { color: #94A3B8; }
-.tl-header { text-align: center; margin-bottom: 3.5rem; }
-.tl-header .tl-desc { margin: 0 auto; }
+/* ── SECTION UTILITIES ──────────────────────────────────── */
+.s { padding: 5.5rem 0; }
+.s--white { background: #fff; }
+.s--alt   { background: #F4F8FB; }
+.s--dark  { background: #0F172A; }
 
-/* ── SERVICES PREVIEW ────────────────────────────────────────── */
-.tl-services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.35rem; }
-.tl-service-card {
-  background: #fff; border: 1px solid #E5E7EB;
-  border-radius: 1.1rem; padding: 1.75rem;
+.s-label {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #1A4A8A;
+  margin-bottom: 1rem;
+}
+.s-label--lt { color: #7EC8F4; }
+.s-label__bar { display: inline-block; width: 18px; height: 2px; background: currentColor; border-radius: 1px; }
+
+.s-h2 {
+  font-size: clamp(1.9rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.14;
+  letter-spacing: -.025em;
+  margin-bottom: 1rem;
+}
+.s-h2--lt { color: #fff; }
+
+.s-sub {
+  font-size: 1rem;
+  color: #64748B;
+  line-height: 1.75;
+  max-width: 580px;
+}
+.s-sub--lt { color: #94A3B8; }
+.s-sub p { margin: 0; }
+
+.s-head { text-align: center; margin-bottom: 3.5rem; }
+.s-head .s-sub { margin: 0 auto; }
+.s-head .s-label { justify-content: center; }
+
+/* ── SERVICES ───────────────────────────────────────────── */
+.svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.svc-card {
+  background: #fff;
+  border: 1px solid #E2E8F0;
+  border-radius: 1.25rem;
+  padding: 2rem 1.875rem;
   transition: transform .22s, box-shadow .22s, border-color .22s;
-  position: relative; overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
-.tl-service-card::before {
-  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, #E98B2E, #F59E0B);
-  transform: scaleX(0); transform-origin: left; transition: transform .3s;
+.svc-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, #1A4A8A, #7EC8F4);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s;
 }
-.tl-service-card:hover { transform: translateY(-4px); border-color: #F59E0B; box-shadow: 0 16px 32px rgba(15,23,42,.1); }
-.tl-service-card:hover::before { transform: scaleX(1); }
-.tl-service-card__icon {
-  width: 52px; height: 52px; border-radius: .9rem;
-  display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;
+.svc-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(15,23,42,.1); border-color: #D1E3F5; }
+.svc-card:hover::after { transform: scaleX(1); }
+.svc-card__num {
+  font-size: .68rem;
+  font-weight: 800;
+  color: #CBD5E1;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
 }
-.tl-service-card__title { font-size: 1.05rem; font-weight: 700; color: #0F172A; margin-bottom: .5rem; }
-.tl-service-card__desc  { color: #64748B; font-size: .875rem; line-height: 1.65; }
-
-/* ── HOW WE WORK ─────────────────────────────────────────────── */
-.tl-process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; position: relative; }
-.tl-process-grid::before {
-  content: ''; position: absolute; top: 2rem; left: 12%; right: 12%; height: 2px;
-  background: linear-gradient(90deg, #E98B2E 0%, #F59E0B 100%); opacity: .25;
-}
-.tl-step { text-align: center; }
-.tl-step__num {
-  width: 48px; height: 48px; border-radius: 50%;
-  background: #E98B2E; color: #fff; font-size: 1rem; font-weight: 800;
+.svc-card__icon {
+  width: 48px; height: 48px;
+  border-radius: .875rem;
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 1.25rem; position: relative; z-index: 1;
-  box-shadow: 0 0 0 8px rgba(233,139,46,.12);
+  margin-bottom: 1.125rem;
 }
-.tl-step__title { font-size: 1rem; font-weight: 700; color: #0F172A; margin-bottom: .5rem; }
-.tl-step__desc  { color: #64748B; font-size: .875rem; line-height: 1.65; }
+.svc-card__title {
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.22;
+  margin-bottom: .625rem;
+}
+.svc-card__desc {
+  font-size: .875rem;
+  color: #64748B;
+  line-height: 1.72;
+  margin-bottom: 1.25rem;
+}
+.tag-row { display: flex; flex-wrap: wrap; gap: .375rem; }
+.tag {
+  font-size: .67rem;
+  font-weight: 700;
+  color: #1A4A8A;
+  background: #EBF5FB;
+  padding: .25rem .625rem;
+  border-radius: .375rem;
+  letter-spacing: .02em;
+}
 
-/* ── PORTFOLIO PREVIEW ───────────────────────────────────────── */
-.tl-portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.35rem; }
-.tl-portfolio-card {
-  border-radius: 1.25rem; overflow: hidden;
-  border: 1px solid #E5E7EB; background: #fff;
+/* ── PORTFOLIO ──────────────────────────────────────────── */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.proj-card {
+  background: #fff;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid #E2E8F0;
   transition: transform .22s, box-shadow .22s;
 }
-.tl-portfolio-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(15,23,42,.12); }
-.tl-portfolio-card__banner {
-  height: 160px; display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
+.proj-card:hover { transform: translateY(-5px); box-shadow: 0 24px 48px rgba(15,23,42,.14); }
+.proj-card__banner {
+  height: 175px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.375rem;
+  position: relative;
+  overflow: hidden;
 }
-.tl-portfolio-card__banner-icon {
-  width: 64px; height: 64px; border-radius: 1rem;
+.proj-card__banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.55) 0%, transparent 55%);
+}
+.proj-card__sector {
+  position: relative; z-index: 1;
+  font-size: .63rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.72);
+  margin-bottom: .3rem;
+}
+.proj-card__banner-title {
+  position: relative; z-index: 1;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+.proj-card__body { padding: 1.375rem 1.5rem; }
+.proj-card__desc {
+  font-size: .875rem;
+  color: #64748B;
+  line-height: 1.68;
+  margin-bottom: 1.25rem;
+}
+.proj-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .83rem;
+  font-weight: 700;
+  color: #1A4A8A;
+  text-decoration: none;
+  transition: gap .2s;
+}
+.proj-link:hover { gap: .6rem; color: #1A4A8A; }
+
+/* ── PROCESS ────────────────────────────────────────────── */
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  position: relative;
+}
+.process-grid::before {
+  content: '';
+  position: absolute;
+  top: 23px;
+  left: calc(12.5% + 14px);
+  right: calc(12.5% + 14px);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(26, 74, 138,.45), rgba(126, 200, 244,.45));
+}
+.proc-step { text-align: center; }
+.proc-step__num {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: #1A4A8A;
+  color: #fff;
+  font-size: .875rem;
+  font-weight: 800;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,.15); backdrop-filter: blur(8px);
+  margin: 0 auto 1.5rem;
+  position: relative; z-index: 1;
+  box-shadow: 0 0 0 6px rgba(26, 74, 138,.14), 0 0 0 12px rgba(26, 74, 138,.06);
 }
-.tl-portfolio-card__body { padding: 1.5rem; }
-.tl-portfolio-card__sector {
-  font-size: .7rem; font-weight: 700; letter-spacing: .1em;
-  text-transform: uppercase; color: #E98B2E; margin-bottom: .4rem;
+.proc-step__title {
+  font-size: .975rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: .5rem;
 }
-.tl-portfolio-card__title { font-size: 1rem; font-weight: 700; color: #0F172A; margin-bottom: .5rem; }
-.tl-portfolio-card__desc  { color: #64748B; font-size: .85rem; line-height: 1.6; margin-bottom: 1rem; }
-.tl-portfolio-card__link {
-  display: inline-flex; align-items: center; gap: .3rem;
-  color: #E98B2E; font-size: .83rem; font-weight: 700;
-  text-decoration: none; transition: gap .2s;
-}
-.tl-portfolio-card__link:hover { gap: .55rem; }
+.proc-step__desc { font-size: .82rem; color: #64748B; line-height: 1.68; }
 
-/* ── WHY TECHLEDGER ──────────────────────────────────────────── */
-.tl-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-.tl-why__list { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
-.tl-why__item { display: flex; gap: 1.25rem; align-items: flex-start; }
-.tl-why__item-icon {
-  width: 48px; height: 48px; border-radius: .9rem; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center; margin-top: .1rem;
+/* ── WHY + TESTIMONIALS ─────────────────────────────────── */
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
 }
-.tl-why__item-title { font-size: 1rem; font-weight: 700; color: #0F172A; margin-bottom: .35rem; }
-.tl-why__item-desc  { color: #64748B; font-size: .875rem; line-height: 1.65; }
 
-/* Visual right side */
-.tl-why__visual {
-  background: linear-gradient(145deg, #0F172A, #1E293B);
-  border-radius: 1.5rem; padding: 2.5rem;
-  border: 1px solid rgba(233,139,46,.15);
-  box-shadow: 0 30px 60px rgba(0,0,0,.2);
+/* Testimonials side */
+.testi-main {
+  background: #0F172A;
+  border: 1px solid rgba(26, 74, 138,.15);
+  border-radius: 1.5rem;
+  padding: 2.25rem;
 }
-.tl-why__visual-label { color: #E98B2E; font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1.5rem; }
-.tl-why__metric-list { display: flex; flex-direction: column; gap: .875rem; }
-.tl-why__metric {
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
-  border-radius: .875rem; padding: 1rem 1.25rem;
+.testi-main__stars { display: flex; gap: 2px; margin-bottom: 1.375rem; }
+.testi-main__star { color: #F59E0B; font-size: .95rem; }
+.testi-main__quote {
+  font-size: 1rem;
+  color: #E2E8F0;
+  line-height: 1.82;
+  font-style: italic;
+  margin-bottom: 1.625rem;
 }
-.tl-why__metric-name { color: #CBD5E1; font-size: .875rem; font-weight: 600; }
-.tl-why__metric-value { color: #E98B2E; font-size: 1rem; font-weight: 800; }
-.tl-why__metric-bar-wrap { height: 4px; background: rgba(255,255,255,.08); border-radius: 2px; margin-top: .5rem; }
-.tl-why__metric-bar { height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E98B2E, #F59E0B); }
-
-/* ── TESTIMONIALS ────────────────────────────────────────────── */
-.tl-testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-.tl-testimonial-card {
-  background: #fff; border: 1px solid #FDE7CC;
-  border-radius: 1.25rem; padding: 2rem;
-  box-shadow: 0 6px 16px rgba(15,23,42,.05);
-}
-.tl-testimonial-card__quote {
-  font-size: .925rem; color: #374151; line-height: 1.75;
-  font-style: italic; margin-bottom: 1.5rem;
-}
-.tl-testimonial-card__author { display: flex; align-items: center; gap: .875rem; }
-.tl-testimonial-card__avatar {
-  width: 42px; height: 42px; border-radius: 50%;
+.testi-main__author { display: flex; align-items: center; gap: 1rem; }
+.testi-main__avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: #1A4A8A;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: .875rem; color: #fff; flex-shrink: 0;
+  font-weight: 800; font-size: .82rem; color: #fff; flex-shrink: 0;
 }
-.tl-testimonial-card__name { font-size: .875rem; font-weight: 700; color: #0F172A; }
-.tl-testimonial-card__role { font-size: .78rem; color: #64748B; }
-.tl-testimonial-card__org  { font-size: .78rem; color: #E98B2E; font-weight: 600; }
+.testi-main__name { font-size: .88rem; font-weight: 700; color: #fff; }
+.testi-main__role { font-size: .76rem; color: #64748B; margin-top: .1rem; }
+.testi-main__org  { font-size: .76rem; color: #7EC8F4; font-weight: 600; }
 
-/* ── CTA ─────────────────────────────────────────────────────── */
-.tl-cta {
+.testi-mini-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .875rem;
+  margin-top: 1rem;
+}
+.testi-mini {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+.testi-mini__quote {
+  font-size: .78rem;
+  color: #94A3B8;
+  line-height: 1.72;
+  font-style: italic;
+  margin-bottom: .875rem;
+}
+.testi-mini__name { font-size: .75rem; font-weight: 700; color: #CBD5E1; }
+.testi-mini__org  { font-size: .72rem; color: #7EC8F4; font-weight: 600; }
+
+/* Why reasons side */
+.why-reasons { display: flex; flex-direction: column; gap: 2rem; }
+.why-reason { display: flex; gap: 1.25rem; align-items: flex-start; }
+.why-reason__icon {
+  width: 46px; height: 46px;
+  border-radius: .875rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.why-reason__title { font-size: 1rem; font-weight: 800; color: #0F172A; margin-bottom: .4rem; }
+.why-reason__desc  { font-size: .875rem; color: #64748B; line-height: 1.72; }
+
+/* ── CTA ────────────────────────────────────────────────── */
+.cta-block {
   background: linear-gradient(140deg, #0F172A 0%, #1E293B 100%);
-  padding: 6rem 0; text-align: center; position: relative; overflow: hidden;
+  padding: 7rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
-.tl-cta::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(233,139,46,.14) 0%, transparent 65%);
+.cta-block::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(26, 74, 138,.13) 0%, transparent 60%),
+    radial-gradient(ellipse at 72% 50%, rgba(126, 200, 244,.06) 0%, transparent 60%);
   pointer-events: none;
 }
-.tl-cta__inner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
-.tl-cta__title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #fff; margin-bottom: 1.25rem; line-height: 1.15; }
-.tl-cta__title span { color: #E98B2E; }
-.tl-cta__desc  { color: #94A3B8; font-size: 1.05rem; line-height: 1.75; margin-bottom: 2.5rem; }
-.tl-cta__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.cta-block__inner { position: relative; z-index: 1; max-width: 660px; margin: 0 auto; }
+.cta-block__h2 {
+  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -.03em;
+  margin-bottom: 1.25rem;
+}
+.cta-block__h2 em { font-style: normal; color: #7EC8F4; }
+.cta-block__sub {
+  font-size: 1.05rem;
+  color: #94A3B8;
+  line-height: 1.75;
+  margin-bottom: 2.75rem;
+}
+.cta-block__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
-/* ── RESPONSIVE ──────────────────────────────────────────────── */
+/* ── RESPONSIVE ─────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .tl-services-grid  { grid-template-columns: repeat(2, 1fr); }
-  .tl-portfolio-grid { grid-template-columns: repeat(2, 1fr); }
-  .tl-process-grid   { grid-template-columns: repeat(2, 1fr); }
-  .tl-process-grid::before { display: none; }
-  .tl-testimonials-grid { grid-template-columns: repeat(2, 1fr); }
-  .tl-why-grid { grid-template-columns: 1fr; }
+  .svc-grid       { grid-template-columns: repeat(2, 1fr); }
+  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .process-grid   { grid-template-columns: repeat(2, 1fr); }
+  .process-grid::before { display: none; }
+  .why-grid       { grid-template-columns: 1fr; gap: 3rem; }
+  .testi-mini-row { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
-  .tl-hero__stats { flex-direction: column; }
-  .tl-hero__stat  { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
-  .tl-hero__stat:last-child { border-bottom: none; }
-  .tl-services-grid  { grid-template-columns: 1fr; }
-  .tl-portfolio-grid { grid-template-columns: 1fr; }
-  .tl-process-grid   { grid-template-columns: 1fr; }
-  .tl-testimonials-grid { grid-template-columns: 1fr; }
+  .svc-grid       { grid-template-columns: 1fr; }
+  .portfolio-grid { grid-template-columns: 1fr; }
+  .process-grid   { grid-template-columns: 1fr; }
+  .hero__arrow    { display: none; }
+  .hero__scroll   { display: none; }
+}
+
+/* ── HERO BACKGROUND SLIDER ─────────────────────────────── */
+.hero__bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.hero__bg-slide {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 1.3s ease, transform 6s ease;
+}
+.hero__bg-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+.hero__bg-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(15, 23, 42, .88) 0%, rgba(18, 47, 92, .80) 55%, rgba(26, 74, 138, .72) 100%);
+}
+.hero .container { position: relative; z-index: 2; }
+.hero__dots {
+  position: absolute;
+  bottom: 1.5rem; left: 0; right: 0;
+  display: flex; gap: .5rem; justify-content: center;
+  z-index: 2;
+}
+.hero__dots .hero__dot {
+  width: 9px; height: 9px;
+  border-radius: 999px;
+  padding: 0; border: none; cursor: pointer;
+  background: rgba(255, 255, 255, .4);
+  transition: width .3s, background .3s;
+}
+.hero__dots .hero__dot.is-active { width: 26px; background: #7EC8F4; }
+@media (prefers-reduced-motion: reduce) {
+  .hero__bg-slide { transition: none; transform: none; }
+}
+
+/* ── HERO SLIDER ARROWS ─────────────────────────────────── */
+.hero__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 46px; height: 46px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .28);
+  color: #fff;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition: background .2s, border-color .2s;
+}
+.hero__arrow:hover { background: rgba(255, 255, 255, .22); border-color: rgba(255, 255, 255, .5); }
+.hero__arrow:focus-visible { outline: 2px solid #7EC8F4; outline-offset: 2px; }
+.hero__arrow--prev { left: 1.75rem; }
+.hero__arrow--next { right: 1.75rem; }
+.hero__arrow svg { width: 22px; height: 22px; }
+
+/* ── HERO SCROLL CUE ────────────────────────────────────── */
+.hero__scroll {
+  position: absolute;
+  right: 2rem; bottom: 1.75rem;
+  z-index: 3;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+  color: rgba(255, 255, 255, .72);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color .2s;
+}
+.hero__scroll span { writing-mode: vertical-rl; }
+.hero__scroll:hover { color: #fff; }
+.hero__scroll::after {
+  content: '';
+  width: 1px; height: 40px;
+  background: linear-gradient(rgba(255, 255, 255, .8), transparent);
+  animation: scrollcue 1.9s ease-in-out infinite;
+}
+@keyframes scrollcue {
+  0%, 100% { transform: scaleY(.35); opacity: .4; transform-origin: top; }
+  50%      { transform: scaleY(1);   opacity: 1;  transform-origin: top; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .reveal--up, .reveal--left, .reveal--right, .reveal--scale { transform: none; }
-  .tl-ticker__track { animation: none; }
+  .hero__scroll::after { animation: none; }
 }
+
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
-<section class="tl-hero">
+<!-- ══════════════════════════════ HERO ══════════════════════════════ -->
+<section class="hero">
+  <div class="hero__bg" data-hero-slider aria-hidden="true">
+    <div class="hero__bg-slide is-active" style="background-image:url('{% static 'images/logo.png' %}');"></div>
+    <div class="hero__bg-slide" style="background-image:url('{% static 'images/hero.png' %}');"></div>
+    <div class="hero__bg-slide" style="background-image:url('{% static 'images/hero1.png' %}');"></div>
+    <div class="hero__bg-slide" style="background-image:url('{% static 'images/hero2.jpg' %}');"></div>
+    <div class="hero__bg-overlay"></div>
+  </div>
+  <button class="hero__arrow hero__arrow--prev" data-hero-prev type="button" aria-label="Previous slide">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button class="hero__arrow hero__arrow--next" data-hero-next type="button" aria-label="Next slide">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+
   <div class="container">
-    <div class="tl-hero__inner reveal reveal--up">
-      <div class="tl-hero__eyebrow">
-        <span class="tl-hero__eyebrow-dot"></span>
-        Based in Sierra Leone · Building for Africa
+    <div class="hero__inner rv rv--up">
+      <div class="hero__tag">
+        <span class="hero__tag-dot"></span>
+        Sierra Leone · Est. 2024
       </div>
-      <h1 class="tl-hero__title">
-        We Build <span class="highlight">Digital Solutions</span><br>
-        That <span class="highlight">Actually Work</span><br>
-        <span class="dim">in Sierra Leone</span>
-      </h1>
-      <p class="tl-hero__desc">
-        TechLedger Solutions designs and builds custom software, web platforms, health dashboards,
-        and management systems for businesses, hospitals, schools, and government agencies across Sierra Leone.
-      </p>
-      <div class="tl-hero__actions">
-        <a href="{% url 'contact:index' %}" class="tl-btn-primary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16z"/></svg>
+      <div class="hero__copy" data-hero-copy>
+        <div class="hero__copy-slide is-active">
+          <h1 class="hero__h1">Software That Works <em>Here.</em></h1>
+          <p class="hero__sub"><strong>Not imported solutions — locally engineered impact.</strong> TechLedger Solutions designs and builds custom web platforms for organisations across Sierra Leone.</p>
+        </div>
+        <div class="hero__copy-slide">
+          <h1 class="hero__h1">Health Tech Built for <em>Real Impact.</em></h1>
+          <p class="hero__sub"><strong>From surveillance to patient care.</strong> We build disease dashboards and health systems trusted across all 16 districts of Sierra Leone.</p>
+        </div>
+        <div class="hero__copy-slide">
+          <h1 class="hero__h1">Systems That <em>Run Your World.</em></h1>
+          <p class="hero__sub"><strong>Memberships, payments, attendance, analytics.</strong> Management platforms purpose-built for how Sierra Leonean organisations work every day.</p>
+        </div>
+        <div class="hero__copy-slide">
+          <h1 class="hero__h1">Data That Drives <em>Decisions.</em></h1>
+          <p class="hero__sub"><strong>Dashboards with mobile money and offline-ready design.</strong> TechLedger turns raw data into clear action — built for our infrastructure.</p>
+        </div>
+      </div>
+      <div class="hero__ctas">
+        <a href="{% url 'contact:index' %}" class="btn-prim">
+          <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16z"/></svg>
           Start a Project
         </a>
-        <a href="{% url 'portfolio:index' %}" class="tl-btn-outline">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <a href="{% url 'portfolio:index' %}" class="btn-ghost">
           See Our Work
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
         </a>
       </div>
-      <div class="tl-hero__stats">
-        <div class="tl-hero__stat">
-          <span class="tl-hero__stat-value">5+</span>
-          <div class="tl-hero__stat-label">Projects Delivered</div>
-        </div>
-        <div class="tl-hero__stat">
-          <span class="tl-hero__stat-value">3</span>
-          <div class="tl-hero__stat-label">Industry Sectors</div>
-        </div>
-        <div class="tl-hero__stat">
-          <span class="tl-hero__stat-value">100%</span>
-          <div class="tl-hero__stat-label">Sierra Leone Built</div>
-        </div>
-        <div class="tl-hero__stat">
-          <span class="tl-hero__stat-value">24/7</span>
-          <div class="tl-hero__stat-label">Platform Uptime</div>
-        </div>
+      <div class="hero__trust">
+        <span class="hero__trust-label">Trusted by</span>
+        <span class="hero__trust-pill">Ministry of Health</span>
+        <span class="hero__trust-pill">Focus Gym</span>
+        <span class="hero__trust-pill">SLPNNA</span>
+        <span class="hero__trust-pill">CoNAHS</span>
       </div>
     </div>
   </div>
+
+  <div class="hero__dots" data-hero-dots></div>
+  <a class="hero__scroll" href="#explore" aria-label="Scroll to content"><span>Scroll</span></a>
 </section>
 
-<!-- ═══════════════════════════════ TICKER ════════════════════════════ -->
-<div class="tl-ticker" aria-hidden="true">
-  <div class="tl-ticker__track">
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Web Applications</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Health Dashboards</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Management Systems</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Mobile Platforms</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Data Analytics</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>API Integrations</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Cloud Deployment</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Sierra Leone Based</span>
-    <!-- duplicate for seamless loop -->
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Web Applications</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Health Dashboards</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Management Systems</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Mobile Platforms</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Data Analytics</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>API Integrations</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Cloud Deployment</span>
-    <span class="tl-ticker__item"><span class="tl-ticker__dot"></span>Sierra Leone Based</span>
+<!-- ══════════════════════════════ CLIENT STRIP ══════════════════════ -->
+<div class="clients-strip" id="explore">
+  <div class="container">
+    <div class="clients-strip__inner">
+      <span class="clients-strip__label">Live Platforms For</span>
+      <span class="clients-strip__name">Ministry of Health &amp; Sanitation</span>
+      <span class="clients-strip__name">College of Nursing &amp; Allied Health Sciences</span>
+      <span class="clients-strip__name">Sierra Leone Paediatric Nurses Association</span>
+      <span class="clients-strip__name">Focus Gym, Freetown</span>
+      <span class="clients-strip__name">MamaCare Sierra Leone</span>
+    </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════ SERVICES ══════════════════════════ -->
-<section class="tl-section">
+<!-- ══════════════════════════════ SERVICES ══════════════════════════ -->
+<section class="s s--white">
   <div class="container">
-    <div class="tl-header reveal reveal--up">
-      <div class="tl-label">What We Build</div>
-      <h2 class="tl-title">Custom Digital Solutions for Every Need</h2>
-      <p class="tl-desc">We don't sell templates. Every product we build is designed from scratch around your exact requirements, your users, and your operating environment.</p>
+    <div class="s-head rv rv--up">
+      <div class="s-label"><span class="s-label__bar"></span> What We Build</div>
+      <h2 class="s-h2">End-to-End Digital Products,<br>Built for Sierra Leone</h2>
+      <div class="s-sub"><p>Every platform we build is custom — designed from scratch around your users, your workflows, and the realities of operating in Sierra Leone.</p></div>
     </div>
-    <div class="tl-services-grid reveal--stagger">
+    <div class="svc-grid rv--stagger">
 
-      <div class="tl-service-card">
-        <div class="tl-service-card__icon" style="background:rgba(233,139,46,.1);color:#E98B2E;">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+      <div class="svc-card">
+        <div class="svc-card__num">01</div>
+        <div class="svc-card__icon" style="background:rgba(26, 74, 138,.1);color:#1A4A8A;">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
         </div>
-        <h3 class="tl-service-card__title">Web Applications</h3>
-        <p class="tl-service-card__desc">Full-featured web platforms — from portals and dashboards to e-commerce and management systems — built to work reliably on Sierra Leone's internet infrastructure.</p>
-      </div>
-
-      <div class="tl-service-card">
-        <div class="tl-service-card__icon" style="background:rgba(59,130,246,.1);color:#3B82F6;">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        </div>
-        <h3 class="tl-service-card__title">Health Tech & Dashboards</h3>
-        <p class="tl-service-card__desc">Disease surveillance systems, patient management platforms, and health analytics dashboards for the Ministry of Health, NGOs, and health institutions.</p>
-      </div>
-
-      <div class="tl-service-card">
-        <div class="tl-service-card__icon" style="background:rgba(16,185,129,.1);color:#10B981;">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-        </div>
-        <h3 class="tl-service-card__title">Institutional Management</h3>
-        <p class="tl-service-card__desc">College, school, hospital, and organisation management systems — handling records, fees, scheduling, and reporting all in one place.</p>
-      </div>
-
-      <div class="tl-service-card">
-        <div class="tl-service-card__icon" style="background:rgba(139,92,246,.1);color:#8B5CF6;">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
-        </div>
-        <h3 class="tl-service-card__title">Mobile-First Platforms</h3>
-        <p class="tl-service-card__desc">Responsive platforms and progressive web apps that work on any device — designed for users accessing from mobile phones in low-bandwidth environments.</p>
-      </div>
-
-      <div class="tl-service-card">
-        <div class="tl-service-card__icon" style="background:rgba(245,158,11,.1);color:#F59E0B;">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        </div>
-        <h3 class="tl-service-card__title">Data & Analytics</h3>
-        <p class="tl-service-card__desc">Custom reporting tools, business intelligence dashboards, and data visualisation systems that turn raw data into decisions you can act on immediately.</p>
-      </div>
-
-      <div class="tl-service-card">
-        <div class="tl-service-card__icon" style="background:rgba(239,68,68,.1);color:#EF4444;">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <h3 class="tl-service-card__title">Payments & Integrations</h3>
-        <p class="tl-service-card__desc">Monime mobile money integration, SMS gateways, email systems, and third-party API connections — connecting your platform to Sierra Leone's payment infrastructure.</p>
-      </div>
-
-    </div>
-    <div style="text-align:center;margin-top:2.5rem;">
-      <a href="{% url 'services:index' %}" class="tl-btn-primary">
-        View All Services
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════ HOW WE WORK ═══════════════════════ -->
-<section class="tl-section tl-section--alt">
-  <div class="container">
-    <div class="tl-header reveal reveal--up">
-      <div class="tl-label">Our Process</div>
-      <h2 class="tl-title">From Idea to Live Product</h2>
-      <p class="tl-desc">A simple, transparent process designed to get your digital product built and deployed without surprises.</p>
-    </div>
-    <div class="tl-process-grid reveal--stagger">
-      <div class="tl-step">
-        <div class="tl-step__num">1</div>
-        <h3 class="tl-step__title">Discovery & Planning</h3>
-        <p class="tl-step__desc">We start by understanding your users, your problem, and your constraints — then we plan the right solution before writing a single line of code.</p>
-      </div>
-      <div class="tl-step">
-        <div class="tl-step__num">2</div>
-        <h3 class="tl-step__title">Design & Prototype</h3>
-        <p class="tl-step__desc">We design the user interface and build a working prototype for your review. You see exactly what you're getting before full development begins.</p>
-      </div>
-      <div class="tl-step">
-        <div class="tl-step__num">3</div>
-        <h3 class="tl-step__title">Build & Test</h3>
-        <p class="tl-step__desc">We build your platform with clean, maintainable code — tested thoroughly at every stage so bugs are caught before they reach your users.</p>
-      </div>
-      <div class="tl-step">
-        <div class="tl-step__num">4</div>
-        <h3 class="tl-step__title">Deploy & Support</h3>
-        <p class="tl-step__desc">We deploy to the cloud, train your team, and stay available for ongoing support — your platform is never left without someone to call.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════ PORTFOLIO PREVIEW ════════════════ -->
-<section class="tl-section">
-  <div class="container">
-    <div class="tl-header reveal reveal--up">
-      <div class="tl-label">Recent Work</div>
-      <h2 class="tl-title">Projects We're Proud Of</h2>
-      <p class="tl-desc">A selection of real products we've shipped for real organisations in Sierra Leone — each solving a genuine problem.</p>
-    </div>
-    <div class="tl-portfolio-grid reveal--stagger">
-
-      <div class="tl-portfolio-card">
-        <div class="tl-portfolio-card__banner" style="background:linear-gradient(135deg,#0F172A,#1E3A5F);">
-          <div class="tl-portfolio-card__banner-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E98B2E" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-          </div>
-        </div>
-        <div class="tl-portfolio-card__body">
-          <div class="tl-portfolio-card__sector">Health · Government</div>
-          <h3 class="tl-portfolio-card__title">Inter-District Health Dashboard</h3>
-          <p class="tl-portfolio-card__desc">National disease surveillance platform covering all 16 districts for the Ministry of Health &amp; Sanitation.</p>
-          <a href="{% url 'portfolio:health-dashboard' %}" class="tl-portfolio-card__link">View Case Study →</a>
+        <h3 class="svc-card__title">Web Platforms &amp; Management Systems</h3>
+        <p class="svc-card__desc">Full-featured web applications — portals, dashboards, member management, and records systems — built to perform reliably on Sierra Leone's infrastructure.</p>
+        <div class="tag-row">
+          <span class="tag">Institutions</span>
+          <span class="tag">Government</span>
+          <span class="tag">Business</span>
         </div>
       </div>
 
-      <div class="tl-portfolio-card">
-        <div class="tl-portfolio-card__banner" style="background:linear-gradient(135deg,#0F172A,#1E293B);">
-          <div class="tl-portfolio-card__banner-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E98B2E" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-          </div>
+      <div class="svc-card">
+        <div class="svc-card__num">02</div>
+        <div class="svc-card__icon" style="background:rgba(126, 200, 244,.1);color:#1A4A8A;">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
-        <div class="tl-portfolio-card__body">
-          <div class="tl-portfolio-card__sector">Fitness · Business</div>
-          <h3 class="tl-portfolio-card__title">Focus Gym Platform</h3>
-          <p class="tl-portfolio-card__desc">Full gym management system with memberships, payments, attendance tracking, and analytics.</p>
-          <a href="{% url 'portfolio:focus-gym' %}" class="tl-portfolio-card__link">View Case Study →</a>
+        <h3 class="svc-card__title">Health Tech &amp; Surveillance Systems</h3>
+        <p class="svc-card__desc">Disease surveillance dashboards, patient management, and health analytics platforms built for the Ministry of Health, NGOs, and health institutions across Sierra Leone.</p>
+        <div class="tag-row">
+          <span class="tag">Public Health</span>
+          <span class="tag">NGOs</span>
+          <span class="tag">Hospitals</span>
         </div>
       </div>
 
-      <div class="tl-portfolio-card">
-        <div class="tl-portfolio-card__banner" style="background:linear-gradient(135deg,#0F172A,#4A0020);">
-          <div class="tl-portfolio-card__banner-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E98B2E" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </div>
+      <div class="svc-card">
+        <div class="svc-card__num">03</div>
+        <div class="svc-card__icon" style="background:rgba(16,185,129,.1);color:#10B981;">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         </div>
-        <div class="tl-portfolio-card__body">
-          <div class="tl-portfolio-card__sector">Health · Community</div>
-          <h3 class="tl-portfolio-card__title">MamaCare Sierra Leone</h3>
-          <p class="tl-portfolio-card__desc">Maternal health platform with pregnancy tracking, ANC booking, and SMS alerts in Krio &amp; English.</p>
-          <a href="{% url 'portfolio:mamacare' %}" class="tl-portfolio-card__link">View Case Study →</a>
+        <h3 class="svc-card__title">Data Dashboards &amp; Analytics</h3>
+        <p class="svc-card__desc">Custom reporting tools and business intelligence dashboards that turn raw data into decisions — with mobile money integration and offline-ready design.</p>
+        <div class="tag-row">
+          <span class="tag">Analytics</span>
+          <span class="tag">Reporting</span>
+          <span class="tag">Mobile-First</span>
         </div>
       </div>
 
     </div>
     <div style="text-align:center;margin-top:2.5rem;">
-      <a href="{% url 'portfolio:index' %}" class="tl-btn-primary">
-        View All Projects
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      <a href="{% url 'services:index' %}" class="btn-prim">
+        All Services
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
       </a>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════ WHY TECHLEDGER ════════════════════ -->
-<section class="tl-section tl-section--alt">
+<!-- ══════════════════════════════ PORTFOLIO ═════════════════════════ -->
+<section class="s s--alt">
   <div class="container">
-    <div class="tl-why-grid">
-      <div class="reveal reveal--left">
-        <div class="tl-label">Why TechLedger</div>
-        <h2 class="tl-title">Built for Sierra Leone.<br>Built to Last.</h2>
-        <p class="tl-desc">We're not a foreign company parachuting in. We live here, we understand the challenges, and we build software that actually works in our environment.</p>
-        <div class="tl-why__list">
-          <div class="tl-why__item">
-            <div class="tl-why__item-icon" style="background:rgba(233,139,46,.1);color:#E98B2E;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            </div>
-            <div>
-              <div class="tl-why__item-title">Local Context, Global Standards</div>
-              <div class="tl-why__item-desc">We design for Sierra Leone's infrastructure — variable connectivity, mobile-first users, local payment systems — while building to international quality standards.</div>
-            </div>
-          </div>
-          <div class="tl-why__item">
-            <div class="tl-why__item-icon" style="background:rgba(16,185,129,.1);color:#10B981;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div>
-              <div class="tl-why__item-title">We Deliver. No Excuses.</div>
-              <div class="tl-why__item-desc">Every project we take on gets shipped. We set realistic timelines, communicate clearly, and hold ourselves accountable to the delivery date.</div>
-            </div>
-          </div>
-          <div class="tl-why__item">
-            <div class="tl-why__item-icon" style="background:rgba(59,130,246,.1);color:#3B82F6;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <div>
-              <div class="tl-why__item-title">You Own Everything</div>
-              <div class="tl-why__item-desc">You get full ownership of your code, your data, and your platform. No lock-in, no hidden fees — just clean, documented software that belongs to you.</div>
-            </div>
-          </div>
+    <div class="s-head rv rv--up">
+      <div class="s-label"><span class="s-label__bar"></span> Our Work</div>
+      <h2 class="s-h2">Real Products. Real Organisations.<br>Real Impact.</h2>
+      <div class="s-sub"><p>We've shipped platforms that run every day — for hospitals, gyms, nursing colleges, and government agencies across Sierra Leone.</p></div>
+    </div>
+    <div class="portfolio-grid rv--stagger">
+
+      <div class="proj-card">
+        <div class="proj-card__banner" style="background:linear-gradient(140deg,#122F5C,#1A4A8A);">
+          <div class="proj-card__sector">Health · Government</div>
+          <div class="proj-card__banner-title">Inter-District Health Dashboard</div>
+        </div>
+        <div class="proj-card__body">
+          <p class="proj-card__desc">National disease surveillance platform covering all 16 districts for the Ministry of Health &amp; Sanitation. Real-time data, district-level reporting, and trend analytics.</p>
+          <a href="{% url 'portfolio:health-dashboard' %}" class="proj-link">
+            View Case Study
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
         </div>
       </div>
-      <div class="reveal reveal--right">
-        <div class="tl-why__visual">
-          <div class="tl-why__visual-label">Platform Performance</div>
-          <div class="tl-why__metric-list">
-            <div class="tl-why__metric">
-              <div>
-                <div class="tl-why__metric-name">Platform Uptime</div>
-                <div class="tl-why__metric-bar-wrap"><div class="tl-why__metric-bar" style="width:99%;"></div></div>
-              </div>
-              <div class="tl-why__metric-value">99.9%</div>
-            </div>
-            <div class="tl-why__metric">
-              <div>
-                <div class="tl-why__metric-name">On-time Delivery Rate</div>
-                <div class="tl-why__metric-bar-wrap"><div class="tl-why__metric-bar" style="width:100%;"></div></div>
-              </div>
-              <div class="tl-why__metric-value">100%</div>
-            </div>
-            <div class="tl-why__metric">
-              <div>
-                <div class="tl-why__metric-name">Client Satisfaction</div>
-                <div class="tl-why__metric-bar-wrap"><div class="tl-why__metric-bar" style="width:98%;"></div></div>
-              </div>
-              <div class="tl-why__metric-value">98%</div>
-            </div>
-            <div class="tl-why__metric">
-              <div>
-                <div class="tl-why__metric-name">Projects Still Running</div>
-                <div class="tl-why__metric-bar-wrap"><div class="tl-why__metric-bar" style="width:100%;"></div></div>
-              </div>
-              <div class="tl-why__metric-value">100%</div>
-            </div>
-            <div class="tl-why__metric">
-              <div>
-                <div class="tl-why__metric-name">Repeat Clients</div>
-                <div class="tl-why__metric-bar-wrap"><div class="tl-why__metric-bar" style="width:80%;"></div></div>
-              </div>
-              <div class="tl-why__metric-value">80%</div>
-            </div>
-          </div>
+
+      <div class="proj-card">
+        <div class="proj-card__banner" style="background:linear-gradient(140deg,#14532D,#16A34A);">
+          <div class="proj-card__sector">Fitness · Business</div>
+          <div class="proj-card__banner-title">Focus Gym Management Platform</div>
         </div>
+        <div class="proj-card__body">
+          <p class="proj-card__desc">Full gym management system: memberships, Monime payments, attendance tracking, and business analytics — purpose-built for Freetown.</p>
+          <a href="{% url 'portfolio:focus-gym' %}" class="proj-link">
+            View Case Study
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-card__banner" style="background:linear-gradient(140deg,#701A75,#A855F7);">
+          <div class="proj-card__sector">Health · Community</div>
+          <div class="proj-card__banner-title">MamaCare Sierra Leone</div>
+        </div>
+        <div class="proj-card__body">
+          <p class="proj-card__desc">Maternal health platform with pregnancy tracking, ANC booking, and SMS alerts in Krio and English — reaching mothers across Sierra Leone.</p>
+          <a href="{% url 'portfolio:mamacare' %}" class="proj-link">
+            View Case Study
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="{% url 'portfolio:index' %}" class="btn-prim">
+        All Projects
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ PROCESS ═══════════════════════════ -->
+<section class="s s--dark">
+  <div class="container">
+    <div class="s-head rv rv--up">
+      <div class="s-label s-label--lt"><span class="s-label__bar"></span> How We Work</div>
+      <h2 class="s-h2 s-h2--lt">From Brief to Live Platform</h2>
+      <div class="s-sub s-sub--lt"><p>A clear four-stage process so you always know what's happening and what comes next — no surprises, no delays.</p></div>
+    </div>
+    <div class="process-grid rv--stagger">
+      <div class="proc-step">
+        <div class="proc-step__num">1</div>
+        <h3 class="proc-step__title">Discovery</h3>
+        <p class="proc-step__desc">We learn your users, your constraints, and your operating environment before we design a single screen.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-step__num">2</div>
+        <h3 class="proc-step__title">Design &amp; Prototype</h3>
+        <p class="proc-step__desc">You review a working prototype before full development begins — you see exactly what you're getting.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-step__num">3</div>
+        <h3 class="proc-step__title">Build &amp; Test</h3>
+        <p class="proc-step__desc">Clean, maintainable code tested at every stage. Bugs are caught before they reach your users.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-step__num">4</div>
+        <h3 class="proc-step__title">Deploy &amp; Support</h3>
+        <p class="proc-step__desc">We deploy, train your team, and stay available. Your platform always has someone to call.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════ TESTIMONIALS ════════════════════ -->
-<section class="tl-section">
+<!-- ══════════════════════════════ WHY + TESTIMONIALS ════════════════ -->
+<section class="s s--white">
   <div class="container">
-    <div class="tl-header reveal reveal--up">
-      <div class="tl-label">Client Stories</div>
-      <h2 class="tl-title">What Our Clients Say</h2>
-    </div>
-    <div class="tl-testimonials-grid reveal--stagger">
-      <div class="tl-testimonial-card">
-        <p class="tl-testimonial-card__quote">"TechLedger built exactly what we needed. They understood our challenges from day one — not just technically but operationally. The platform has transformed how we manage our members."</p>
-        <div class="tl-testimonial-card__author">
-          <div class="tl-testimonial-card__avatar" style="background:#E98B2E;">AK</div>
-          <div>
-            <div class="tl-testimonial-card__name">Alpha Kamara</div>
-            <div class="tl-testimonial-card__role">Manager</div>
-            <div class="tl-testimonial-card__org">Focus Gym, Freetown</div>
+    <div class="why-grid">
+
+      <div class="rv rv--left">
+        <div class="s-label"><span class="s-label__bar"></span> Client Stories</div>
+        <h2 class="s-h2" style="margin-bottom:2rem;">What Our<br>Clients Say</h2>
+        <div class="testi-main">
+          <div class="testi-main__stars">
+            <span class="testi-main__star" aria-hidden="true">★</span>
+            <span class="testi-main__star" aria-hidden="true">★</span>
+            <span class="testi-main__star" aria-hidden="true">★</span>
+            <span class="testi-main__star" aria-hidden="true">★</span>
+            <span class="testi-main__star" aria-hidden="true">★</span>
+          </div>
+          <p class="testi-main__quote">"Having all 16 districts on one surveillance platform changed how we coordinate nationally. TechLedger understood public health data — not just software. That distinction made all the difference."</p>
+          <div class="testi-main__author">
+            <div class="testi-main__avatar" aria-hidden="true">SK</div>
+            <div>
+              <div class="testi-main__name">Dr. Sorie Kamara</div>
+              <div class="testi-main__role">District Medical Officer</div>
+              <div class="testi-main__org">Ministry of Health &amp; Sanitation</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-mini-row">
+          <div class="testi-mini">
+            <p class="testi-mini__quote">"The platform transformed how we manage our members. They understood our challenges from day one."</p>
+            <div class="testi-mini__name">Alpha Kamara, Manager</div>
+            <div class="testi-mini__org">Focus Gym, Freetown</div>
+          </div>
+          <div class="testi-mini">
+            <p class="testi-mini__quote">"Results that used to take weeks now take hours. Our students and staff are both happier."</p>
+            <div class="testi-mini__name">Dr. Ibrahim Bangura, Principal</div>
+            <div class="testi-mini__org">College of Nursing &amp; Allied Health</div>
           </div>
         </div>
       </div>
-      <div class="tl-testimonial-card">
-        <p class="tl-testimonial-card__quote">"The college system has saved us countless hours every semester. Results that used to take weeks now take hours. Our students are happier, our staff is less stressed."</p>
-        <div class="tl-testimonial-card__author">
-          <div class="tl-testimonial-card__avatar" style="background:#1D4ED8;">IB</div>
-          <div>
-            <div class="tl-testimonial-card__name">Dr. Ibrahim Bangura</div>
-            <div class="tl-testimonial-card__role">Principal</div>
-            <div class="tl-testimonial-card__org">College of Nursing &amp; Allied Health</div>
+
+      <div class="rv rv--right">
+        <div class="s-label"><span class="s-label__bar"></span> Why TechLedger</div>
+        <h2 class="s-h2" style="margin-bottom:2rem;">Built Here.<br>Built to Last.</h2>
+        <div class="why-reasons">
+          <div class="why-reason">
+            <div class="why-reason__icon" style="background:rgba(26, 74, 138,.1);color:#1A4A8A;">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="why-reason__title">Local Context, Global Standards</div>
+              <div class="why-reason__desc">We design for Sierra Leone's infrastructure — variable connectivity, mobile-first users, local payment systems — built to international quality standards.</div>
+            </div>
+          </div>
+          <div class="why-reason">
+            <div class="why-reason__icon" style="background:rgba(16,185,129,.1);color:#10B981;">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <div class="why-reason__title">We Deliver. Every Time.</div>
+              <div class="why-reason__desc">Every project we take on gets shipped. Realistic timelines, clear communication, no excuses — and we stay reachable after launch.</div>
+            </div>
+          </div>
+          <div class="why-reason">
+            <div class="why-reason__icon" style="background:rgba(139,92,246,.1);color:#8B5CF6;">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="why-reason__title">You Own Everything</div>
+              <div class="why-reason__desc">Full ownership of your code, your data, and your platform. No lock-in, no hidden fees — clean, documented software that belongs to you.</div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="tl-testimonial-card">
-        <p class="tl-testimonial-card__quote">"Having all 16 districts on one surveillance canvas changed how we coordinate. TechLedger understood public health data — not just software. That made all the difference."</p>
-        <div class="tl-testimonial-card__author">
-          <div class="tl-testimonial-card__avatar" style="background:#059669;">SK</div>
-          <div>
-            <div class="tl-testimonial-card__name">Dr. Sorie Kamara</div>
-            <div class="tl-testimonial-card__role">District Medical Officer</div>
-            <div class="tl-testimonial-card__org">Ministry of Health &amp; Sanitation</div>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════ CTA ══════════════════════════════ -->
-<section class="tl-cta">
+<!-- ══════════════════════════════ CTA ═══════════════════════════════ -->
+<section class="cta-block">
   <div class="container">
-    <div class="tl-cta__inner reveal reveal--up">
-      <div class="tl-label tl-label--light" style="justify-content:center;margin-bottom:1.25rem;">Let's Build Something</div>
-      <h2 class="tl-cta__title">Ready to <span>Digitise</span> Your<br>Organisation?</h2>
-      <p class="tl-cta__desc">Whether you need a website, a management system, a health platform, or a custom data dashboard — we'll build it with you, for Sierra Leone.</p>
-      <div class="tl-cta__actions">
-        <a href="{% url 'contact:index' %}" class="tl-btn-primary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16z"/></svg>
+    <div class="cta-block__inner rv rv--up">
+      <div class="s-label s-label--lt" style="justify-content:center;margin-bottom:1.25rem;"><span class="s-label__bar"></span> Let's Build</div>
+      <h2 class="cta-block__h2">Ready to <em>Digitise</em><br>Your Organisation?</h2>
+      <p class="cta-block__sub">Whether you need a management system, a health platform, or a custom data dashboard — we'll build it with you, for Sierra Leone.</p>
+      <div class="cta-block__actions">
+        <a href="{% url 'contact:index' %}" class="btn-prim">
+          <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16z"/></svg>
           Start a Conversation
         </a>
-        <a href="{% url 'portfolio:index' %}" class="tl-btn-outline">
+        <a href="{% url 'portfolio:index' %}" class="btn-ghost">
           Browse Our Portfolio
         </a>
       </div>
@@ -682,21 +1011,71 @@
 <script>
 (function () {
   'use strict';
-  const rM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
-      const el = entry.target;
-      if (el.classList.contains('reveal--stagger')) {
-        Array.from(el.children).forEach((child, i) => {
-          if (!rM) child.style.transitionDelay = (i * 100) + 'ms';
+      var el = entry.target;
+      if (el.classList.contains('rv--stagger')) {
+        Array.from(el.children).forEach(function (child, i) {
+          if (!reduced) child.style.transitionDelay = (i * 85) + 'ms';
         });
       }
-      el.classList.add('is-visible');
+      el.classList.add('in');
       obs.unobserve(el);
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-  document.querySelectorAll('.reveal, .reveal--stagger').forEach(el => obs.observe(el));
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.rv, .rv--stagger').forEach(function (el) { obs.observe(el); });
+})();
+
+/* Hero background slider — auto crossfade, dots, pause when tab hidden */
+(function () {
+  var slider = document.querySelector('[data-hero-slider]');
+  if (!slider) return;
+  var slides = slider.querySelectorAll('.hero__bg-slide');
+  var copySlides = document.querySelectorAll('[data-hero-copy] .hero__copy-slide');
+  var dotsWrap = document.querySelector('[data-hero-dots]');
+  var count = slides.length;
+  if (count <= 1) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var i = 0, timer = null, INTERVAL = 5000;
+
+  if (dotsWrap) {
+    for (var d = 0; d < count; d++) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'hero__dot' + (d === 0 ? ' is-active' : '');
+      dot.setAttribute('aria-label', 'Go to slide ' + (d + 1));
+      (function (idx) {
+        dot.addEventListener('click', function () { go(idx); restart(); });
+      })(d);
+      dotsWrap.appendChild(dot);
+    }
+  }
+  var dots = dotsWrap ? dotsWrap.children : [];
+
+  function go(n) {
+    slides[i].classList.remove('is-active');
+    if (dots[i]) dots[i].classList.remove('is-active');
+    if (copySlides[i]) copySlides[i].classList.remove('is-active');
+    i = (n + count) % count;
+    slides[i].classList.add('is-active');
+    if (dots[i]) dots[i].classList.add('is-active');
+    if (copySlides[i]) copySlides[i].classList.add('is-active');
+  }
+  function start() { if (!reduce) timer = setInterval(function () { go(i + 1); }, INTERVAL); }
+  function restart() { clearInterval(timer); start(); }
+
+  var prevBtn = document.querySelector('[data-hero-prev]');
+  var nextBtn = document.querySelector('[data-hero-next]');
+  if (prevBtn) prevBtn.addEventListener('click', function () { go(i - 1); restart(); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { go(i + 1); restart(); });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) clearInterval(timer); else restart();
+  });
+  start();
 })();
 </script>
 {% endblock %}

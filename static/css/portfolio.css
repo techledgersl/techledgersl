@@ -1,22 +1,22 @@
 .portfolio-page {
     --pf-surface-0: #ffffff;
-    --pf-surface-1: #fff8ef;
-    --pf-surface-2: #fff1e1;
-    --pf-border: #fde7cc;
-    --pf-accent: #e98b2e;
-    --pf-accent-dark: #d97706;
-    --pf-title: #0f172a;
-    --pf-text: #334155;
-    --pf-muted: #64748b;
+    --pf-surface-1: #F4F8FB;
+    --pf-surface-2: #EBF5FB;
+    --pf-border: var(--color-border-warm);
+    --pf-accent: var(--color-primary);
+    --pf-accent-dark: var(--color-primary-dark);
+    --pf-title: var(--color-text-dark);
+    --pf-text: var(--color-text-medium);
+    --pf-muted: var(--color-text-light);
     --pf-shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.06);
-    --pf-shadow-warm: 0 18px 45px rgba(233, 139, 46, 0.14);
+    --pf-shadow-warm: 0 18px 45px rgba(26, 74, 138, 0.14);
     color: var(--pf-title);
 }
 
 /* ── Hero ─────────────────────────────────────────────────── */
 .portfolio-hero {
     padding: clamp(4.5rem, 7vw, 6.5rem) 0 clamp(3rem, 5vw, 4rem);
-    background: linear-gradient(160deg, #fff8ef 0%, #ffffff 100%);
+    background: linear-gradient(160deg, #F4F8FB 0%, #ffffff 100%);
     text-align: center;
 }
 
@@ -92,8 +92,8 @@
 }
 
 .portfolio-card--featured {
-    border-color: rgba(233, 139, 46, 0.35);
-    background: linear-gradient(135deg, #fff8ef 0%, #ffffff 60%);
+    border-color: rgba(26, 74, 138, 0.35);
+    background: linear-gradient(135deg, #F4F8FB 0%, #ffffff 60%);
 }
 
 /* ── Card Media Panel ─────────────────────────────────────── */
@@ -118,11 +118,11 @@
     flex-shrink: 0;
 }
 
-.portfolio-card__icon-wrap--fitness   { background: #eff6ff; color: #2563eb; }
-.portfolio-card__icon-wrap--health    { background: #f0fdf4; color: #16a34a; }
-.portfolio-card__icon-wrap--education { background: #faf5ff; color: #7c3aed; }
-.portfolio-card__icon-wrap--maternal  { background: #fff1f2; color: #e11d48; }
-.portfolio-card__icon-wrap--data      { background: #fff8ef; color: var(--pf-accent); }
+.portfolio-card__icon-wrap--fitness   { background: var(--pf-surface-1); color: var(--pf-accent); }
+.portfolio-card__icon-wrap--health    { background: var(--pf-surface-1); color: var(--pf-accent); }
+.portfolio-card__icon-wrap--education { background: var(--pf-surface-1); color: var(--pf-accent); }
+.portfolio-card__icon-wrap--maternal  { background: var(--pf-surface-1); color: var(--pf-accent); }
+.portfolio-card__icon-wrap--data      { background: var(--pf-surface-1); color: var(--pf-accent); }
 
 .portfolio-card__tags {
     display: flex;
@@ -280,13 +280,13 @@
 .portfolio-btn--primary {
     background: var(--pf-accent);
     color: #ffffff;
-    box-shadow: 0 4px 16px rgba(233, 139, 46, 0.35);
+    box-shadow: 0 4px 16px rgba(26, 74, 138, 0.35);
 }
 
 .portfolio-btn--primary:hover {
     background: var(--pf-accent-dark);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(233, 139, 46, 0.45);
+    box-shadow: 0 8px 24px rgba(26, 74, 138, 0.45);
 }
 
 .portfolio-btn--ghost {

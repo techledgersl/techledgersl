@@ -7,6 +7,10 @@
     <meta name="description" content="{% block meta_description %}TechLedger Solutions - Technology-driven research, academic writing, and financial analytics services.{% endblock %}">
     <title>{% block title %}TechLedger Solutions{% endblock %}</title>
     {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'images/icon.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
     <link rel="stylesheet" href="{% static 'css/components.css' %}">
@@ -40,7 +44,6 @@
     <script src="{% static 'js/integrations-circle.js' %}"></script>
     <script src="{% static 'js/integrations-scroll.js' %}"></script>
     <script src="{% static 'js/cta-scroll.js' %}"></script>
-    <script src="{% static 'js/page-transitions.js' %}"></script>
     <script src="{% static 'js/scroll-to-top.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>

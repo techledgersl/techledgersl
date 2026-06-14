@@ -257,22 +257,32 @@ const Navigation = (function() {
      */
     function initActiveLink() {
         const currentPath = window.location.pathname;
-        
+
         navbarLinks.forEach(link => {
-            const linkPath = new URL(link.href).pathname;
-            
-            if (linkPath === currentPath || 
-                (currentPath.startsWith(linkPath) && linkPath !== '/')) {
-                link.classList.add('active');
+            const href = link.getAttribute('href');
+            const isDropdownToggle = link.classList.contains('navbar__dropdown-toggle');
+
+            // Only anchor links have a resolvable URL; the dropdown toggle is a
+            // <button> without an href, so guard before parsing to avoid throwing.
+            if (href) {
+                const linkPath = new URL(link.href, window.location.origin).pathname;
+
+                if (linkPath === currentPath ||
+                    (currentPath.startsWith(linkPath) && linkPath !== '/')) {
+                    link.classList.add('active');
+                }
             }
 
-            // Close menu when clicking on navigation links
-            link.addEventListener('click', function() {
-                closeAllDropdowns();
-                if (isMenuOpen) {
-                    closeMenu();
-                }
-            });
+            // Close the mobile menu when navigating. The dropdown toggle manages
+            // its own open/close behaviour, so leave it to initDropdowns().
+            if (!isDropdownToggle) {
+                link.addEventListener('click', function() {
+                    closeAllDropdowns();
+                    if (isMenuOpen) {
+                        closeMenu();
+                    }
+                });
+            }
         });
     }
 

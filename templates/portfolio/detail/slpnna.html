@@ -7,12 +7,12 @@
 {% block extra_css %}
 <style>
 :root {
-  --sl-teal:   #0D9488;
+  --sl-teal:   #1A4A8A;
   --sl-navy:   #0F172A;
-  --sl-accent: #E98B2E;
+  --sl-accent: #1A4A8A;
   --sl-muted:  #64748B;
-  --sl-surface:#F0FDFA;
-  --sl-border: #99F6E4;
+  --sl-surface:#F4F8FB;
+  --sl-border: #D1E3F5;
 }
 .reveal{opacity:0;will-change:transform,opacity;transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1);}
 .reveal--up{transform:translateY(40px);}.reveal--left{transform:translateX(-40px);}.reveal--right{transform:translateX(40px);}
@@ -23,40 +23,40 @@
 .portfolio-back-bar{background:#0F172A;padding:.85rem 0;border-bottom:1px solid rgba(255,255,255,.08);}
 .portfolio-back-bar__inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
 .portfolio-back-btn{display:inline-flex;align-items:center;gap:.45rem;color:#CBD5E1;font-size:.83rem;font-weight:600;text-decoration:none;transition:color .2s;}
-.portfolio-back-btn:hover{color:#E98B2E;}
-.portfolio-back-crumb{color:#64748B;font-size:.78rem;}.portfolio-back-crumb span{color:#E98B2E;}
+.portfolio-back-btn:hover{color:#1A4A8A;}
+.portfolio-back-crumb{color:#64748B;font-size:.78rem;}.portfolio-back-crumb span{color:#1A4A8A;}
 
 /* Hero */
-.sl-hero{background:linear-gradient(140deg,#0F172A 0%,#134E4A 55%,#0F172A 100%);min-height:92vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:8rem 0 5rem;}
-.sl-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 75% 25%,rgba(13,148,136,.25) 0%,transparent 50%),radial-gradient(circle at 20% 75%,rgba(233,139,46,.10) 0%,transparent 40%);pointer-events:none;}
+.sl-hero{background:linear-gradient(140deg,#0F172A 0%,#1E293B 55%,#0F172A 100%);min-height:92vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:8rem 0 5rem;}
+.sl-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 75% 25%,rgba(26, 74, 138, .25) 0%,transparent 50%),radial-gradient(circle at 20% 75%,rgba(26, 74, 138, .10) 0%,transparent 40%);pointer-events:none;}
 .sl-hero__grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
-.sl-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(13,148,136,.15);border:1px solid rgba(13,148,136,.35);color:#5EEAD4;font-size:.73rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .9rem;border-radius:999px;margin-bottom:1.5rem;}
+.sl-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(26, 74, 138, .15);border:1px solid rgba(26, 74, 138, .35);color:#7EC8F4;font-size:.73rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .9rem;border-radius:999px;margin-bottom:1.5rem;}
 .sl-hero__title{font-size:clamp(2.2rem,4vw,3.6rem);font-weight:800;color:#fff;line-height:1.12;margin-bottom:1.25rem;}
-.sl-hero__title span{color:#E98B2E;}
+.sl-hero__title span{color:#1A4A8A;}
 .sl-hero__desc{color:#94A3B8;font-size:1.05rem;line-height:1.72;max-width:520px;margin-bottom:2rem;}
 .sl-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.5rem;}
 .sl-tag{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#CBD5E1;font-size:.75rem;font-weight:600;padding:.3rem .75rem;border-radius:.5rem;}
 .sl-hero__stats{display:flex;gap:2.5rem;flex-wrap:wrap;}
-.sl-stat-value{display:block;font-size:2rem;font-weight:800;color:#2DD4BF;line-height:1;}
+.sl-stat-value{display:block;font-size:2rem;font-weight:800;color:#7EC8F4;line-height:1;}
 .sl-stat-label{font-size:.78rem;color:#64748B;margin-top:.2rem;}
 
 /* Member portal mockup */
-.sl-card{background:linear-gradient(145deg,#1E293B,#0F172A);border:1px solid rgba(13,148,136,.25);border-radius:1.5rem;padding:1.75rem;box-shadow:0 30px 60px rgba(0,0,0,.5),0 0 0 1px rgba(13,148,136,.1);}
+.sl-card{background:linear-gradient(145deg,#1E293B,#0F172A);border:1px solid rgba(26, 74, 138, .25);border-radius:1.5rem;padding:1.75rem;box-shadow:0 30px 60px rgba(0,0,0,.5),0 0 0 1px rgba(26, 74, 138, .1);}
 .sl-card__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
 .sl-card__title{color:#F1F5F9;font-size:.9rem;font-weight:700;}
-.sl-card__badge{background:rgba(13,148,136,.2);color:#5EEAD4;font-size:.7rem;font-weight:700;padding:.25rem .65rem;border-radius:999px;}
+.sl-card__badge{background:rgba(26, 74, 138, .2);color:#7EC8F4;font-size:.7rem;font-weight:700;padding:.25rem .65rem;border-radius:999px;}
 .sl-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem;}
 .sl-stat-mini{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:.875rem;padding:.875rem;text-align:center;}
 .sl-stat-mini__value{color:#F1F5F9;font-size:1.3rem;font-weight:800;}
 .sl-stat-mini__label{color:#64748B;font-size:.68rem;margin-top:.15rem;}
-.sl-stat-mini__trend{font-size:.67rem;margin-top:.2rem;color:#2DD4BF;}
+.sl-stat-mini__trend{font-size:.67rem;margin-top:.2rem;color:#7EC8F4;}
 .sl-member-list{display:flex;flex-direction:column;gap:.5rem;}
 .sl-member-item{display:flex;align-items:center;gap:.75rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:.75rem;padding:.65rem .875rem;}
 .sl-member-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;flex-shrink:0;}
 .sl-member-name{color:#E2E8F0;font-size:.8rem;font-weight:600;flex:1;}
 .sl-member-role{color:#64748B;font-size:.72rem;}
 .sl-member-cpd{font-size:.68rem;font-weight:700;padding:.2rem .55rem;border-radius:999px;}
-.cpd-ok{background:rgba(45,212,191,.15);color:#2DD4BF;}
+.cpd-ok{background:rgba(252,211,77,.15);color:#7EC8F4;}
 .cpd-due{background:rgba(251,146,60,.15);color:#FB923C;}
 .cpd-pending{background:rgba(250,204,21,.15);color:#FACC15;}
 
@@ -77,10 +77,10 @@
 .sl-feature-card__desc{color:var(--sl-muted);font-size:.875rem;line-height:1.6;}
 
 .sl-split{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
-.sl-split__img{background:linear-gradient(135deg,#0F172A 0%,#134E4A 100%);border-radius:1.5rem;padding:2.5rem;border:1px solid rgba(13,148,136,.2);box-shadow:0 20px 40px rgba(0,0,0,.15);}
+.sl-split__img{background:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);border-radius:1.5rem;padding:2.5rem;border:1px solid rgba(26, 74, 138, .2);box-shadow:0 20px 40px rgba(0,0,0,.15);}
 .sl-checklist{list-style:none;padding:0;margin:1.5rem 0;display:flex;flex-direction:column;gap:.875rem;}
 .sl-checklist li{display:flex;align-items:flex-start;gap:.75rem;color:#475569;font-size:.925rem;line-height:1.6;}
-.sl-checklist li::before{content:'';width:20px;height:20px;border-radius:50%;background:rgba(13,148,136,.1);border:2px solid #0D9488;flex-shrink:0;margin-top:.1rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230D9488' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;}
+.sl-checklist li::before{content:'';width:20px;height:20px;border-radius:50%;background:rgba(26, 74, 138, .1);border:2px solid #1A4A8A;flex-shrink:0;margin-top:.1rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230284C7' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;}
 
 .sl-impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-top:3rem;}
 .sl-impact-card{background:#fff;border:1px solid var(--sl-border);border-radius:1.1rem;padding:1.75rem;text-align:center;box-shadow:0 6px 16px rgba(15,23,42,.05);}
@@ -91,16 +91,16 @@
 .tech-badge{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid #E5E7EB;border-radius:.65rem;padding:.5rem 1rem;font-size:.83rem;font-weight:600;color:#334155;box-shadow:0 2px 8px rgba(15,23,42,.05);}
 .tech-badge__dot{width:8px;height:8px;border-radius:50%;}
 
-.sl-cta{background:linear-gradient(140deg,#0F172A 0%,#134E4A 100%);padding:5rem 0;text-align:center;position:relative;overflow:hidden;}
-.sl-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(13,148,136,.15) 0%,transparent 65%);pointer-events:none;}
+.sl-cta{background:linear-gradient(140deg,#0F172A 0%,#1E293B 100%);padding:5rem 0;text-align:center;position:relative;overflow:hidden;}
+.sl-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(26, 74, 138, .15) 0%,transparent 65%);pointer-events:none;}
 .sl-cta__inner{position:relative;z-index:1;max-width:680px;margin:0 auto;}
 .sl-cta__title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;color:#fff;margin-bottom:1rem;}
 .sl-cta__desc{color:#94A3B8;font-size:1rem;line-height:1.7;margin-bottom:2rem;}
 .sl-cta__actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
-.btn-primary{background:#E98B2E;color:#fff;padding:.85rem 1.85rem;border-radius:.75rem;font-weight:700;font-size:.925rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:background .2s,transform .15s,box-shadow .2s;}
-.btn-primary:hover{background:#D97706;transform:translateY(-1px);box-shadow:0 6px 20px rgba(233,139,46,.35);}
+.btn-primary{background:#1A4A8A;color:#fff;padding:.85rem 1.85rem;border-radius:.75rem;font-weight:700;font-size:.925rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:background .2s,transform .15s,box-shadow .2s;}
+.btn-primary:hover{background:#122F5C;transform:translateY(-1px);box-shadow:0 6px 20px rgba(26, 74, 138, .35);}
 .btn-outline-light{background:transparent;color:#CBD5E1;border:1.5px solid rgba(255,255,255,.2);padding:.85rem 1.85rem;border-radius:.75rem;font-weight:600;font-size:.925rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:border-color .2s,color .2s;}
-.btn-outline-light:hover{border-color:#E98B2E;color:#E98B2E;}
+.btn-outline-light:hover{border-color:#1A4A8A;color:#1A4A8A;}
 
 @media(max-width:1024px){.sl-features-grid{grid-template-columns:repeat(2,1fr);}.sl-impact-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:768px){.sl-hero__grid{grid-template-columns:1fr;}.sl-split{grid-template-columns:1fr;}.sl-features-grid{grid-template-columns:1fr;}.sl-impact-grid{grid-template-columns:repeat(2,1fr);}}
@@ -168,12 +168,12 @@
           </div>
           <div class="sl-member-list">
             <div class="sl-member-item">
-              <div class="sl-member-avatar" style="background:#0D9488;">AK</div>
+              <div class="sl-member-avatar" style="background:#1A4A8A;">AK</div>
               <div><div class="sl-member-name">Nurse Aminata Kamara</div><div class="sl-member-role">Senior Paediatric Nurse · Western Area</div></div>
               <span class="sl-member-cpd cpd-ok">CPD ✓</span>
             </div>
             <div class="sl-member-item">
-              <div class="sl-member-avatar" style="background:#E98B2E;">FB</div>
+              <div class="sl-member-avatar" style="background:#1A4A8A;">FB</div>
               <div><div class="sl-member-name">Nurse Fatmata Bangura</div><div class="sl-member-role">Neonatal Nurse · Kenema District</div></div>
               <span class="sl-member-cpd cpd-due">Due soon</span>
             </div>
@@ -205,7 +205,7 @@
     <div class="sl-features-grid reveal--stagger">
 
       <div class="sl-feature-card">
-        <div class="sl-feature-card__icon" style="background:rgba(13,148,136,.1);color:#0D9488;">
+        <div class="sl-feature-card__icon" style="background:rgba(26, 74, 138, .1);color:#1A4A8A;">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
         <h3 class="sl-feature-card__title">Membership Registry</h3>
@@ -213,7 +213,7 @@
       </div>
 
       <div class="sl-feature-card">
-        <div class="sl-feature-card__icon" style="background:rgba(233,139,46,.1);color:#E98B2E;">
+        <div class="sl-feature-card__icon" style="background:rgba(26, 74, 138, .1);color:#1A4A8A;">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
         </div>
         <h3 class="sl-feature-card__title">CPD Tracking</h3>
@@ -245,7 +245,7 @@
       </div>
 
       <div class="sl-feature-card">
-        <div class="sl-feature-card__icon" style="background:rgba(245,158,11,.1);color:#F59E0B;">
+        <div class="sl-feature-card__icon" style="background:rgba(126, 200, 244, .1);color:#7EC8F4;">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         </div>
         <h3 class="sl-feature-card__title">Leadership Analytics</h3>
@@ -274,7 +274,7 @@
       </div>
       <div class="reveal reveal--right">
         <div class="sl-split__img">
-          <div class="sl-label" style="color:#5EEAD4;">Our Solution</div>
+          <div class="sl-label" style="color:#7EC8F4;">Our Solution</div>
           <h3 style="color:#fff;font-size:1.4rem;font-weight:700;margin-bottom:1rem;">A professional digital home for every SLPNNA nurse</h3>
           <ul class="sl-checklist">
             <li style="color:#CBD5E1;">Central membership database — every nurse registered, verified, and searchable</li>
@@ -329,7 +329,7 @@
 <section class="sl-cta">
   <div class="container">
     <div class="sl-cta__inner reveal reveal--up">
-      <div class="sl-label" style="justify-content:center;color:#5EEAD4;margin-bottom:1rem;">Work With Us</div>
+      <div class="sl-label" style="justify-content:center;color:#7EC8F4;margin-bottom:1rem;">Work With Us</div>
       <h2 class="sl-cta__title">Need a platform for your professional association?</h2>
       <p class="sl-cta__desc">We build custom digital platforms for professional associations, NGOs, health organisations, and government agencies across Sierra Leone. Let's talk about what you need.</p>
       <div class="sl-cta__actions">

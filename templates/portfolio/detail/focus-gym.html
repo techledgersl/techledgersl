@@ -7,12 +7,12 @@
 {% block extra_css %}
 <style>
 :root {
-  --gym-orange: #E98B2E;
+  --gym-orange: #1A4A8A;
   --gym-dark:   #0F172A;
-  --gym-accent: #F59E0B;
+  --gym-accent: #7EC8F4;
   --gym-muted:  #64748B;
-  --gym-surface:#FFF8EF;
-  --gym-border: #FDE7CC;
+  --gym-surface:#F4F8FB;
+  --gym-border: #D1E3F5;
 }
 
 /* Back bar */
@@ -30,9 +30,9 @@
   color: #CBD5E1; font-size: .83rem; font-weight: 600;
   text-decoration: none; transition: color .2s;
 }
-.portfolio-back-btn:hover { color: #E98B2E; }
+.portfolio-back-btn:hover { color: #1A4A8A; }
 .portfolio-back-crumb { color: #64748B; font-size: .78rem; }
-.portfolio-back-crumb span { color: #E98B2E; }
+.portfolio-back-crumb span { color: #1A4A8A; }
 
 /* Reveal */
 .reveal { opacity: 0; will-change: transform, opacity; transition: opacity .65s cubic-bezier(.4,0,.2,1), transform .65s cubic-bezier(.4,0,.2,1); }
@@ -53,15 +53,15 @@
 .gym-hero::before {
   content: ''; position: absolute; inset: 0;
   background-image:
-    radial-gradient(circle at 80% 20%, rgba(233,139,46,.18) 0%, transparent 50%),
-    radial-gradient(circle at 15% 80%, rgba(245,158,11,.10) 0%, transparent 40%);
+    radial-gradient(circle at 80% 20%, rgba(26, 74, 138, .18) 0%, transparent 50%),
+    radial-gradient(circle at 15% 80%, rgba(126, 200, 244, .10) 0%, transparent 40%);
   pointer-events: none;
 }
 .gym-hero__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
 .gym-hero__badge {
   display: inline-flex; align-items: center; gap: .5rem;
-  background: rgba(233,139,46,.12); border: 1px solid rgba(233,139,46,.3);
-  color: #FCD34D; font-size: .73rem; font-weight: 700;
+  background: rgba(26, 74, 138, .12); border: 1px solid rgba(26, 74, 138, .3);
+  color: #7EC8F4; font-size: .73rem; font-weight: 700;
   letter-spacing: .1em; text-transform: uppercase;
   padding: .35rem .9rem; border-radius: 999px; margin-bottom: 1.5rem;
 }
@@ -69,7 +69,7 @@
   font-size: clamp(2.4rem, 4.5vw, 3.8rem);
   font-weight: 800; color: #FFFFFF; line-height: 1.12; margin-bottom: 1.25rem;
 }
-.gym-hero__title span { color: #E98B2E; }
+.gym-hero__title span { color: #1A4A8A; }
 .gym-hero__desc { color: #94A3B8; font-size: 1.05rem; line-height: 1.72; max-width: 520px; margin-bottom: 2rem; }
 .gym-hero__tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2.5rem; }
 .gym-hero__tag {
@@ -78,15 +78,15 @@
   padding: .3rem .75rem; border-radius: .5rem;
 }
 .gym-hero__stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
-.gym-hero__stat-value { display: block; font-size: 2rem; font-weight: 800; color: #E98B2E; line-height: 1; }
+.gym-hero__stat-value { display: block; font-size: 2rem; font-weight: 800; color: #1A4A8A; line-height: 1; }
 .gym-hero__stat-label { font-size: .78rem; color: #64748B; margin-top: .2rem; }
 
 /* App mockup */
 .gym-app-card {
   background: linear-gradient(145deg, #1E293B, #0F172A);
-  border: 1px solid rgba(233,139,46,.2);
+  border: 1px solid rgba(26, 74, 138, .2);
   border-radius: 1.5rem; padding: 1.75rem;
-  box-shadow: 0 30px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(233,139,46,.1);
+  box-shadow: 0 30px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(26, 74, 138, .1);
 }
 .gym-app-card__header {
   display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;
@@ -162,12 +162,12 @@
 .gym-split__img {
   background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%);
   border-radius: 1.5rem; padding: 2.5rem;
-  border: 1px solid rgba(233,139,46,.15);
+  border: 1px solid rgba(26, 74, 138, .15);
   box-shadow: 0 20px 40px rgba(0,0,0,.15);
 }
 .gym-checklist { list-style: none; padding: 0; margin: 1.5rem 0; display: flex; flex-direction: column; gap: .875rem; }
 .gym-checklist li { display: flex; align-items: flex-start; gap: .75rem; color: #475569; font-size: .925rem; line-height: 1.6; }
-.gym-checklist li::before { content: ''; width: 20px; height: 20px; border-radius: 50%; background: rgba(233,139,46,.15); border: 2px solid #E98B2E; flex-shrink: 0; margin-top: .1rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23E98B2E' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; }
+.gym-checklist li::before { content: ''; width: 20px; height: 20px; border-radius: 50%; background: rgba(26, 74, 138, .15); border: 2px solid #1A4A8A; flex-shrink: 0; margin-top: .1rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23E98B2E' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; }
 
 /* Tech stack */
 .tech-stack-grid { display: flex; flex-wrap: wrap; gap: .875rem; margin-top: 1.5rem; }
@@ -197,7 +197,7 @@
 }
 .gym-cta::before {
   content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(233,139,46,.12) 0%, transparent 65%);
+  background: radial-gradient(circle at 50% 50%, rgba(26, 74, 138, .12) 0%, transparent 65%);
   pointer-events: none;
 }
 .gym-cta__inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
@@ -205,19 +205,19 @@
 .gym-cta__desc  { color: #94A3B8; font-size: 1rem; line-height: 1.7; margin-bottom: 2rem; }
 .gym-cta__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .btn-primary {
-  background: #E98B2E; color: #fff; padding: .85rem 1.85rem;
+  background: #1A4A8A; color: #fff; padding: .85rem 1.85rem;
   border-radius: .75rem; font-weight: 700; font-size: .925rem;
   text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
   transition: background .2s, transform .15s, box-shadow .2s;
 }
-.btn-primary:hover { background: #D97706; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(233,139,46,.35); }
+.btn-primary:hover { background: #122F5C; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26, 74, 138, .35); }
 .btn-outline-light {
   background: transparent; color: #CBD5E1; border: 1.5px solid rgba(255,255,255,.2);
   padding: .85rem 1.85rem; border-radius: .75rem; font-weight: 600; font-size: .925rem;
   text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
   transition: border-color .2s, color .2s;
 }
-.btn-outline-light:hover { border-color: #E98B2E; color: #E98B2E; }
+.btn-outline-light:hover { border-color: #1A4A8A; color: #1A4A8A; }
 
 /* Responsive */
 @media (max-width: 1024px) { .gym-features-grid { grid-template-columns: repeat(2, 1fr); } .gym-impact-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -308,7 +308,7 @@
           </div>
           <div class="gym-member-list">
             <div class="gym-member-item">
-              <div class="gym-member-avatar" style="background:#E98B2E;">AK</div>
+              <div class="gym-member-avatar" style="background:#1A4A8A;">AK</div>
               <div>
                 <div class="gym-member-name">Alpha Kamara</div>
                 <div class="gym-member-plan">Premium · Expires Jul 15</div>
@@ -356,7 +356,7 @@
     </div>
     <div class="gym-features-grid reveal--stagger">
       <div class="gym-feature-card">
-        <div class="gym-feature-card__icon" style="background:rgba(233,139,46,.1);color:#E98B2E;">
+        <div class="gym-feature-card__icon" style="background:rgba(26, 74, 138, .1);color:#1A4A8A;">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
         <h3 class="gym-feature-card__title">Member Management</h3>
@@ -377,7 +377,7 @@
         <p class="gym-feature-card__desc">Integrated Monime mobile money payments. Members pay via phone, receipts are auto-generated, and overdue accounts are flagged automatically.</p>
       </div>
       <div class="gym-feature-card">
-        <div class="gym-feature-card__icon" style="background:rgba(245,158,11,.1);color:#F59E0B;">
+        <div class="gym-feature-card__icon" style="background:rgba(126, 200, 244, .1);color:#7EC8F4;">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16z"/></svg>
         </div>
         <h3 class="gym-feature-card__title">Automated Reminders</h3>
@@ -419,7 +419,7 @@
       </div>
       <div class="reveal reveal--right">
         <div class="gym-split__img">
-          <div class="gym-label" style="color:#FCD34D;">Our Solution</div>
+          <div class="gym-label" style="color:#7EC8F4;">Our Solution</div>
           <h3 style="color:#fff;font-size:1.4rem;font-weight:700;margin-bottom:1rem;">A single platform that runs the whole gym</h3>
           <ul class="gym-checklist" style="">
             <li style="color:#CBD5E1;">Full member database with subscription tracking and auto-renewal alerts</li>
@@ -475,7 +475,7 @@
         <div class="tech-badge"><span class="tech-badge__dot" style="background:#336791;"></span>PostgreSQL</div>
         <div class="tech-badge"><span class="tech-badge__dot" style="background:#3776AB;"></span>Python 3.14</div>
         <div class="tech-badge"><span class="tech-badge__dot" style="background:#38BDF8;"></span>Tailwind CSS</div>
-        <div class="tech-badge"><span class="tech-badge__dot" style="background:#E98B2E;"></span>Monime Payments</div>
+        <div class="tech-badge"><span class="tech-badge__dot" style="background:#1A4A8A;"></span>Monime Payments</div>
         <div class="tech-badge"><span class="tech-badge__dot" style="background:#00C7B7;"></span>Render Cloud</div>
         <div class="tech-badge"><span class="tech-badge__dot" style="background:#3ECF8E;"></span>Supabase DB</div>
         <div class="tech-badge"><span class="tech-badge__dot" style="background:#111827;"></span>Gunicorn WSGI</div>
@@ -488,7 +488,7 @@
 <section class="gym-cta">
   <div class="container">
     <div class="gym-cta__inner reveal reveal--up">
-      <div class="gym-label" style="justify-content:center;color:#FCD34D;margin-bottom:1rem;">Work With Us</div>
+      <div class="gym-label" style="justify-content:center;color:#7EC8F4;margin-bottom:1rem;">Work With Us</div>
       <h2 class="gym-cta__title">Want a system like this for your business?</h2>
       <p class="gym-cta__desc">Whether you run a gym, a school, a clinic, or any other business — TechLedger can build you a custom digital platform that fits your operations perfectly.</p>
       <div class="gym-cta__actions">

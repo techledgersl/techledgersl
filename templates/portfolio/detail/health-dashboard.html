@@ -28,12 +28,12 @@
   text-decoration: none;
   transition: color .2s;
 }
-.portfolio-back-btn:hover { color: #E98B2E; }
+.portfolio-back-btn:hover { color: #1A4A8A; }
 .portfolio-back-crumb {
   color: #64748B;
   font-size: .78rem;
 }
-.portfolio-back-crumb span { color: #E98B2E; }
+.portfolio-back-crumb span { color: #1A4A8A; }
 </style>
 <style>
 /* ─── SCROLL PROGRESS BAR ────────────────────────────────────── */
@@ -42,7 +42,7 @@
   top: 0; left: 0;
   width: 0%;
   height: 3px;
-  background: linear-gradient(90deg, var(--health-green), #34D399, #3B82F6);
+  background: linear-gradient(90deg, var(--health-green), var(--health-accent));
   z-index: 9999;
   transition: width .08s linear;
   pointer-events: none;
@@ -80,10 +80,10 @@
 .btn--health-primary:hover,
 .btn--health-primary:focus {
   background: linear-gradient(90deg,
-    #E98B2E 0%,
-    #F59E0B 40%,
-    #E98B2E 60%,
-    #D97706 100%);
+    #1A4A8A 0%,
+    #7EC8F4 40%,
+    #1A4A8A 60%,
+    #122F5C 100%);
   background-size: 200% auto;
   animation: shimmer .9s linear infinite;
 }
@@ -113,7 +113,7 @@
 
 /* ─── COUNTER ODOMETER FLASH ─────────────────────────────────── */
 @keyframes counter-flash {
-  0%  { color: #E98B2E; }
+  0%  { color: #1A4A8A; }
   100%{ color: inherit; }
 }
 .counter-done { animation: counter-flash .4s ease forwards; }
@@ -129,19 +129,19 @@
 }
 /* ─── HEALTH SURVEILLANCE THEME ─────────────────────────────────── */
 :root {
-  --health-green:   #E98B2E;
+  --health-green:   #1A4A8A;
   --health-dark:    #0F172A;
-  --health-accent:  #F59E0B;
+  --health-accent:  #7EC8F4;
   --health-red:     #EF4444;
   --health-blue:    #3B82F6;
   --health-muted:   #64748B;
-  --health-surface: #FFF8EF;
-  --health-border:  #FDE7CC;
+  --health-surface: #F4F8FB;
+  --health-border:  #D1E3F5;
 }
 
 /* ─── HERO ───────────────────────────────────────────────────────── */
 .health-hero {
-  background: linear-gradient(140deg, #FFFFFF 0%, #FFF8EF 58%, #FFF1E1 100%);
+  background: linear-gradient(140deg, #FFFFFF 0%, #F4F8FB 58%, #EBF5FB 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -154,8 +154,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 78% 16%, rgba(233,139,46,.22) 0%, transparent 42%),
-    radial-gradient(circle at 18% 82%, rgba(245,158,11,.12) 0%, transparent 38%);
+    radial-gradient(circle at 78% 16%, rgba(26, 74, 138, .22) 0%, transparent 42%),
+    radial-gradient(circle at 18% 82%, rgba(126, 200, 244, .12) 0%, transparent 38%);
   pointer-events: none;
 }
 .health-hero__grid {
@@ -168,8 +168,8 @@
   display: inline-flex;
   align-items: center;
   gap: .5rem;
-  background: rgba(233,139,46,.08);
-  border: 1px solid rgba(233,139,46,.28);
+  background: rgba(26, 74, 138, .08);
+  border: 1px solid rgba(26, 74, 138, .28);
   color: #B45309;
   font-size: .75rem;
   font-weight: 600;
@@ -181,13 +181,13 @@
 }
 .health-hero__badge-dot {
   width: 8px; height: 8px;
-  background: #E98B2E;
+  background: #1A4A8A;
   border-radius: 50%;
   animation: pulse-dot 2s infinite;
 }
 @keyframes pulse-dot {
-  0%,100%{ box-shadow: 0 0 0 0 rgba(233,139,46,.55); }
-  50%    { box-shadow: 0 0 0 6px rgba(233,139,46,0); }
+  0%,100%{ box-shadow: 0 0 0 0 rgba(26, 74, 138, .55); }
+  50%    { box-shadow: 0 0 0 6px rgba(26, 74, 138, 0); }
 }
 .health-hero__title {
   font-size: clamp(2.2rem, 4vw, 3.4rem);
@@ -196,7 +196,7 @@
   line-height: 1.15;
   margin-bottom: 1.25rem;
 }
-.health-hero__title span { color: #E98B2E; }
+.health-hero__title span { color: #1A4A8A; }
 .health-hero__description {
   color: #475569;
   font-size: 1.1rem;
@@ -241,13 +241,13 @@
   display: flex;
   align-items: center;
   gap: .4rem;
-  color: #E98B2E;
+  color: #1A4A8A;
   font-size: .75rem;
   font-weight: 600;
 }
 .live-dot {
   width: 7px; height: 7px;
-  background: #E98B2E;
+  background: #1A4A8A;
   border-radius: 50%;
   animation: pulse-dot 1.5s infinite;
 }
@@ -267,7 +267,7 @@
   flex-shrink: 0;
 }
 .health-alert-item__dot--red    { background: #EF4444; box-shadow: 0 0 6px #EF4444; }
-.health-alert-item__dot--amber  { background: #F59E0B; box-shadow: 0 0 6px #F59E0B; }
+.health-alert-item__dot--amber  { background: #7EC8F4; box-shadow: 0 0 6px #7EC8F4; }
 .health-alert-item__dot--green  { background: #34D399; box-shadow: 0 0 6px #34D399; }
 .health-alert-item__dot--blue   { background: #60A5FA; box-shadow: 0 0 6px #60A5FA; }
 .health-alert-item__info { flex: 1; }
@@ -323,22 +323,22 @@
 
 /* Hero-only button palette (keeps other sections untouched) */
 .health-hero .btn--health-primary {
-  background: #E98B2E;
+  background: #1A4A8A;
   color: #fff;
 }
 .health-hero .btn--health-primary:hover {
-  background: #D97706;
+  background: #122F5C;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(233,139,46,.35);
+  box-shadow: 0 6px 20px rgba(26, 74, 138, .35);
 }
 .health-hero .btn--health-outline {
   background: transparent;
-  color: #E98B2E;
-  border: 1.5px solid rgba(233,139,46,.65);
+  color: #1A4A8A;
+  border: 1.5px solid rgba(26, 74, 138, .65);
 }
 .health-hero .btn--health-outline:hover {
-  border-color: #D97706;
-  background: rgba(233,139,46,.08);
+  border-color: #122F5C;
+  background: rgba(26, 74, 138, .08);
 }
 
 /* ─── TRUST TICKER BAR (continuous) ─────────────────────────────── */
@@ -409,7 +409,7 @@
 /* ─── SECTION SHARED ─────────────────────────────────────────────── */
 .hs-section { padding: 5rem 0; }
 .hs-section--alt { background: var(--health-surface); }
-.hs-section--dark { background: #FFF8EF; }
+.hs-section--dark { background: #F4F8FB; }
 .hs-label {
   display: inline-flex;
   align-items: center;
@@ -490,13 +490,13 @@
 }
 .feature-card:hover {
   transform: translateY(-4px);
-  border-color: #F59E0B;
+  border-color: #7EC8F4;
   box-shadow: 0 14px 28px rgba(15,23,42,.10);
 }
 .feature-card.is-active {
   transform: scale(1.035);
-  border-color: #E98B2E;
-  box-shadow: 0 18px 36px rgba(233,139,46,.22);
+  border-color: #1A4A8A;
+  box-shadow: 0 18px 36px rgba(26, 74, 138, .22);
   z-index: 2;
 }
 .feature-card__icon {
@@ -515,8 +515,8 @@
 .feature-card.is-active .feature-card__icon svg {
   transform: rotate(360deg);
 }
-.feature-card__icon--teal  { background: rgba(13,148,136,.1); color: var(--health-green); }
-.feature-card__icon--amber { background: rgba(245,158,11,.1); color: #D97706; }
+.feature-card__icon--teal  { background: rgba(26, 74, 138, .1); color: var(--health-green); }
+.feature-card__icon--amber { background: rgba(126, 200, 244, .1); color: #122F5C; }
 .feature-card__icon--blue  { background: rgba(59,130,246,.1); color: #2563EB; }
 .feature-card__icon--red   { background: rgba(239,68,68,.1);  color: #DC2626; }
 .feature-card__icon--purple{ background: rgba(139,92,246,.1); color: #7C3AED; }
@@ -538,7 +538,7 @@
   display: inline-flex;
   align-items: center;
   gap: .28rem;
-  color: #E98B2E;
+  color: #1A4A8A;
   font-size: .84rem;
   font-weight: 700;
   margin-top: 1rem;
@@ -580,7 +580,7 @@
   margin: 0 auto 1.25rem;
   position: relative;
   z-index: 1;
-  box-shadow: 0 0 0 8px rgba(13,148,136,.12);
+  box-shadow: 0 0 0 8px rgba(26, 74, 138, .12);
 }
 .step-card__title {
   font-size: 1rem;
@@ -603,7 +603,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, rgba(233,139,46,.10) 0%, transparent 70%);
+  background: radial-gradient(ellipse at 50% 50%, rgba(26, 74, 138, .10) 0%, transparent 70%);
   pointer-events: none;
 }
 .coverage-grid {
@@ -622,7 +622,7 @@
   width: 100%;
   max-width: 420px;
   opacity: .9;
-  filter: drop-shadow(0 0 36px rgba(233,139,46,.24));
+  filter: drop-shadow(0 0 36px rgba(26, 74, 138, .24));
 }
 .coverage__region-stats {
   display: flex;
@@ -713,7 +713,7 @@
   border-radius: 999px;
 }
 .tracker-table__status--alert  { background: #FEF2F2; color: #DC2626; }
-.tracker-table__status--watch  { background: #FFFBEB; color: #D97706; }
+.tracker-table__status--watch  { background: #FFFBEB; color: #122F5C; }
 .tracker-table__status--stable { background: #F0FDF4; color: #16A34A; }
 .tracker-table__trend-up   { color: #EF4444; font-weight: 700; font-size: .8rem; }
 .tracker-table__trend-down { color: #22C55E; font-weight: 700; font-size: .8rem; }
@@ -772,7 +772,7 @@
 }
 .partner-logo:hover {
   transform: translateY(-2px);
-  border-color: #F59E0B;
+  border-color: #7EC8F4;
   box-shadow: 0 12px 22px rgba(15,23,42,.08);
 }
 .partner-logo__img {
@@ -787,8 +787,8 @@
   height: 100%;
   max-height: 62px;
   border-radius: .65rem;
-  background: #FFF8EF;
-  border: 1px dashed #F59E0B;
+  background: #F4F8FB;
+  border: 1px dashed #7EC8F4;
   color: #B45309;
   font-size: .75rem;
   font-weight: 700;
@@ -874,7 +874,7 @@
 .impact-card__org   { font-size: .78rem; color: var(--health-green); font-weight: 600; }
 
 /* ─── ALERT TYPES SECTION ────────────────────────────────────────── */
-.alert-types { padding: 5rem 0; background: #FFF8EF; border-top: 1px solid #FDE7CC; border-bottom: 1px solid #FDE7CC; }
+.alert-types { padding: 5rem 0; background: #F4F8FB; border-top: 1px solid #D1E3F5; border-bottom: 1px solid #D1E3F5; }
 .alert-types-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -891,7 +891,7 @@
 }
 .alert-type-card:hover {
   background: #FFFFFF;
-  border-color: #F59E0B;
+  border-color: #7EC8F4;
   transform: translateY(-2px);
   box-shadow: 0 10px 22px rgba(15,23,42,.08);
 }
@@ -909,7 +909,7 @@
 
 /* ─── CTA ─────────────────────────────────────────────────────────── */
 .health-cta {
-  background: linear-gradient(140deg, #FFFFFF 0%, #FFF8EF 58%, #FFF1E1 100%);
+  background: linear-gradient(140deg, #FFFFFF 0%, #F4F8FB 58%, #EBF5FB 100%);
   border-top: 1px solid #F1F5F9;
   padding: 5rem 0;
   text-align: center;
@@ -920,7 +920,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(233,139,46,.16) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 50%, rgba(26, 74, 138, .16) 0%, transparent 60%);
   pointer-events: none;
 }
 .health-cta__inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
@@ -935,7 +935,7 @@
 
 /* ─── BUTTON OVERRIDES ───────────────────────────────────────────── */
 .btn--health-primary {
-  background: #E98B2E;
+  background: #1A4A8A;
   color: #fff;
   padding: .8rem 1.75rem;
   border-radius: .75rem;
@@ -950,14 +950,14 @@
   transition: background .2s, transform .15s, box-shadow .2s;
 }
 .btn--health-primary:hover {
-  background: #D97706;
+  background: #122F5C;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(233,139,46,.35);
+  box-shadow: 0 6px 20px rgba(26, 74, 138, .35);
 }
 .btn--health-outline {
   background: transparent;
-  color: #E98B2E;
-  border: 1.5px solid rgba(233,139,46,.65);
+  color: #1A4A8A;
+  border: 1.5px solid rgba(26, 74, 138, .65);
   padding: .8rem 1.75rem;
   border-radius: .75rem;
   font-weight: 600;
@@ -969,8 +969,8 @@
   transition: border-color .2s, background .2s;
 }
 .btn--health-outline:hover {
-  border-color: #D97706;
-  background: rgba(233,139,46,.08);
+  border-color: #122F5C;
+  background: rgba(26, 74, 138, .08);
 }
 .btn--health-light {
   background: #FFFFFF;
@@ -987,8 +987,8 @@
   transition: background .2s;
 }
 .btn--health-light:hover {
-  background: #FFF8EF;
-  border-color: #F59E0B;
+  background: #F4F8FB;
+  border-color: #7EC8F4;
 }
 
 /* ─── RESPONSIVE ─────────────────────────────────────────────────── */
@@ -1483,9 +1483,9 @@
             <span class="region-stat__value">81%</span>
           </div>
           <div class="region-stat">
-            <span class="region-stat__dot" style="background:#FCD34D;"></span>
+            <span class="region-stat__dot" style="background:#7EC8F4;"></span>
             <span class="region-stat__label">North West Province</span>
-            <div class="region-stat__bar"><div class="region-stat__fill" style="width:77%;background:#FCD34D;"></div></div>
+            <div class="region-stat__bar"><div class="region-stat__fill" style="width:77%;background:#7EC8F4;"></div></div>
             <span class="region-stat__value">77%</span>
           </div>
           <div class="region-stat">
@@ -1546,7 +1546,7 @@
         <div class="alert-type-card__desc">Cholera, Lassa fever, meningitis, yellow fever, measles, and viral haemorrhagic fever vigilance — configured to national case definitions and response SOPs.</div>
       </div>
       <div class="alert-type-card">
-        <div class="alert-type-card__icon" style="background:rgba(245,158,11,.15);color:#FCD34D;">
+        <div class="alert-type-card__icon" style="background:rgba(126, 200, 244, .15);color:#7EC8F4;">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
         <div class="alert-type-card__title">Vector-borne Diseases</div>

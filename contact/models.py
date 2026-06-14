@@ -18,7 +18,9 @@ class ContactInquiry(models.Model):
 
     name = models.CharField(max_length=100)
     email = models.EmailField()
+    phone = models.CharField(max_length=30, blank=True, default='')
     subject = models.CharField(max_length=200)
+    topic = models.CharField(max_length=200, blank=True, default='')
     message = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
     status = models.CharField(

@@ -31,10 +31,10 @@ class ContactForm(forms.ModelForm):
             'class': 'form-control',
         })
     )
-    
+
     class Meta:
         model = ContactInquiry
-        fields = ['name', 'email', 'subject', 'message']
+        fields = ['name', 'email', 'phone', 'subject', 'topic', 'message']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -44,12 +44,26 @@ class ContactForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'your.email@example.com',
             }),
+            'phone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Phone Number (Optional)',
+            }),
+            'topic': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Subject',
+            }),
             'message': forms.Textarea(attrs={
                 'class': 'form-control',
                 'placeholder': 'Your Message',
                 'rows': 5,
             }),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Phone is optional; subject line (topic) is required to match the design
+        self.fields['phone'].required = False
+        self.fields['topic'].required = True
 
     def clean_name(self):
         """Validate name field."""

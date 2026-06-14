@@ -10,19 +10,19 @@ class ContactInquiryAdmin(AdminFinanceOperationsAccessMixin, admin.ModelAdmin):
     """
     Admin interface for ContactInquiry model.
     """
-    list_display = ['name', 'email', 'subject', 'status', 'created_at']
+    list_display = ['name', 'email', 'phone', 'subject', 'topic', 'status', 'created_at']
     list_filter = ['status', 'created_at']
-    search_fields = ['name', 'email', 'subject', 'message']
+    search_fields = ['name', 'email', 'phone', 'subject', 'topic', 'message']
     readonly_fields = ['created_at']
     list_editable = ['status']
     date_hierarchy = 'created_at'
     
     fieldsets = (
         ('Contact Information', {
-            'fields': ('name', 'email')
+            'fields': ('name', 'email', 'phone')
         }),
         ('Message Details', {
-            'fields': ('subject', 'message')
+            'fields': ('subject', 'topic', 'message')
         }),
         ('Status', {
             'fields': ('status', 'created_at')

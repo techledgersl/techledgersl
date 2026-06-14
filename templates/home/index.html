@@ -222,10 +222,8 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  overflow-x: auto;
-  scrollbar-width: none;
+  overflow: hidden;
 }
-.clients-strip__inner::-webkit-scrollbar { display: none; }
 .clients-strip__label {
   font-size: .68rem;
   font-weight: 700;
@@ -237,12 +235,43 @@
   border-right: 1px solid #E2E8F0;
   white-space: nowrap;
 }
+/* Continuously looping ticker. Two identical groups sit side by side and
+   the track slides left by exactly one group width, so the loop is seamless. */
+.clients-strip__marquee {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  mask: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+}
+.clients-strip__track {
+  display: flex;
+  width: max-content;
+  animation: clients-marquee 28s linear infinite;
+}
+.clients-strip__marquee:hover .clients-strip__track {
+  animation-play-state: paused;
+}
+.clients-strip__group {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  padding-right: 2.5rem;
+  flex-shrink: 0;
+}
 .clients-strip__name {
   font-size: .82rem;
   font-weight: 600;
   color: #64748B;
   white-space: nowrap;
   flex-shrink: 0;
+}
+@keyframes clients-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .clients-strip__track { animation: none; }
 }
 
 /* ── SECTION UTILITIES ──────────────────────────────────── */
@@ -741,11 +770,24 @@
   <div class="container">
     <div class="clients-strip__inner">
       <span class="clients-strip__label">Live Platforms For</span>
-      <span class="clients-strip__name">Ministry of Health &amp; Sanitation</span>
-      <span class="clients-strip__name">College of Nursing &amp; Allied Health Sciences</span>
-      <span class="clients-strip__name">Sierra Leone Paediatric Nurses Association</span>
-      <span class="clients-strip__name">Focus Gym, Freetown</span>
-      <span class="clients-strip__name">MamaCare Sierra Leone</span>
+      <div class="clients-strip__marquee">
+        <div class="clients-strip__track">
+          <div class="clients-strip__group">
+            <span class="clients-strip__name">Ministry of Health &amp; Sanitation</span>
+            <span class="clients-strip__name">College of Nursing &amp; Allied Health Sciences</span>
+            <span class="clients-strip__name">Sierra Leone Paediatric Nurses Association</span>
+            <span class="clients-strip__name">Focus Gym, Freetown</span>
+            <span class="clients-strip__name">MamaCare Sierra Leone</span>
+          </div>
+          <div class="clients-strip__group" aria-hidden="true">
+            <span class="clients-strip__name">Ministry of Health &amp; Sanitation</span>
+            <span class="clients-strip__name">College of Nursing &amp; Allied Health Sciences</span>
+            <span class="clients-strip__name">Sierra Leone Paediatric Nurses Association</span>
+            <span class="clients-strip__name">Focus Gym, Freetown</span>
+            <span class="clients-strip__name">MamaCare Sierra Leone</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

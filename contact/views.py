@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from django.core.cache import cache
+from django.http import HttpResponseRedirect
 from .forms import ContactForm
 
 logger = logging.getLogger('contact')
@@ -32,14 +33,14 @@ class IndexView(FormView):
     success_url = reverse_lazy('contact:index')
 
     def form_valid(self, form):
-        # Honeypot check — silently discard bot submissions
+        # Honeypot — discard silently without saving, bot thinks it succeeded
         if form.cleaned_data.get('website'):
             logger.warning('Honeypot triggered from IP %s', _get_client_ip(self.request))
             messages.success(
                 self.request,
                 'Thank you for contacting us! We have received your message and will get back to you soon.'
             )
-            return super().form_valid(form)
+            return HttpResponseRedirect(self.get_success_url())
 
         # Rate limiting — max RATE_LIMIT submissions per IP per hour
         ip = _get_client_ip(self.request)
@@ -50,10 +51,9 @@ class IndexView(FormView):
                 self.request,
                 'Too many messages sent. Please wait an hour before trying again.'
             )
-            return self.form_invalid(form)
+            return self.render_to_response(self.get_context_data(form=form))
         cache.set(cache_key, count + 1, RATE_WINDOW)
 
-        """Handle valid form submission."""
         # Save the inquiry to database
         inquiry = form.save()
         

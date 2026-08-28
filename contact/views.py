@@ -61,85 +61,16 @@ class IndexView(FormView):
         service_choices = dict(ContactForm.SERVICE_CHOICES)
         service_name = service_choices.get(inquiry.subject, inquiry.subject)
         
-        # Send email notification to company
-        try:
-            subject = f'New Contact Inquiry: {service_name}'
-            
-            # Email body for company notification
-            message = f"""
-New contact form submission received:
-
-Name: {inquiry.name}
-Email: {inquiry.email}
-Phone: {inquiry.phone or 'Not provided'}
-Service: {service_name}
-Subject: {inquiry.topic or 'Not provided'}
-Message:
-{inquiry.message}
-
----
-This message was sent from the TechLedger Solutions contact form.
-            """
-            
-            # Send email to company
-            send_mail(
-                subject=subject,
-                message=message.strip(),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.CONTACT_EMAIL],
-                fail_silently=False,
-            )
-            
-            # Send confirmation email to client
-            confirmation_subject = 'Thank you for contacting TechLedger Solutions'
-            confirmation_message = f"""
-Dear {inquiry.name},
-
-Thank you for contacting TechLedger Solutions. We have received your inquiry regarding {service_name}.
-
-Our team will review your message and get back to you as soon as possible, typically within 24-48 hours.
-
-Your inquiry details:
-Service: {service_name}
-Message: {inquiry.message[:100]}{'...' if len(inquiry.message) > 100 else ''}
-
-If you have any urgent questions, please feel free to contact us directly at tech.ledger.sl@gmail.com.
-
-Best regards,
-TechLedger Solutions Team
-            """
-            
-            send_mail(
-                subject=confirmation_subject,
-                message=confirmation_message.strip(),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[inquiry.email],
-                fail_silently=False,
-            )
-            
-            # Log successful email sending
-            logger.info(
-                'Contact form submission processed successfully',
-                extra={
-                    'inquiry_id': inquiry.id,
-                    'inquiry_name': inquiry.name,
-                    'inquiry_email': inquiry.email,
-                    'service': service_name,
-                }
-            )
-            
-        except Exception as e:
-            # Log the error with full context but don't fail the form submission
-            logger.error(
-                'Failed to send email notification for contact inquiry',
-                exc_info=True,
-                extra={
-                    'inquiry_id': inquiry.id,
-                    'inquiry_name': inquiry.name,
-                    'inquiry_email': inquiry.email,
-                    'service': service_name,
-                }
-            )
+        # Email notifications temporarily disabled
+        logger.info(
+            'Contact form submission saved (email disabled)',
+            extra={
+                'inquiry_id': inquiry.id,
+                'inquiry_name': inquiry.name,
+                'inquiry_email': inquiry.email,
+                'service': service_name,
+            }
+        )
         
         messages.success(
             self.request,

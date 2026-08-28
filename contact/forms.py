@@ -59,6 +59,13 @@ class ContactForm(forms.ModelForm):
             }),
         }
 
+    # Honeypot — hidden from real users; bots fill it in
+    website = forms.CharField(required=False, widget=forms.TextInput(attrs={
+        'autocomplete': 'off',
+        'tabindex': '-1',
+        'aria-hidden': 'true',
+    }))
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Phone is optional; subject line (topic) is required to match the design

@@ -1,309 +1,191 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}MamaCare Sierra Leone — TechLedger Portfolio{% endblock %}
-{% block meta_description %}A maternal health platform built for Sierra Leone — helping mothers track pregnancies, book clinic appointments, and access health information in their language.{% endblock %}
-
-{% block extra_css %}
-<style>
-:root{--mc-pink:#1A4A8A;--mc-rose:#F4F8FB;--mc-navy:#0F172A;--mc-accent:#1A4A8A;--mc-muted:#64748B;--mc-border:#D1E3F5;}
-.reveal{opacity:0;will-change:transform,opacity;transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1);}
-.reveal--up{transform:translateY(40px);}.reveal--left{transform:translateX(-40px);}.reveal--right{transform:translateX(40px);}
-.reveal.is-visible{opacity:1;transform:none;}
-.reveal--stagger>*{opacity:0;transform:translateY(32px);transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .55s cubic-bezier(.4,0,.2,1);}
-.reveal--stagger.is-visible>*{opacity:1;transform:none;}
-.portfolio-back-bar{background:#0F172A;padding:.85rem 0;border-bottom:1px solid rgba(255,255,255,.08);}
-.portfolio-back-bar__inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
-.portfolio-back-btn{display:inline-flex;align-items:center;gap:.45rem;color:#CBD5E1;font-size:.83rem;font-weight:600;text-decoration:none;transition:color .2s;}
-.portfolio-back-btn:hover{color:#1A4A8A;}
-.portfolio-back-crumb{color:#64748B;font-size:.78rem;}.portfolio-back-crumb span{color:#1A4A8A;}
-
-.mc-hero{background:linear-gradient(140deg,#0F172A 0%,#1E293B 60%,#0F172A 100%);min-height:92vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:8rem 0 5rem;}
-.mc-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 75% 25%,rgba(26, 74, 138, .2) 0%,transparent 50%),radial-gradient(circle at 20% 75%,rgba(26, 74, 138, .1) 0%,transparent 40%);pointer-events:none;}
-.mc-hero__grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
-.mc-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(26, 74, 138, .15);border:1px solid rgba(26, 74, 138, .35);color:#7EC8F4;font-size:.73rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .9rem;border-radius:999px;margin-bottom:1.5rem;}
-.mc-hero__title{font-size:clamp(2.2rem,4vw,3.6rem);font-weight:800;color:#fff;line-height:1.12;margin-bottom:1.25rem;}
-.mc-hero__title span{color:#1A4A8A;}
-.mc-hero__desc{color:#94A3B8;font-size:1.05rem;line-height:1.72;max-width:520px;margin-bottom:2rem;}
-.mc-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.5rem;}
-.mc-tag{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#CBD5E1;font-size:.75rem;font-weight:600;padding:.3rem .75rem;border-radius:.5rem;}
-.mc-hero__stats{display:flex;gap:2.5rem;flex-wrap:wrap;}
-.mc-stat-value{display:block;font-size:2rem;font-weight:800;color:#7EC8F4;line-height:1;}
-.mc-stat-label{font-size:.78rem;color:#64748B;margin-top:.2rem;}
-
-.mc-card{background:linear-gradient(145deg,#1E293B,#0F172A);border:1px solid rgba(26, 74, 138, .25);border-radius:1.5rem;padding:1.75rem;box-shadow:0 30px 60px rgba(0,0,0,.5);}
-.mc-card__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
-.mc-card__title{color:#F1F5F9;font-size:.9rem;font-weight:700;}
-.mc-card__tag{background:rgba(26, 74, 138, .2);color:#7EC8F4;font-size:.7rem;font-weight:700;padding:.25rem .65rem;border-radius:999px;}
-.mc-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem;}
-.mc-stat-mini{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:.875rem;padding:.875rem;text-align:center;}
-.mc-stat-mini__value{color:#F1F5F9;font-size:1.3rem;font-weight:800;}
-.mc-stat-mini__label{color:#64748B;font-size:.68rem;margin-top:.15rem;}
-.mc-stat-mini__trend{font-size:.67rem;margin-top:.2rem;color:#7EC8F4;}
-
-.mc-patient-list{display:flex;flex-direction:column;gap:.5rem;}
-.mc-patient-item{display:flex;align-items:center;gap:.75rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:.75rem;padding:.65rem .875rem;}
-.mc-patient-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;flex-shrink:0;}
-.mc-patient-name{color:#E2E8F0;font-size:.8rem;font-weight:600;flex:1;}
-.mc-patient-week{color:#64748B;font-size:.72rem;}
-.mc-appt-status{font-size:.68rem;font-weight:700;padding:.2rem .55rem;border-radius:999px;}
-.mc-appt-ok{background:rgba(252,211,77,.15);color:#7EC8F4;}
-.mc-appt-due{background:rgba(251,146,60,.15);color:#FB923C;}
-
-.mc-section{padding:5rem 0;}
-.mc-section--alt{background:var(--mc-rose);}
-.mc-label{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mc-pink);margin-bottom:.75rem;}
-.mc-title{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;color:var(--mc-navy);line-height:1.2;margin-bottom:1rem;}
-.mc-desc{color:var(--mc-muted);font-size:1rem;line-height:1.7;max-width:600px;}
-.mc-header{text-align:center;margin-bottom:3.5rem;}
-.mc-header .mc-desc{margin:0 auto;}
-
-.mc-features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
-.mc-feature-card{background:#fff;border:1px solid #E5E7EB;border-radius:1.1rem;padding:1.65rem 1.5rem;transition:transform .22s,box-shadow .22s,border-color .22s;}
-.mc-feature-card:hover{transform:translateY(-4px);border-color:var(--mc-pink);box-shadow:0 12px 28px rgba(15,23,42,.09);}
-.mc-feature-card__icon{width:52px;height:52px;border-radius:.9rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
-.mc-feature-card__title{font-size:1rem;font-weight:700;color:var(--mc-navy);margin-bottom:.5rem;}
-.mc-feature-card__desc{color:var(--mc-muted);font-size:.875rem;line-height:1.6;}
-
-.mc-split{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
-.mc-split__img{background:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);border-radius:1.5rem;padding:2.5rem;border:1px solid rgba(26, 74, 138, .2);box-shadow:0 20px 40px rgba(0,0,0,.15);}
-.mc-checklist{list-style:none;padding:0;margin:1.5rem 0;display:flex;flex-direction:column;gap:.875rem;}
-.mc-checklist li{display:flex;align-items:flex-start;gap:.75rem;color:#475569;font-size:.925rem;line-height:1.6;}
-.mc-checklist li::before{content:'';width:20px;height:20px;border-radius:50%;background:rgba(26, 74, 138, .1);border:2px solid #1A4A8A;flex-shrink:0;margin-top:.1rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230284C7' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;}
-
-.mc-impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-top:3rem;}
-.mc-impact-card{background:#fff;border:1px solid var(--mc-border);border-radius:1.1rem;padding:1.75rem;text-align:center;box-shadow:0 6px 16px rgba(15,23,42,.05);}
-.mc-impact-card__value{font-size:2.4rem;font-weight:800;color:var(--mc-pink);line-height:1;}
-.mc-impact-card__label{color:var(--mc-muted);font-size:.8rem;margin-top:.5rem;line-height:1.5;}
-
-.tech-stack-grid{display:flex;flex-wrap:wrap;gap:.875rem;margin-top:1.5rem;}
-.tech-badge{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid #E5E7EB;border-radius:.65rem;padding:.5rem 1rem;font-size:.83rem;font-weight:600;color:#334155;box-shadow:0 2px 8px rgba(15,23,42,.05);}
-.tech-badge__dot{width:8px;height:8px;border-radius:50%;}
-
-.mc-cta{background:linear-gradient(140deg,#0F172A 0%,#1E293B 100%);padding:5rem 0;text-align:center;position:relative;overflow:hidden;}
-.mc-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(26, 74, 138, .12) 0%,transparent 65%);pointer-events:none;}
-.mc-cta__inner{position:relative;z-index:1;max-width:680px;margin:0 auto;}
-.mc-cta__title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;color:#fff;margin-bottom:1rem;}
-.mc-cta__desc{color:#94A3B8;font-size:1rem;line-height:1.7;margin-bottom:2rem;}
-.mc-cta__actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
-.btn-primary{background:#1A4A8A;color:#fff;padding:.85rem 1.85rem;border-radius:.75rem;font-weight:700;font-size:.925rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:background .2s,transform .15s,box-shadow .2s;}
-.btn-primary:hover{background:#122F5C;transform:translateY(-1px);box-shadow:0 6px 20px rgba(26, 74, 138, .35);}
-.btn-outline-light{background:transparent;color:#CBD5E1;border:1.5px solid rgba(255,255,255,.2);padding:.85rem 1.85rem;border-radius:.75rem;font-weight:600;font-size:.925rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:border-color .2s,color .2s;}
-.btn-outline-light:hover{border-color:#1A4A8A;color:#1A4A8A;}
-
-@media(max-width:1024px){.mc-features-grid{grid-template-columns:repeat(2,1fr);}.mc-impact-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:768px){.mc-hero__grid{grid-template-columns:1fr;}.mc-split{grid-template-columns:1fr;}.mc-features-grid{grid-template-columns:1fr;}.mc-impact-grid{grid-template-columns:repeat(2,1fr);}}
-</style>
-{% endblock %}
+{% block title %}MamaCare Sierra Leone — TechLedger Solutions{% endblock %}
+{% block meta_description %}A maternal health platform for Sierra Leone — pregnancy tracking, antenatal booking, offline community health worker tools and SMS in Krio and English.{% endblock %}
 
 {% block content %}
-<div class="portfolio-back-bar">
-  <div class="container">
-    <div class="portfolio-back-bar__inner">
-      <a href="{% url 'portfolio:index' %}" class="portfolio-back-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-        Back to Portfolio
-      </a>
-      <span class="portfolio-back-crumb">Portfolio / <span>MamaCare Sierra Leone</span></span>
+<section class="site-masthead">
+    <div class="site-wrap">
+        <p class="site-label site-masthead__label">Case study &middot; Health &amp; field operations</p>
+        <h1>MamaCare Sierra Leone</h1>
+        <p>
+            A digital maternal health platform helping mothers track pregnancies and book antenatal
+            care — designed to work in low-connectivity areas.
+        </p>
     </div>
-  </div>
+</section>
+
+<div class="site-crumbs">
+    <div class="site-wrap">
+        <span>You are here:</span>
+        <a href="{% url 'home:index' %}">Home</a>
+        <span>/</span>
+        <a href="{% url 'portfolio:index' %}">Our work</a>
+        <span>/</span>
+        <span>MamaCare Sierra Leone</span>
+    </div>
 </div>
 
-<section class="mc-hero">
-  <div class="container">
-    <div class="mc-hero__grid">
-      <div class="reveal reveal--left">
-        <div class="mc-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          Case Study · Maternal Health
+<div class="site-wrap">
+    <div class="site-grid">
+        <div class="site-article">
+
+            <section id="overview" class="site-reveal">
+                <h2>Maternal care that reaches past the network</h2>
+                <div class="site-stats site-reveal-group">
+                    <div class="site-stat"><b>3,500+</b><span>Mothers registered</span></div>
+                    <div class="site-stat"><b>12</b><span>Districts covered</span></div>
+                    <div class="site-stat"><b>85%</b><span>Appointment attendance</span></div>
+                </div>
+                <p>
+                    Antenatal care depends on mothers attending appointments and on health workers
+                    knowing which pregnancies need attention. Both break down when records are on
+                    paper and the mother lives somewhere the network does not reach.
+                </p>
+                <p>
+                    MamaCare combines a public-facing service for mothers with field tools for
+                    community health workers, and it is built so that neither depends on being
+                    online at the moment of use.
+                </p>
+            </section>
+
+            <section id="challenge" class="site-reveal">
+                <h2>The challenge</h2>
+                <ul class="site-ticks">
+                    <li>Antenatal records kept on paper cards that get lost or left at home.</li>
+                    <li>Missed appointments with no reminder mechanism.</li>
+                    <li>Community health workers operating in areas with no reliable connectivity.</li>
+                    <li>Literacy and language barriers to any English-only, text-heavy service.</li>
+                </ul>
+            </section>
+
+            <section id="features" class="site-reveal">
+                <h2>Platform features</h2>
+                <dl class="site-defs">
+                    <div>
+                        <dt>Pregnancy tracking</dt>
+                        <dd>
+                            Week-by-week updates, development milestones and personalised health tips
+                            sent to each mother by SMS and in the app.
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>Appointment booking</dt>
+                        <dd>
+                            Mothers book antenatal clinic visits online, and automated SMS reminders
+                            reduce missed appointments.
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>SMS in Krio and English</dt>
+                        <dd>
+                            Reminders and alerts are sent in both languages, making the platform
+                            usable regardless of literacy level or English fluency.
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>High-risk flagging</dt>
+                        <dd>
+                            The system identifies high-risk pregnancies from reported symptoms and
+                            vital signs, alerting midwives to prioritise those cases.
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>Community health worker tools</dt>
+                        <dd>
+                            CHWs register and monitor mothers in their communities on a mobile
+                            interface that stores data locally and syncs when connectivity returns.
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>District health analytics</dt>
+                        <dd>
+                            District officers see live data on registrations, appointment attendance
+                            and high-risk cases across their area.
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section id="results" class="site-reveal">
+                <h2>What changed</h2>
+                <ul class="site-ticks">
+                    <li>
+                        <strong>85% appointment attendance.</strong>
+                        Automated reminders in the mother's own language changed turnout.
+                    </li>
+                    <li>
+                        <strong>Field work no longer waits for signal.</strong>
+                        CHWs record visits offline and sync later, so remote communities are covered.
+                    </li>
+                    <li>
+                        <strong>High-risk cases are found earlier.</strong>
+                        Flagging happens at the point of data entry rather than at review.
+                    </li>
+                </ul>
+            </section>
+
+            <section id="stack" class="site-reveal">
+                <h2>How it is built</h2>
+                <p>
+                    Django, PostgreSQL and Python with SMS gateway integration and an offline-first
+                    field interface that queues records locally and reconciles them on reconnection.
+                </p>
+            </section>
+
         </div>
-        <h1 class="mc-hero__title">
-          Every Mother in<br>Sierra Leone Deserves<br><span>Better Care</span>
-        </h1>
-        <p class="mc-hero__desc">
-          MamaCare Sierra Leone is a digital maternal health platform that helps pregnant mothers
-          track their pregnancies, book antenatal clinic appointments, and access vital health
-          information — even in low-connectivity areas.
-        </p>
-        <div class="mc-tags">
-          <span class="mc-tag">Django</span>
-          <span class="mc-tag">PostgreSQL</span>
-          <span class="mc-tag">Python</span>
-          <span class="mc-tag">SMS Integration</span>
-          <span class="mc-tag">Offline Support</span>
-          <span class="mc-tag">Krio Language</span>
-        </div>
-        <div class="mc-hero__stats">
-          <div><span class="mc-stat-value">3,500+</span><div class="mc-stat-label">Mothers registered</div></div>
-          <div><span class="mc-stat-value">12</span><div class="mc-stat-label">Districts covered</div></div>
-          <div><span class="mc-stat-value">85%</span><div class="mc-stat-label">Appointment attendance rate</div></div>
-        </div>
-      </div>
-      <div class="reveal reveal--right">
-        <div class="mc-card">
-          <div class="mc-card__header">
-            <span class="mc-card__title">Antenatal Dashboard</span>
-            <span class="mc-card__tag">Live</span>
-          </div>
-          <div class="mc-stats-row">
-            <div class="mc-stat-mini"><div class="mc-stat-mini__value">3,512</div><div class="mc-stat-mini__label">Registered mothers</div><div class="mc-stat-mini__trend">▲ 48 this week</div></div>
-            <div class="mc-stat-mini"><div class="mc-stat-mini__value">218</div><div class="mc-stat-mini__label">Appointments today</div><div class="mc-stat-mini__trend">▲ 85% attended</div></div>
-            <div class="mc-stat-mini"><div class="mc-stat-mini__value">94</div><div class="mc-stat-mini__label">Due this month</div><div class="mc-stat-mini__trend">12 districts</div></div>
-          </div>
-          <div class="mc-patient-list">
-            <div class="mc-patient-item">
-              <div class="mc-patient-avatar" style="background:#1A4A8A;">AK</div>
-              <div><div class="mc-patient-name">Aminata Kamara</div><div class="mc-patient-week">28 weeks · Bo District</div></div>
-              <span class="mc-appt-status mc-appt-ok">Confirmed</span>
+
+        <aside class="site-rail site-reveal-group">
+            <div class="site-rail__box">
+                <h2>Project facts</h2>
+                <dl>
+                    <div><dt>Sector</dt><dd>Maternal health</dd></div>
+                    <div><dt>Mothers</dt><dd>3,500+</dd></div>
+                    <div><dt>Districts</dt><dd>12</dd></div>
+                    <div><dt>Languages</dt><dd>Krio, English</dd></div>
+                    <div><dt>Status</dt><dd>Live</dd></div>
+                </dl>
             </div>
-            <div class="mc-patient-item">
-              <div class="mc-patient-avatar" style="background:#1A4A8A;">FB</div>
-              <div><div class="mc-patient-name">Fatmata Bangura</div><div class="mc-patient-week">34 weeks · Western Area</div></div>
-              <span class="mc-appt-status mc-appt-due">Due today</span>
+
+            <div class="site-rail__box site-rail__box--accent">
+                <h2>Need something similar?</h2>
+                <div class="site-rail__actions">
+                    <a class="site-btn site-btn--accent site-btn--block" href="{% url 'contact:index' %}">Start a project</a>
+                    <a class="site-btn site-btn--quiet site-btn--block" href="{% url 'portfolio:index' %}">All case studies</a>
+                </div>
             </div>
-            <div class="mc-patient-item">
-              <div class="mc-patient-avatar" style="background:#8B5CF6;">MS</div>
-              <div><div class="mc-patient-name">Mariama Sesay</div><div class="mc-patient-week">16 weeks · Kenema</div></div>
-              <span class="mc-appt-status mc-appt-ok">Confirmed</span>
+
+            <div class="site-rail__box site-contents">
+                <h2>Page contents</h2>
+                <ol>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#challenge">The challenge</a></li>
+                    <li><a href="#features">Platform features</a></li>
+                    <li><a href="#results">What changed</a></li>
+                    <li><a href="#stack">How it is built</a></li>
+                </ol>
             </div>
-            <div class="mc-patient-item">
-              <div class="mc-patient-avatar" style="background:#10B981;">IJ</div>
-              <div><div class="mc-patient-name">Isatu Jalloh</div><div class="mc-patient-week">38 weeks · Port Loko</div></div>
-              <span class="mc-appt-status mc-appt-due">Alert: overdue</span>
+
+            <div class="site-rail__box">
+                <h2>Related work</h2>
+                <div class="site-rail__links">
+                    <a href="{% url 'portfolio:health-dashboard' %}">Health Dashboard</a>
+                    <a href="{% url 'portfolio:slpnna' %}">SLPNNA platform</a>
+                </div>
             </div>
-          </div>
+        </aside>
+    </div>
+</div>
+
+<section class="site-endband site-reveal">
+    <div class="site-wrap">
+        <h2>Working where the network does not reach?</h2>
+        <p>We build offline-first field tools that sync when connectivity returns. Let us talk.</p>
+        <div class="site-cta-row">
+            <a class="site-btn site-btn--accent" href="{% url 'contact:index' %}">Start a conversation</a>
+            <a class="site-btn site-btn--outline" href="{% url 'portfolio:index' %}">See more work</a>
         </div>
-      </div>
     </div>
-  </div>
 </section>
-
-<section class="mc-section">
-  <div class="container">
-    <div class="mc-header reveal reveal--up">
-      <div class="mc-label">Platform Features</div>
-      <h2 class="mc-title">Designed for Sierra Leone's Mothers</h2>
-      <p class="mc-desc">Simple enough for first-time smartphone users. Powerful enough for clinicians and health workers to coordinate care across districts.</p>
-    </div>
-    <div class="mc-features-grid reveal--stagger">
-      <div class="mc-feature-card">
-        <div class="mc-feature-card__icon" style="background:rgba(26, 74, 138, .1);color:#1A4A8A;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-        <h3 class="mc-feature-card__title">Pregnancy Tracking</h3>
-        <p class="mc-feature-card__desc">Week-by-week pregnancy updates, baby development milestones, and personalised health tips sent directly to each mother via SMS and app.</p>
-      </div>
-      <div class="mc-feature-card">
-        <div class="mc-feature-card__icon" style="background:rgba(59,130,246,.1);color:#3B82F6;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-        <h3 class="mc-feature-card__title">Appointment Booking</h3>
-        <p class="mc-feature-card__desc">Mothers book antenatal clinic visits online. Automated SMS reminders reduce missed appointments and ensure timely antenatal care.</p>
-      </div>
-      <div class="mc-feature-card">
-        <div class="mc-feature-card__icon" style="background:rgba(26, 74, 138, .1);color:#1A4A8A;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16z"/></svg></div>
-        <h3 class="mc-feature-card__title">SMS in Krio & English</h3>
-        <p class="mc-feature-card__desc">Health reminders and alerts are sent in both English and Krio — Sierra Leone's lingua franca — making the platform accessible to all mothers regardless of literacy level.</p>
-      </div>
-      <div class="mc-feature-card">
-        <div class="mc-feature-card__icon" style="background:rgba(16,185,129,.1);color:#10B981;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
-        <h3 class="mc-feature-card__title">High-Risk Flagging</h3>
-        <p class="mc-feature-card__desc">The system automatically identifies high-risk pregnancies based on reported symptoms and vital signs — alerting midwives and health workers to prioritise these cases.</p>
-      </div>
-      <div class="mc-feature-card">
-        <div class="mc-feature-card__icon" style="background:rgba(139,92,246,.1);color:#8B5CF6;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-        <h3 class="mc-feature-card__title">Community Health Workers</h3>
-        <p class="mc-feature-card__desc">CHWs get their own mobile interface to register and monitor mothers in their communities — syncing when connectivity is available.</p>
-      </div>
-      <div class="mc-feature-card">
-        <div class="mc-feature-card__icon" style="background:rgba(126, 200, 244, .1);color:#7EC8F4;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-        <h3 class="mc-feature-card__title">District Health Analytics</h3>
-        <p class="mc-feature-card__desc">District health officers see real-time data on maternal registrations, appointment attendance, high-risk cases, and delivery outcomes by district.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="mc-section mc-section--alt">
-  <div class="container">
-    <div class="mc-split">
-      <div class="reveal reveal--left">
-        <div class="mc-label">The Challenge</div>
-        <h2 class="mc-title">Sierra Leone's maternal mortality is among the highest globally</h2>
-        <p class="mc-desc">Many preventable maternal deaths in Sierra Leone stem from missed antenatal visits, late detection of complications, and poor communication between health workers and mothers.</p>
-        <ul class="mc-checklist">
-          <li>Mothers in rural areas missing critical antenatal appointments</li>
-          <li>No system to identify and prioritise high-risk pregnancies</li>
-          <li>Health workers unable to track mothers between visits</li>
-          <li>Language barriers preventing mothers from understanding health advice</li>
-          <li>Paper-based records making coordination between clinics impossible</li>
-        </ul>
-      </div>
-      <div class="reveal reveal--right">
-        <div class="mc-split__img">
-          <div class="mc-label" style="color:#7EC8F4;">Our Solution</div>
-          <h3 style="color:#fff;font-size:1.4rem;font-weight:700;margin-bottom:1rem;">Technology in service of every mother</h3>
-          <ul class="mc-checklist">
-            <li style="color:#CBD5E1;">SMS reminders in Krio and English ensure no mother misses an appointment</li>
-            <li style="color:#CBD5E1;">Automated high-risk pregnancy detection alerts health workers immediately</li>
-            <li style="color:#CBD5E1;">Community health workers can register and track mothers offline</li>
-            <li style="color:#CBD5E1;">Digital records shared between clinics — mothers are never lost in the system</li>
-            <li style="color:#CBD5E1;">District dashboards give health officers real-time visibility across their area</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="mc-section">
-  <div class="container">
-    <div class="mc-header reveal reveal--up">
-      <div class="mc-label">Results & Impact</div>
-      <h2 class="mc-title">Saving Lives Through Technology</h2>
-    </div>
-    <div class="mc-impact-grid reveal--stagger">
-      <div class="mc-impact-card"><div class="mc-impact-card__value">3,500+</div><div class="mc-impact-card__label">Mothers registered on the platform</div></div>
-      <div class="mc-impact-card"><div class="mc-impact-card__value">85%</div><div class="mc-impact-card__label">Antenatal appointment attendance rate</div></div>
-      <div class="mc-impact-card"><div class="mc-impact-card__value">12</div><div class="mc-impact-card__label">Districts reached across Sierra Leone</div></div>
-      <div class="mc-impact-card"><div class="mc-impact-card__value">40%</div><div class="mc-impact-card__label">Reduction in missed high-risk appointments</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="mc-section mc-section--alt">
-  <div class="container">
-    <div class="reveal reveal--up">
-      <div class="mc-label">Technology</div>
-      <h2 class="mc-title">Built for Low-Connectivity Environments</h2>
-      <p class="mc-desc">Designed to work in Sierra Leone's variable connectivity landscape — from Freetown's 4G to remote chiefdoms with limited data access.</p>
-      <div class="tech-stack-grid">
-        <div class="tech-badge"><span class="tech-badge__dot" style="background:#092E20;"></span>Django 5</div>
-        <div class="tech-badge"><span class="tech-badge__dot" style="background:#336791;"></span>PostgreSQL</div>
-        <div class="tech-badge"><span class="tech-badge__dot" style="background:#3776AB;"></span>Python 3.14</div>
-        <div class="tech-badge"><span class="tech-badge__dot" style="background:#38BDF8;"></span>Tailwind CSS</div>
-        <div class="tech-badge"><span class="tech-badge__dot" style="background:#25D366;"></span>SMS Gateway</div>
-        <div class="tech-badge"><span class="tech-badge__dot" style="background:#EA4335;"></span>Gmail SMTP</div>
-        <div class="tech-badge"><span class="tech-badge__dot" style="background:#00C7B7;"></span>Render Cloud</div>
-        <div class="tech-badge"><span class="tech-badge__dot" style="background:#3ECF8E;"></span>Supabase DB</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="mc-cta">
-  <div class="container">
-    <div class="mc-cta__inner reveal reveal--up">
-      <div class="mc-label" style="justify-content:center;color:#7EC8F4;margin-bottom:1rem;">Work With Us</div>
-      <h2 class="mc-cta__title">Want to build a health tech solution?</h2>
-      <p class="mc-cta__desc">TechLedger builds digital health platforms, patient management systems, and community health tools for organisations working in Sierra Leone and beyond.</p>
-      <div class="mc-cta__actions">
-        <a href="{% url 'contact:index' %}" class="btn-primary">Start Your Project</a>
-        <a href="{% url 'portfolio:index' %}" class="btn-outline-light">View More Projects</a>
-      </div>
-    </div>
-  </div>
-</section>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-(function(){const rM=window.matchMedia('(prefers-reduced-motion:reduce)').matches;const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(!e.isIntersecting)return;if(e.target.classList.contains('reveal--stagger')){Array.from(e.target.children).forEach((c,i)=>{if(!rM)c.style.transitionDelay=(i*100)+'ms';});}e.target.classList.add('is-visible');obs.unobserve(e.target);});},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});document.querySelectorAll('.reveal,.reveal--stagger').forEach(el=>obs.observe(el));})();
-</script>
 {% endblock %}

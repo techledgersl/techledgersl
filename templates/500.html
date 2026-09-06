@@ -1,22 +1,29 @@
 {% extends 'base/base.html' %}
 
-{% block title %}500 - Server Error - TechLedger Solutions{% endblock %}
+{% block title %}Server error — TechLedger Solutions{% endblock %}
 
 {% block content %}
-<section class="error-page">
-    <div class="container">
-        <div class="error-page__content">
-            <h1 class="error-page__code">500</h1>
-            <h2 class="error-page__title">Server Error</h2>
-            <p class="error-page__description">
-                We're sorry, but something went wrong on our end. Please try again later.
-            </p>
-            <div class="error-page__actions">
-                <a href="{% url 'home:index' %}" class="btn btn--primary">Go to Homepage</a>
-                <a href="{% url 'contact:index' %}" class="btn btn--secondary">Contact Us</a>
-            </div>
-        </div>
+<section class="site-masthead">
+    <div class="site-wrap">
+        <p class="site-label site-masthead__label">Error 500</p>
+        <h1>Something went wrong at our end</h1>
+        <p>
+            This is our fault, not yours. The problem has been logged and we are looking at it.
+            Please try again shortly.
+        </p>
     </div>
 </section>
-{% endblock %}
 
+<div class="site-wrap site-column site-column--narrow">
+    <div class="site-prose">
+        <p>
+            If this keeps happening, email us at
+            <a href="mailto:tech.ledger.sl@gmail.com">tech.ledger.sl@gmail.com</a>
+            or call +232 74 989898 and tell us what you were trying to do.
+        </p>
+    </div>
+    <p style="margin-top:28px;">
+        <a class="site-btn site-btn--accent" href="/">Go to the homepage</a>
+    </p>
+</div>
+{% endblock %}

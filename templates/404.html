@@ -1,22 +1,32 @@
 {% extends 'base/base.html' %}
 
-{% block title %}404 - Page Not Found - TechLedger Solutions{% endblock %}
+{% block title %}Page not found — TechLedger Solutions{% endblock %}
 
 {% block content %}
-<section class="error-page">
-    <div class="container">
-        <div class="error-page__content">
-            <h1 class="error-page__code">404</h1>
-            <h2 class="error-page__title">Page Not Found</h2>
-            <p class="error-page__description">
-                Sorry, the page you are looking for does not exist or has been moved.
-            </p>
-            <div class="error-page__actions">
-                <a href="{% url 'home:index' %}" class="btn btn--primary">Go to Homepage</a>
-                <a href="{% url 'contact:index' %}" class="btn btn--secondary">Contact Us</a>
-            </div>
-        </div>
+<section class="site-masthead">
+    <div class="site-wrap">
+        <p class="site-label site-masthead__label">Error 404</p>
+        <h1>Page not found</h1>
+        <p>
+            The page you asked for does not exist, or it has moved. The links below should get you
+            back to where you were going.
+        </p>
     </div>
 </section>
-{% endblock %}
 
+<div class="site-wrap site-column site-column--narrow">
+    <div class="site-prose">
+        <p>If you followed a link to get here, we would like to know so we can fix it.</p>
+        <ul>
+            <li><a href="{% url 'home:index' %}">Home</a></li>
+            <li><a href="{% url 'services:index' %}">Services</a></li>
+            <li><a href="{% url 'portfolio:index' %}">Our work</a></li>
+            <li><a href="{% url 'about:index' %}">About us</a></li>
+            <li><a href="{% url 'contact:index' %}">Contact us</a></li>
+        </ul>
+    </div>
+    <p style="margin-top:28px;">
+        <a class="site-btn site-btn--accent" href="{% url 'home:index' %}">Go to the homepage</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,6 +1,20 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block title %}Pay for a Service - TechLedger{% endblock %}
+
+{% comment %}
+The checkout has not been moved onto the prospectus design system yet, so it
+still needs the previous public stylesheets that base.html no longer loads.
+Pulling them in here keeps the payment flow working exactly as before, and
+keeps them off every other page. Remove this block when checkout is redesigned.
+{% endcomment %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="{% static 'css/layout.css' %}">
+<link rel="stylesheet" href="{% static 'css/components.css' %}">
+<link rel="stylesheet" href="{% static 'css/sections.css' %}">
+{% endblock %}
 
 {% block content %}
 <section class="checkout-page">

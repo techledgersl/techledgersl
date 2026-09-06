@@ -1,267 +1,250 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}Services - TechLedger Solutions{% endblock %}
+{% block title %}Services — TechLedger Solutions{% endblock %}
+{% block meta_description %}Web platforms, health and surveillance systems, dashboards and analytics, system integration, research and advisory, and financial systems — built for institutions in Sierra Leone.{% endblock %}
 
 {% block content %}
-
-<section class="services-section services-section--primenet">
-    <div class="container">
-        <p class="services-section__eyebrow">Our Services</p>
-        <h1 class="services-section__title">
-            Crafting Digital <span>Excellence</span>
-        </h1>
-        <p class="services-section__subtitle">
-            We deliver cutting-edge solutions that transform businesses and drive innovation forward.
+<section class="site-masthead">
+    <div class="site-wrap">
+        <p class="site-label site-masthead__label">Services</p>
+        <h1>What we build, and who we build it for</h1>
+        <p>
+            Six service areas delivered under one contract by one accountable team, rather than
+            handed between a developer, an analyst and a consultant.
         </p>
-        <div class="services-grid">
+    </div>
+</section>
+
+<div class="site-crumbs">
+    <div class="site-wrap">
+        <span>You are here:</span>
+        <a href="{% url 'home:index' %}">Home</a>
+        <span>/</span>
+        <span>Services</span>
+    </div>
+</div>
+
+<div class="site-wrap">
+    <div class="site-grid">
+        <div class="site-article">
+
+            <section id="overview" class="site-reveal">
+                <h2>How we work with you</h2>
+                <p>
+                    Every platform we build is custom. We start from your workflow, your users and
+                    your constraints — not from a product that was designed for a different country
+                    and configured to fit afterwards.
+                </p>
+                <p>
+                    Most engagements begin with a short discovery phase. It costs you nothing, and
+                    it produces a written scope, a realistic timeline and an honest answer about
+                    whether we are the right team for the work.
+                </p>
+            </section>
+
             {% if services %}
-                {% for service in services %}
-                {% cycle 'service-icon--web' 'service-icon--code' 'service-icon--mobile' as service_icon silent %}
-                <div class="service-card">
-                    <div class="service-card__top">
-                        <div class="service-card__icon {{ service_icon }}" aria-hidden="true">
-                            {% if service_icon == 'service-icon--web' %}
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="9"></circle>
-                                <path d="M3 12h18"></path>
-                                <path d="M12 3c2.9 3.2 2.9 14.8 0 18"></path>
-                                <path d="M12 3c-2.9 3.2-2.9 14.8 0 18"></path>
-                            </svg>
-                            {% elif service_icon == 'service-icon--code' %}
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M8.5 8.5L4.5 12l4 3.5"></path>
-                                <path d="M15.5 8.5l4 3.5-4 3.5"></path>
-                                <path d="M13.5 5.5l-3 13"></path>
-                            </svg>
-                            {% else %}
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <rect x="7" y="2.5" width="10" height="19" rx="2"></rect>
-                                <path d="M10 18.5h4"></path>
-                            </svg>
-                            {% endif %}
+            <section id="services" class="site-reveal">
+                <h2>Our services</h2>
+                <div class="site-rows site-reveal-group">
+                    {% for service in services %}
+                    <a class="site-row" href="{% url 'services:detail' service.slug %}">
+                        <div>
+                            <h3>{{ service.name }}</h3>
+                            <p>{{ service.description|truncatewords:24 }}</p>
                         </div>
-                        <span class="service-card__index">{{ forloop.counter|stringformat:"02d" }}</span>
-                    </div>
-                    <div class="service-card__content">
-                        <h3 class="service-card__title">{{ service.name }}</h3>
-                        <p class="service-card__description">{{ service.description }}</p>
-                        <ul class="service-card__list">
-                            <li>Tailored Solutions</li>
-                            <li>Enterprise Ready</li>
-                            <li>Scalable Delivery</li>
-                        </ul>
-                        <a class="service-card__action" href="{% url 'contact:index' %}">
-                            Explore Service
-                            <span class="service-card__action-icon" aria-hidden="true">→</span>
-                        </a>
-                    </div>
+                        <span class="site-row__meta">Read more</span>
+                    </a>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+            </section>
             {% else %}
-                <div class="service-card">
-                    <div class="service-card__top">
-                        <div class="service-card__icon service-icon--web" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="9"></circle>
-                                <path d="M3 12h18"></path>
-                                <path d="M12 3c2.9 3.2 2.9 14.8 0 18"></path>
-                                <path d="M12 3c-2.9 3.2-2.9 14.8 0 18"></path>
-                            </svg>
-                        </div>
-                        <span class="service-card__index">01</span>
+            <section id="services" class="site-reveal">
+                <h2>Our services</h2>
+
+                <dl class="site-defs">
+                    <div>
+                        <dt>Web platforms and management systems</dt>
+                        <dd>
+                            Portals, registers, records systems, member and staff management, and
+                            internal workflow platforms. Built to perform reliably on Sierra Leone's
+                            infrastructure and to be used by staff with a wide range of digital
+                            confidence.
+                        </dd>
                     </div>
-                    <div class="service-card__content">
-                        <h3 class="service-card__title">Technology Solutions</h3>
-                        <p class="service-card__description">
-                            Cutting-edge technology solutions including software development, system integration, and digital transformation.
-                        </p>
-                        <ul class="service-card__list">
-                            <li>Responsive Delivery</li>
-                            <li>High Performance</li>
-                            <li>SEO Optimized</li>
-                        </ul>
-                        <a class="service-card__action" href="{% url 'contact:index' %}">
-                            Explore Service
-                            <span class="service-card__action-icon" aria-hidden="true">→</span>
-                        </a>
+                    <div>
+                        <dt>Health tech and surveillance systems</dt>
+                        <dd>
+                            Disease surveillance dashboards, patient and programme management, and
+                            health analytics platforms for ministries, NGOs and health institutions —
+                            including district-to-national reporting workflows.
+                        </dd>
                     </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-card__top">
-                        <div class="service-card__icon service-icon--code" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M8.5 8.5L4.5 12l4 3.5"></path>
-                                <path d="M15.5 8.5l4 3.5-4 3.5"></path>
-                                <path d="M13.5 5.5l-3 13"></path>
-                            </svg>
-                        </div>
-                        <span class="service-card__index">02</span>
+                    <div>
+                        <dt>Data dashboards and analytics</dt>
+                        <dd>
+                            Reporting tools and business intelligence that turn operational records
+                            into decisions: district-level breakdowns, trend analysis, exception
+                            alerts, and reports your team can export and file.
+                        </dd>
                     </div>
-                    <div class="service-card__content">
-                        <h3 class="service-card__title">Financial Management</h3>
-                        <p class="service-card__description">
-                            Comprehensive financial management services including analysis, budgeting, forecasting, and strategic planning.
-                        </p>
-                        <ul class="service-card__list">
-                            <li>Custom Solutions</li>
-                            <li>Enterprise Ready</li>
-                            <li>Scalable Architecture</li>
-                        </ul>
-                        <a class="service-card__action" href="{% url 'contact:index' %}">
-                            Explore Service
-                            <span class="service-card__action-icon" aria-hidden="true">→</span>
-                        </a>
+                    <div>
+                        <dt>System integration</dt>
+                        <dd>
+                            Connecting new platforms to existing databases, finance systems and
+                            reporting tools, so information is entered once and flows to everywhere
+                            it is needed without re-keying.
+                        </dd>
                     </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-card__top">
-                        <div class="service-card__icon service-icon--mobile" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <rect x="7" y="2.5" width="10" height="19" rx="2"></rect>
-                                <path d="M10 18.5h4"></path>
-                            </svg>
-                        </div>
-                        <span class="service-card__index">03</span>
+                    <div>
+                        <dt>Research and advisory</dt>
+                        <dd>
+                            Data collection design, evidence-based analysis and technical advisory
+                            for programme and policy decisions, including baseline studies and
+                            monitoring frameworks.
+                        </dd>
                     </div>
-                    <div class="service-card__content">
-                        <h3 class="service-card__title">Research & Analytics</h3>
-                        <p class="service-card__description">
-                            Comprehensive research services, data analytics, and evidence-based insights for informed decision-making.
-                        </p>
-                        <ul class="service-card__list">
-                            <li>iOS and Android</li>
-                            <li>Cross-Platform</li>
-                            <li>User-Centric Design</li>
-                        </ul>
-                        <a class="service-card__action" href="{% url 'contact:index' %}">
-                            Explore Service
-                            <span class="service-card__action-icon" aria-hidden="true">→</span>
-                        </a>
+                    <div>
+                        <dt>Financial systems and analytics</dt>
+                        <dd>
+                            Budget tracking, revenue and payment systems with mobile money
+                            integration, automated receipting, forecasting and financial performance
+                            reporting.
+                        </dd>
                     </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-card__top">
-                        <div class="service-card__icon service-icon--web" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="9"></circle>
-                                <path d="M3 12h18"></path>
-                                <path d="M12 3c2.9 3.2 2.9 14.8 0 18"></path>
-                                <path d="M12 3c-2.9 3.2-2.9 14.8 0 18"></path>
-                            </svg>
-                        </div>
-                        <span class="service-card__index">04</span>
-                    </div>
-                    <div class="service-card__content">
-                        <h3 class="service-card__title">Consulting Services</h3>
-                        <p class="service-card__description">
-                            Expert consulting services to help you navigate complex technology and financial challenges.
-                        </p>
-                        <ul class="service-card__list">
-                            <li>Tailored Solutions</li>
-                            <li>Strategy Focused</li>
-                            <li>Scalable Delivery</li>
-                        </ul>
-                        <a class="service-card__action" href="{% url 'contact:index' %}">
-                            Explore Service
-                            <span class="service-card__action-icon" aria-hidden="true">→</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-card__top">
-                        <div class="service-card__icon service-icon--code" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M8.5 8.5L4.5 12l4 3.5"></path>
-                                <path d="M15.5 8.5l4 3.5-4 3.5"></path>
-                                <path d="M13.5 5.5l-3 13"></path>
-                            </svg>
-                        </div>
-                        <span class="service-card__index">05</span>
-                    </div>
-                    <div class="service-card__content">
-                        <h3 class="service-card__title">Custom Development</h3>
-                        <p class="service-card__description">
-                            Tailored software development solutions designed specifically for your business needs and requirements.
-                        </p>
-                        <ul class="service-card__list">
-                            <li>Custom Solutions</li>
-                            <li>Enterprise Ready</li>
-                            <li>Architecture Driven</li>
-                        </ul>
-                        <a class="service-card__action" href="{% url 'contact:index' %}">
-                            Explore Service
-                            <span class="service-card__action-icon" aria-hidden="true">→</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-card__top">
-                        <div class="service-card__icon service-icon--mobile" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <rect x="7" y="2.5" width="10" height="19" rx="2"></rect>
-                                <path d="M10 18.5h4"></path>
-                            </svg>
-                        </div>
-                        <span class="service-card__index">06</span>
-                    </div>
-                    <div class="service-card__content">
-                        <h3 class="service-card__title">System Integration</h3>
-                        <p class="service-card__description">
-                            Seamless integration of existing systems with new technologies to optimize workflows and operations.
-                        </p>
-                        <ul class="service-card__list">
-                            <li>Mobile Ready</li>
-                            <li>Cross-Platform</li>
-                            <li>User-Centric Design</li>
-                        </ul>
-                        <a class="service-card__action" href="{% url 'contact:index' %}">
-                            Explore Service
-                            <span class="service-card__action-icon" aria-hidden="true">→</span>
-                        </a>
-                    </div>
-                </div>
+                </dl>
+            </section>
             {% endif %}
-        </div>
-    </div>
-</section>
 
-<section class="cta-section services-cta">
-    <div class="container">
-        <div class="services-cta__panel">
-            <h2 class="services-cta__title">Ready to Build Your Next Digital Solution?</h2>
-            <p class="services-cta__description">
-                Let us discuss your requirements and recommend the right service package for your organization.
-            </p>
-            <div class="services-cta__actions">
-                <a href="mailto:info@techledger.com?subject=Schedule a Meeting" class="services-cta__button services-cta__button--primary">
-                    Schedule a Meeting
-                </a>
-                <a href="{% url 'contact:index' %}" class="services-cta__button services-cta__button--secondary">
-                    Contact Us
-                </a>
+            <section id="technology" class="site-reveal">
+                <h2>Technology and standards</h2>
+                <ul class="site-ticks">
+                    <li>
+                        <strong>Python and Django.</strong>
+                        A mature, secure framework used by government and enterprise systems
+                        worldwide — not a niche stack that leaves you dependent on one supplier.
+                    </li>
+                    <li>
+                        <strong>PostgreSQL.</strong>
+                        A proven relational database, suitable for records that have to stand up to
+                        audit.
+                    </li>
+                    <li>
+                        <strong>Offline-capable field tools.</strong>
+                        Data captured without connectivity and synchronised automatically when the
+                        network returns.
+                    </li>
+                    <li>
+                        <strong>Role-based access control.</strong>
+                        Every user sees only what their role permits, with audit trails on the
+                        records that matter.
+                    </li>
+                    <li>
+                        <strong>Mobile money integration.</strong>
+                        Live payment collection, automatic receipting and reconciled revenue
+                        reporting, already running in production.
+                    </li>
+                    <li>
+                        <strong>Full client ownership.</strong>
+                        You own the code, the data and the platform. No lock-in, and documentation
+                        another team could pick up.
+                    </li>
+                </ul>
+            </section>
+
+            <section id="engagement" class="site-reveal">
+                <h2>How an engagement runs</h2>
+                <ol class="site-steps">
+                    <li>
+                        <div>
+                            <b>Discovery</b>
+                            <span>We learn your users, constraints and operating environment before designing a single screen.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <b>Design and prototype</b>
+                            <span>You review a working prototype before full development begins.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <b>Build and test</b>
+                            <span>Clean, maintainable code tested at every stage, delivered in milestones.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <b>Deploy and support</b>
+                            <span>We deploy, train your team, and stay reachable after launch.</span>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+
+            <section id="next" class="site-reveal">
+                <h2>Discuss your requirements</h2>
+                <p>
+                    Tell us what you are trying to run better and we will recommend the right scope —
+                    including telling you when a smaller piece of work would serve you better than a
+                    full platform.
+                </p>
+                <p>
+                    <a class="site-btn site-btn--accent" href="{% url 'contact:index' %}">Contact us</a>
+                </p>
+            </section>
+
+        </div>
+
+        <aside class="site-rail site-reveal-group">
+            <div class="site-rail__box">
+                <h2>At a glance</h2>
+                <dl>
+                    <div><dt>Service areas</dt><dd>6</dd></div>
+                    <div><dt>Platforms live</dt><dd>20+</dd></div>
+                    <div><dt>Districts covered</dt><dd>16</dd></div>
+                    <div><dt>Discovery phase</dt><dd>Free</dd></div>
+                </dl>
             </div>
+
+            <div class="site-rail__box site-rail__box--accent">
+                <div class="site-rail__actions">
+                    <a class="site-btn site-btn--accent site-btn--block" href="{% url 'contact:index' %}">Request a proposal</a>
+                    <a class="site-btn site-btn--quiet site-btn--block" href="{% url 'portfolio:index' %}">See our work</a>
+                </div>
+            </div>
+
+            <div class="site-rail__box site-contents">
+                <h2>Page contents</h2>
+                <ol>
+                    <li><a href="#overview">How we work with you</a></li>
+                    <li><a href="#services">Our services</a></li>
+                    <li><a href="#technology">Technology and standards</a></li>
+                    <li><a href="#engagement">How an engagement runs</a></li>
+                    <li><a href="#next">Discuss your requirements</a></li>
+                </ol>
+            </div>
+
+            <div class="site-rail__box">
+                <h2>Explore</h2>
+                <div class="site-rail__links">
+                    <a href="{% url 'portfolio:index' %}">Case studies</a>
+                    <a href="{% url 'about:index' %}">About the company</a>
+                    <a href="{% url 'contact:index' %}">Contact us</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<section class="site-endband site-reveal">
+    <div class="site-wrap">
+        <h2>Ready to build your next digital solution?</h2>
+        <p>Let us discuss your requirements and recommend the right approach for your organisation.</p>
+        <div class="site-cta-row">
+            <a class="site-btn site-btn--accent" href="{% url 'contact:index' %}">Schedule a meeting</a>
+            <a class="site-btn site-btn--outline" href="mailto:tech.ledger.sl@gmail.com">Email us</a>
         </div>
     </div>
 </section>
-
-{% endblock %}
-
-{% block extra_js %}
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    var cards = document.querySelectorAll('.services-section--primenet .service-card');
-    cards.forEach(function (card) {
-        card.addEventListener('click', function () {
-            var isActive = card.classList.contains('is-active');
-            cards.forEach(function (item) {
-                item.classList.remove('is-active');
-            });
-            if (!isActive) {
-                card.classList.add('is-active');
-            }
-        });
-    });
-});
-</script>
 {% endblock %}

@@ -1,59 +1,29 @@
-<header class="site-header">
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar__brand">
-                <a href="{% url 'home:index' %}" class="navbar__logo-link">
-                    {% load static %}
-                    <img src="{% static 'images/logo.png' %}" alt="TechLedger Solutions" class="navbar__logo-img">
-                </a>
-            </div>
-            <button class="navbar__toggle" aria-label="Toggle navigation" aria-expanded="false">
-                <span class="navbar__toggle-icon"></span>
-            </button>
-            <div class="navbar__menu" role="navigation" aria-label="Main navigation">
-                <ul class="navbar__nav" role="list">
-                    <li class="navbar__item">
-                        <a href="{% url 'home:index' %}" class="navbar__link">Home</a>
-                    </li>
-                    <li class="navbar__item navbar__item--has-dropdown">
-                        <button
-                            class="navbar__link navbar__dropdown-toggle"
-                            type="button"
-                            aria-expanded="false"
-                            aria-controls="about-submenu">
-                            About Us
-                            <span class="navbar__dropdown-caret" aria-hidden="true">▾</span>
-                        </button>
-                        <ul class="navbar__dropdown-menu" id="about-submenu" role="list">
-                            <li>
-                                <a href="{% url 'about:index' %}" class="navbar__dropdown-link">About</a>
-                            </li>
-                            <li>
-                                <a href="{% url 'about:index' %}#team" class="navbar__dropdown-link">Our Team</a>
-                            </li>
-                            <li>
-                                <a href="{% url 'home:index' %}#testimonials" class="navbar__dropdown-link">Testimonials</a>
-                            </li>
-                            <li>
-                                <a href="{% url 'payments:checkout' %}" class="navbar__dropdown-link">Pay for Service</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="navbar__item">
-                        <a href="{% url 'services:index' %}" class="navbar__link">Services</a>
-                    </li>
-                    <li class="navbar__item">
-                        <a href="{% url 'portfolio:index' %}" class="navbar__link">Portfolio</a>
-                    </li>
-                    <li class="navbar__item">
-                        <a href="{% url 'contact:index' %}" class="navbar__link">Contact</a>
-                    </li>
-                </ul>
-                <div class="navbar__actions">
-                    <a href="{% url 'contact:index' %}" class="navbar__action-link navbar__action-link--primary">Contact Us</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-</header>
+{% load static %}
+<div class="site-util">
+    <div class="site-wrap">
+        <span>Freetown, Sierra Leone &middot; Systems delivered across all 16 districts</span>
+        <a href="{% url 'contact:index' %}">Contact us</a>
+    </div>
+</div>
 
+<header class="site-header">
+    <div class="site-wrap">
+        <a class="site-brand" href="{% url 'home:index' %}">
+            <img class="site-brand__mark" src="{% static 'images/logo.png' %}" alt="">
+            <span>
+                <span class="site-brand__name">TechLedger Solutions</span>
+                <span class="site-brand__sub">Software &amp; Data Systems</span>
+            </span>
+        </a>
+
+        <button type="button" class="site-nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+
+        <nav class="site-nav" id="site-nav" data-open="false" aria-label="Primary">
+            <a href="{% url 'home:index' %}"{% if request.resolver_match.namespace == 'home' %} aria-current="page"{% endif %}>Home</a>
+            <a href="{% url 'services:index' %}"{% if request.resolver_match.namespace == 'services' %} aria-current="page"{% endif %}>Services</a>
+            <a href="{% url 'portfolio:index' %}"{% if request.resolver_match.namespace == 'portfolio' %} aria-current="page"{% endif %}>Our work</a>
+            <a href="{% url 'about:index' %}"{% if request.resolver_match.namespace == 'about' %} aria-current="page"{% endif %}>About us</a>
+            <a href="{% url 'contact:index' %}"{% if request.resolver_match.namespace == 'contact' %} aria-current="page"{% endif %}>Contact</a>
+        </nav>
+    </div>
+</header>

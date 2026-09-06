@@ -1,33 +1,118 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
-{% block title %}{{ service.name }} - TechLedger Solutions{% endblock %}
+{% block title %}{{ service.name }} — TechLedger Solutions{% endblock %}
+{% block meta_description %}{{ service.description|truncatewords:28 }}{% endblock %}
 
 {% block content %}
-<section class="page-header">
-    <div class="container">
-        <h1 class="page-header__title">{{ service.name }}</h1>
-        <p class="page-header__subtitle">{{ service.description }}</p>
+<section class="site-masthead">
+    <div class="site-wrap">
+        <p class="site-label site-masthead__label">Service</p>
+        <h1>{{ service.name }}</h1>
     </div>
 </section>
 
-<section class="service-detail">
-    <div class="container">
-        <div class="service-detail__content">
-            <div class="service-detail__body">
-                <h2>About This Service</h2>
-                <div class="service-detail__description">
+<div class="site-crumbs">
+    <div class="site-wrap">
+        <span>You are here:</span>
+        <a href="{% url 'home:index' %}">Home</a>
+        <span>/</span>
+        <a href="{% url 'services:index' %}">Services</a>
+        <span>/</span>
+        <span>{{ service.name }}</span>
+    </div>
+</div>
+
+<div class="site-wrap">
+    <div class="site-grid">
+        <div class="site-article">
+
+            <section id="about" class="site-reveal">
+                <h2>About this service</h2>
+                <div class="site-prose">
                     {{ service.description|linebreaks }}
                 </div>
-            </div>
-            <div class="service-detail__sidebar">
-                <div class="service-detail__cta">
-                    <h3>Interested in this service?</h3>
-                    <p>Contact us to discuss how we can help with your project.</p>
-                    <a href="{% url 'contact:index' %}" class="btn btn--primary">Get in Touch</a>
+            </section>
+
+            <section id="approach" class="site-reveal">
+                <h2>How we deliver it</h2>
+                <ol class="site-steps">
+                    <li>
+                        <div>
+                            <b>Discovery</b>
+                            <span>We learn your users, constraints and operating environment before designing a single screen.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <b>Design and prototype</b>
+                            <span>You review a working prototype before full development begins.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <b>Build and test</b>
+                            <span>Clean, maintainable code tested at every stage, delivered in milestones.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <b>Deploy and support</b>
+                            <span>We deploy, train your team, and stay reachable after launch.</span>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+
+            <section id="next" class="site-reveal">
+                <h2>Talk to us about this service</h2>
+                <p>
+                    Tell us what you are trying to achieve and we will set out a realistic scope,
+                    timeline and cost.
+                </p>
+                <p>
+                    <a class="site-btn site-btn--accent" href="{% url 'contact:index' %}">Contact us</a>
+                </p>
+            </section>
+
+        </div>
+
+        <aside class="site-rail site-reveal-group">
+            <div class="site-rail__box site-rail__box--accent">
+                <div class="site-rail__actions">
+                    <a class="site-btn site-btn--accent site-btn--block" href="{% url 'contact:index' %}">Request a proposal</a>
+                    <a class="site-btn site-btn--quiet site-btn--block" href="{% url 'services:index' %}">All services</a>
                 </div>
             </div>
+
+            <div class="site-rail__box site-contents">
+                <h2>Page contents</h2>
+                <ol>
+                    <li><a href="#about">About this service</a></li>
+                    <li><a href="#approach">How we deliver it</a></li>
+                    <li><a href="#next">Talk to us</a></li>
+                </ol>
+            </div>
+
+            <div class="site-rail__box">
+                <h2>Explore</h2>
+                <div class="site-rail__links">
+                    <a href="{% url 'portfolio:index' %}">Case studies</a>
+                    <a href="{% url 'about:index' %}">About the company</a>
+                    <a href="{% url 'contact:index' %}">Contact us</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<section class="site-endband site-reveal">
+    <div class="site-wrap">
+        <h2>Ready to get started?</h2>
+        <p>Let us discuss your requirements and recommend the right approach for your organisation.</p>
+        <div class="site-cta-row">
+            <a class="site-btn site-btn--accent" href="{% url 'contact:index' %}">Start a conversation</a>
         </div>
     </div>
 </section>
 {% endblock %}
-
